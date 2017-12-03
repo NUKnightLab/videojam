@@ -1,0 +1,122 @@
+{
+  "name": "electron-quick-start",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "NODE_ENV=DEV concurrently \"babel-node server.js\" \"sleep 2 && electron .\"",
+    "bundle": "webpack",
+    "watch": "NODE_ENV=DEV babel-node server.js",
+    "start:prod": "webpack && electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "appId": "com.electron.VideoJam",
+    "productName": "VideoJam",
+    "copyright": "Copyright © 2017 Northwestern University Knight Lab",
+    "asar": false,
+    "files": [
+      "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffmpeg-static/index.js",
+      "node_modules/ffmpeg-static/package.json",
+      "node_modules/ffprobe-static/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffprobe-static/index.js",
+      "node_modules/ffprobe-static/package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "files": [
+        "!node_modules/ffmpeg-static/bin/win${/*}",
+        "!node_modules/ffmpeg-static/bin/linux${/*}",
+        "!node_modules/ffprobe-static/bin/win${/*}",
+        "!node_modules/ffprobe-static/bin/linux${/*}"
+      ]
+    },
+    "linux": {
+      "category": "",
+      "packageCategory": "GNOME;GTK;VideoEditing",
+      "description": "VideoJam Desktop Client for Linux",
+      "target": [
+        "deb",
+        "zip",
+        "AppImage",
+        "rpm"
+      ],
+      "maintainer": "Northwestern University Knight Lab",
+      "files": [
+        "!node_modules/ffmpeg-static/bin/linux/ia32${/*}",
+        "!node_modules/ffmpeg-static/bin/win${/*}",
+        "!node_modules/ffmpeg-static/bin/mac${/*}",
+        "!node_modules/ffprobe-static/bin/linux/ia32${/*}",
+        "!node_modules/ffprobe-static/bin/win${/*}",
+        "!node_modules/ffprobe-static/bin/mac${/*}"
+      ]
+    },
+    "deb": {
+      "synopsis": "autoEdit2 Desktop App"
+    },
+    "dmg": {
+      "background": "build/background.png",
+      "icon": "build/icon.icns",
+      "iconSize": 128,
+      "contents": [
+        {
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "type": "file"
+        }
+      ]
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico",
+      "files": [
+        "node_modules/ffmpeg-static/bin/win/${arch}/ffmpeg",
+        "!node_modules/ffmpeg-static/bin/win/ia32${/*}",
+        "!node_modules/ffmpeg-static/bin/linux${/*}",
+        "!node_modules/ffmpeg-static/bin/mac${/*}"
+      ]
+    },
+    "nsis": {
+      "perMachine": true,
+      "oneClick": false
+    }
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-react-hmre": "^1.1.1",
+    "concurrently": "^3.5.0",
+    "css-loader": "^0.28.7",
+    "electron": "~1.7.8",
+    "electron-builder": "^19.45.5",
+    "electron-packager": "^9.1.0",
+    "electron-rebuild": "^1.6.0",
+    "express": "^4.16.2",
+    "style-loader": "^0.19.0",
+    "webpack": "^3.8.1",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-hot-middleware": "^2.20.0"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^2.0.0",
+    "ffprobe-static": "^2.0.0",
+    "file-system": "^2.2.2",
+    "fluent-ffmpeg": "^2.1.2",
+    "path": "^0.12.7",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1"
+  }
+}

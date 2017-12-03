@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    <div id="app">
+      Loading...
+      <!-- <script src="./bundle/renderer.bundle.js"></script> -->
+    </div>
+    <div id="test">
+      <h1>It would be awesome if this worked</h1>
+      <input
+        type="file"
+        id="v1"
+        onchange="console.log(files[0].path)"></input>
+      <input type="file" id="v2"></input>
+      <button
+        id="concat"
+        onclick="concatVidClips()">make video</button>
+      <div id="msgs">results of this experiment will go here:</div>
+    </div>
+  </body>
+
+  <script>
+    // var fs = require('file-system');
+    // fs.recurse('/Users/mwhitely/desktop/knight-lab/2017-2018/jam/electron-quick-start',
+    // function(filepath, relative, filename){
+    //   document.getElementById("results").append(filename);
+    // });
+    var fluent_ffmpeg = require('fluent-ffmpeg');
+    var ffmpegPath  = require("./config.js").ffmpegPath;
+    var ffprobePath = require("./config.js").ffprobePath;
+    fluent_ffmpeg.setFfmpegPath(ffmpegPath);
+    fluent_ffmpeg.setFfprobePath(ffprobePath);
+
+    //initialize global variables
+    var mergedVideo = fluent_ffmpeg();
+
+    var vid1 = document.getElementById("v1");
+    var vid2 = document.getElementById("v2");
+    var makeVidBtn = document.getElementById("concat");
+
+    // vid1.onchange = console.log(vid1);
+    //
+    // makeVidBtn.onClick = console.log("You clicked")
+    // makeVidBtn.onclick = concatVidClips();
+
+    function concatVidClips() {
+		var outPath = "/Users/mwhitely/desktop/out.mp4";
+		var msgArea = document.getElementById("msgs");
+
+		var proc = fluent_ffmpeg(vid1.files[0].path)
+	    .input(vid2.files[0].path)
+			.on('progress', function(progress) {
+  			// console.log('Processing: ' + progress.percent + '% done');
+				msgArea.innerHTML += 'Processing: ' + progress.percent + '% done\n';
+			})
+	    .on('end', function() {
+	      console.log('files have been merged succesfully');
+				msgArea.innerHTML += 'files have been merged succesfully';
+	    })
+	    .on('error', function(err) {
+	      console.log('an error happened: ' + err.message);
+				msgArea.innerHTML += 'an error happened: ' + err.message;
+	    })
+	    .mergeToFile(outPath);
+	 }
+
+  </script>
+
+  <script>
+    // You can also require other files to run in this process
+    // install babel hooks in the main process
+
+    var bundlePath = './bundle/renderer.bundle.js';
+
+    if(typeof process !== 'undefined' && process.env.NODE_ENV === 'DEV') {
+	   const port = process.env.PORT || 8080;
+      bundlePath = `http://127.0.0.1:${port}/bundle/renderer.bundle.js`;
+      var bundleScriptEl = document.createElement('script');
+      bundleScriptEl.src = bundlePath;
+      bundleScriptEl.async = true;
+      document.currentScript.parentNode.insertBefore(bundleScriptEl, document.currentScript);
+    } else {
+      require(bundlePath);
+    }
+  </script>
+  <script>
+    if (process && process.env.NODE_ENV === 'DEV') {
+      document.title += ' (DEV MODE)';
+    }
+  </script>
+</html>
