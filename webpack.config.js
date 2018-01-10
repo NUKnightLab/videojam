@@ -9,7 +9,7 @@ module.exports = {
     './renderer.js',
     'babel-polyfill',
     path.resolve(__dirname, './renderer.js'),
-    `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`,
+    `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`
   ],
   target: 'electron-renderer',
   output: {
