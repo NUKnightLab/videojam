@@ -1,7 +1,7 @@
 {
-  "name": "electron-quick-start",
+  "name": "VideoJam",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A desktop application to efficiently create social videos.",
   "main": "main.js",
   "scripts": {
     "start": "NODE_ENV=DEV concurrently \"babel-node server.js\" \"sleep 2 && electron .\"",
@@ -13,7 +13,7 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "build": {
-    "appId": "com.electron.VideoJam",
+    "appId": "edu.northwestern.knightlab.VideoJam",
     "productName": "VideoJam",
     "copyright": "Copyright © 2017 Northwestern University Knight Lab",
     "asar": false,
@@ -55,7 +55,7 @@
       ]
     },
     "deb": {
-      "synopsis": "autoEdit2 Desktop App"
+      "synopsis": "VideoJam Desktop App"
     },
     "win": {
       "target": "nsis",
@@ -72,9 +72,9 @@
       "oneClick": false
     }
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/NUKnightLab/videojam",
   "keywords": [],
-  "author": "GitHub",
+  "author": "Northwestern University Knight Lab",
   "license": "CC0-1.0",
   "devDependencies": {
     "babel-cli": "^6.26.0",
