@@ -9,8 +9,7 @@
 6. Add FFmpeg packages:
 `yarn add ffmpeg-static ffprobe-static fluent-ffmpeg`
 7. Add a `config.js` file at the root of the project so that `fluent-ffmpeg` grabs static versions of `ffmpeg` and `ffprobe`
-8. Install `electron-packager` globally for easy packaging from the command line:
-`npm install electron-packager -g`
+8. Install `electron-packager` globally for easy packaging from the command line: `npm install electron-packager -g`
 Note: At some point I started using `npm` instead of `yarn`. Pick one if possible. I recommend `yarn` since most Electron boilerplates use it.
 9. At this point, you can create an Electron application that successfully uses FFmpeg in both development and production environments.
 10. Walk through [this tutorial](https://willowtreeapps.com/ideas/how-to-develop-apps-in-electron-using-react) to set up React in a development environment in Electron. This setup alone doesn't mount the React components in a packaged application.
@@ -28,3 +27,7 @@ Note: At some point I started using `npm` instead of `yarn`. Pick one if possibl
 5. To package the app:
   * Install Electron Packager: `npm install electron-packager -g`
   * Run `electron-packager <project-directory-name>`
+Note: At some point I started using `npm` instead of `yarn`. Pick one if possible.
+9. At this point, you can create an Electron application that successfully uses FFmpeg *in the packaged version!!!* Next thing to solve for is getting React components to mount in packaged application.
+10. At some point (before I did steps 7-9), I walked through [this tutorial](https://willowtreeapps.com/ideas/how-to-develop-apps-in-electron-using-react) to set up React in Electron. However, this setup alone doesn't mount the React components in a packaged application so that's the next issue I'll be tackling.
+11. on 1/9/18, I created a PR with a WebPack configuration that puts React components in a final packaged application. You have to run `npm run bundle` in order to bundle all React components via Webpack before packaging the application. In order to package the app currently you have to globally install `electron-packager` and run `electron-packager <project-directory-name>`
