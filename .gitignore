@@ -1,4 +1,4 @@
 node_modules
 
-test4-darwin-x64/
-test5-darwin-x64/
+bundle/
+out.mp4

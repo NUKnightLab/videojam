@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const port = process.env.PORT || '8080';
 
@@ -9,7 +10,7 @@ module.exports = {
     './renderer.js',
     'babel-polyfill',
     path.resolve(__dirname, './renderer.js'),
-    `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`,
+    `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`
   ],
   target: 'electron-renderer',
   output: {
@@ -30,15 +31,34 @@ module.exports = {
         query: {
           presets: ['es2015', 'react', 'react-hmre']
         }
+      },
+      {
+        test: /\.css/,
+        use: [
+          "style-loader",
+          "css-loader"
+        ]
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
+      {
+        test: /\.png/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 12000
+            }
+          }
+        ]
       }
-      // { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader' },
-      // {
-      //   test: /\.json$/,
-      //   loader: 'json-loader'
-      // }
     ]
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.ProgressPlugin(),
+    new HtmlWebpackPlugin()
   ]
 };
