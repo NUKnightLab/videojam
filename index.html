@@ -34,6 +34,8 @@
     var fluent_ffmpeg = require('fluent-ffmpeg');
     var ffmpegPath  = require("./config.js").ffmpegPath;
     var ffprobePath = require("./config.js").ffprobePath;
+    const path = require('path');
+
     fluent_ffmpeg.setFfmpegPath(ffmpegPath);
     fluent_ffmpeg.setFfprobePath(ffprobePath);
 
@@ -50,7 +52,7 @@
     // makeVidBtn.onclick = concatVidClips();
 
     function concatVidClips() {
-  		var outPath = "/Users/mwhitely/desktop/out.mp4";
+  		var outPath = path.join(__dirname, 'out.mp4');
   		var msgArea = document.getElementById("msgs");
 
   		var proc = fluent_ffmpeg(vid1.files[0].path)
