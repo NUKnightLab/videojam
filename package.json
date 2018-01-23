@@ -86,7 +86,7 @@
     "babel-preset-react-hmre": "^1.1.1",
     "concurrently": "^3.5.0",
     "css-loader": "^0.28.8",
-    "electron": "~1.7.8",
+    "electron": "^1.7.11",
     "electron-builder": "^19.45.5",
     "electron-packager": "^9.1.0",
     "electron-rebuild": "^1.6.0",
