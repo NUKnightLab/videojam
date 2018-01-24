@@ -7,7 +7,7 @@
     "start": "NODE_ENV=DEV concurrently \"babel-node server.js\" \"sleep 2 && electron .\"",
     "bundle": "webpack",
     "watch": "NODE_ENV=DEV babel-node server.js",
-    "start:prod": "webpack && electron .",
+    "start:prod": "webpack && electron ."
   },
   "build": {
     "appId": "edu.northwestern.knightlab.VideoJam",
