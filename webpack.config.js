@@ -19,6 +19,9 @@ module.exports = {
     publicPath: `http://localhost:${port}/bundle/`,
     libraryTarget: 'commonjs2'
   },
+  externals: {
+    'fluent-ffmpeg': 'fluent-ffmpeg'
+  },
   module: {
     loaders: [
       { test: /\.(js|jsx)$/,
@@ -56,6 +59,7 @@ module.exports = {
       }
     ]
   },
+  module.exports = exports,
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProgressPlugin(),
