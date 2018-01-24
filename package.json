@@ -8,9 +8,6 @@
     "bundle": "webpack",
     "watch": "NODE_ENV=DEV babel-node server.js",
     "start:prod": "webpack && electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "postinstall": "electron-builder install-app-deps"
   },
   "build": {
     "appId": "edu.northwestern.knightlab.VideoJam",

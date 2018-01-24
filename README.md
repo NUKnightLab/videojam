@@ -21,7 +21,7 @@ Note: At some point I started using `npm` instead of `yarn`. Pick one if possibl
 
 ### to use the existing setup
 1. Clone repo: `git clone https://github.com/NUKnightLab/videojam.git`
-2. Install dependencies:  `yarn add`
+2. Install dependencies:  `yarn`
 3. To start the app in development environment: `npm start`
 4. To start the app in production environment: `npm run start:prod`
 5. To package the app:
