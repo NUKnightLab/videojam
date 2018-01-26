@@ -59,7 +59,7 @@ module.exports = {
       }
     ]
   },
-  module.exports = exports,
+  // module.exports = exports,
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProgressPlugin(),

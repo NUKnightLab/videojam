@@ -1,5 +1,5 @@
+// Set up React and FFmpeg
 var React = require('react');
-import Clip from './Clip/Clip.jsx';
 var fluent_ffmpeg = require("fluent-ffmpeg");
 var ffmpegPath  = require("./../config.js").ffmpegPath;
 var ffprobePath = require("./../config.js").ffprobePath;
@@ -8,35 +8,47 @@ fluent_ffmpeg.setFfprobePath(ffprobePath);
 const path = require('path');
 var mergedVideo = fluent_ffmpeg();
 
+// Import libraries
 var fs = require("fs");
-var tmp = require('tmp'); //Allows creation of temporary files + directories
+var tmp = require('tmp');
 var tmpobj = tmp.dirSync({unsafeCleanup: true});
 
-fluent_ffmpeg.setFfmpegPath(ffmpegPath);
-fluent_ffmpeg.setFfprobePath(ffprobePath);
+// Import componenets
+import Clip from './Clip/Clip.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoObjects: []
+      videoObjects: [],
+      clipCards: []
     }
-    this.createVideoObjects = this.createVideoObjects.bind(this);
+
+    // this.createVideoObjects = this.createVideoObjects.bind(this);
     this.addCard = this.addCard.bind(this);
     this.concatClips = this.concatClips.bind(this);
 
   }
 
-  createVideoObjects(newVideoObjects) {
-    this.setState({ videoObjects: newVideoObjects });
-  };
+  // createVideoObjects(newVideoObjects) {
+  //   this.setState({ videoObjects: newVideoObjects });
+  // };
 
   addCard(event) {
+    var clipCards = this.state.clipCards;
+    this.setState({
+      'clipCards': clipCards.concat(<Clip key={clipCards.length} />)
+    });
+    console.log(clipCards)
+  };
+
+  addVideoObjects(event) {
+    var clipCards = this.state.clipCards;
     var videoObjects = this.state.videoObjects;
     this.setState({
-      videoObjects: videoObjects.concat(<Clip key={videoObjects.length} />)
-    })
-  };
+      videoObjects: videoObjects.concat()
+    });
+  }
 
   concatClips(event) {
     // var outPath = path.join(__dirname, 'out.mp4');
@@ -87,8 +99,8 @@ export default class App extends React.Component {
       <div>
         <h2>Hello World!</h2>
         <button onClick={this.addCard}>add clips</button>
-        {this.state.videoObjects.map(function(videoObject, index) {
-          return videoObject
+        {this.state.clipCards.map(function(clipCard, index) {
+          return clipCard
         })}
         <button onClick={this.concatClips}>make video</button>
       </div>
