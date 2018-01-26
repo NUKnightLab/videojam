@@ -1,22 +1,21 @@
 import React from 'react';
+import Clip from './Clip/Clip.jsx';
+import TextChunker from './TextChunker/TextChunker.jsx';
 
 export default class App extends React.Component {
-  dateTime() {
-    var currentdate = new Date();
-    var datetime = "Last Sync: " + currentdate.getDate() + "/"
-      + (currentdate.getMonth()+1)  + "/"
-      + currentdate.getFullYear() + " @ "
-      + currentdate.getHours() + ":"
-      + currentdate.getMinutes() + ":"
-      + currentdate.getSeconds();
-    return datetime
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('hi!!');
   }
+
   render() {
     return (
       <div>
         Hello World!
-        <a href="https://willowtreeapps.com/careers">Come work with me.</a>
-        <p>{this.dateTime()}</p>
+        <TextChunker />
+
+        <Clip />
+
       </div>
     );
   }
