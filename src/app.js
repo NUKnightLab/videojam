@@ -24,15 +24,9 @@ export default class App extends React.Component {
       clipCards: []
     }
 
-    // this.createVideoObjects = this.createVideoObjects.bind(this);
     this.addCard = this.addCard.bind(this);
     this.concatClips = this.concatClips.bind(this);
-
   }
-
-  // createVideoObjects(newVideoObjects) {
-  //   this.setState({ videoObjects: newVideoObjects });
-  // };
 
   addCard(event) {
     var clipCards = this.state.clipCards;
@@ -48,6 +42,10 @@ export default class App extends React.Component {
     this.setState({
       videoObjects: videoObjects.concat()
     });
+  }
+
+  componentDidUpdate() {
+    console.log("Hi!!")
   }
 
   concatClips(event) {

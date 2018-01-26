@@ -15,13 +15,20 @@ export default class Clip extends React.Component {
   addPath(event) {
     var videoPaths = this.state.videoPaths;
     var mediaCount = this.state.mediaCount;
+    //find a more elegant way to do this
     var videoPath = event.target.files[0].path;
+
     this.setState({
+      //array only contains most recent path...
       'videoPaths': videoPaths.push(videoPath),
       'mediaCount': ++mediaCount
     });
     console.log(videoPath)
     console.log(videoPaths)
+  }
+
+  componentDidUpdate() {
+    console.log("bby!!")
   }
 
   render() {
