@@ -15,6 +15,7 @@ var tmpobj = tmp.dirSync({unsafeCleanup: true});
 
 // Import componenets
 import Clip from './Clip/Clip.jsx';
+import MediaLibrary from './MediaLibrary/MediaLibrary.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -46,6 +47,23 @@ export default class App extends React.Component {
 
   componentDidUpdate() {
     console.log("Hi!!")
+  }
+
+  // adds the most recently added video clip path to the
+  // videoPaths array
+  addPath(event) {
+    var videoPaths = this.state.videoPaths;
+    var mediaCount = this.state.mediaCount;
+    //find a more elegant way to do this
+    var videoPath = event.target.files[0].path;
+
+    this.setState({
+      //array only contains most recent path...
+      'videoPaths': videoPaths.push(videoPath),
+      'mediaCount': ++mediaCount
+    });
+    console.log(videoPath)
+    console.log(videoPaths)
   }
 
   concatClips(event) {
@@ -96,6 +114,7 @@ export default class App extends React.Component {
     return (
       <div>
         <h2>Hello World!</h2>
+        <MediaLibrary />
         <button onClick={this.addCard}>add clips</button>
         {this.state.clipCards.map(function(clipCard, index) {
           return clipCard
