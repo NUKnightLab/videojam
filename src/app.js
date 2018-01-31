@@ -1,12 +1,34 @@
 // Set up React and FFmpeg
 var React = require('react');
-var fluent_ffmpeg = require("fluent-ffmpeg");
+var fluent_ffmpeg = require('fluent-ffmpeg');
 var ffmpegPath  = require("./../config.js").ffmpegPath;
 var ffprobePath = require("./../config.js").ffprobePath;
+const path = require('path');
 fluent_ffmpeg.setFfmpegPath(ffmpegPath);
 fluent_ffmpeg.setFfprobePath(ffprobePath);
-const path = require('path');
+//initialize global variables
 var mergedVideo = fluent_ffmpeg();
+
+const osHomedir = require('os-homedir');
+
+//
+//
+//
+//
+// var fluent_ffmpeg = require("fluent-ffmpeg");
+// const path = require('path');
+// var mergedVideo = fluent_ffmpeg();
+// var ffmpegPath  = require("./../config.js").ffmpegPath;
+// console.log(ffmpegPath)
+// var ffprobePath = require("./../config.js").ffprobePath;
+// console.log(ffprobePath)
+// mergedVideo.setFfmpegPath(ffmpegPath);
+// mergedVideo.setFfprobePath(ffprobePath);
+//
+
+// var config = './../config.js'
+// mergedVideo.setFfmpegPath(config.ffmpegBin);
+// mergedVideo.setFfprobePath(config.ffprobeBin);
 
 // Import libraries
 var fs = require("fs");
@@ -22,7 +44,6 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       clipCards: []
-      //first one doesn't get added to arr
     }
 
     this.addCard = this.addCard.bind(this);
@@ -40,46 +61,46 @@ export default class App extends React.Component {
   };
 
   // getCards()
-
-  addVideoObjects(event) {
-    var clipCards = this.state.clipCards;
-    var videoObjects = this.state.videoObjects;
-    this.setState({
-      videoObjects: videoObjects.concat()
-    });
-  }
-
-  componentDidUpdate() {
-    console.log("Hi!!")
-  }
+  //
+  // addVideoObjects(event) {
+  //   var clipCards = this.state.clipCards;
+  //   var videoObjects = this.state.videoObjects;
+  //   this.setState({
+  //     videoObjects: videoObjects.concat()
+  //   });
+  // }
+  //
+  // componentDidUpdate() {
+  //   console.log("Hi!!")
+  // }
 
   // adds the most recently added video clip path to the
   // videoPaths array
-  addPath(event) {
-    var videoPaths = this.state.videoPaths;
-    var mediaCount = this.state.mediaCount;
-    //find a more elegant way to do this
-    var videoPath = event.target.files[0].path;
-
-    this.setState({
-      //array only contains most recent path...
-      'videoPaths': videoPaths.push(videoPath),
-      'mediaCount': ++mediaCount
-    });
-    console.log(videoPath)
-    console.log(videoPaths)
-  }
+  // addPath(event) {
+  //   var videoPaths = this.state.videoPaths;
+  //   var mediaCount = this.state.mediaCount;
+  //   //find a more elegant way to do this
+  //   var videoPath = event.target.files[0].path;
+  //
+  //   this.setState({
+  //     //array only contains most recent path...
+  //     'videoPaths': videoPaths.push(videoPath),
+  //     'mediaCount': ++mediaCount
+  //   });
+  //   console.log(videoPath)
+  //   console.log(videoPaths)
+  // }
 
   concatClips(event) {
-    // var outPath = path.join(__dirname, 'out.mp4');
-    var outPath = './out.mp4';
-    var msgArea = document.getElementById("msgs");
-    var videoObjects = this.state.videoObjects;
+    var outPath = path.join(__dirname, 'out.mp4');
+    // var outPath = './out.mp4';
+    // var msgArea = document.getElementById("msgs");
+    var clipCards = this.state.clipCards;
     var x = 0;
-
-    var outStream = fs.createWriteStream(tmpobj.name +'/' + x + '.mov');
-    videoObjects.forEach(function(videoObject) {
-      fluent_ffmpeg(videoObject.video_path)
+    clipCards.forEach(function(clipCard) {
+      var outStream = fs.createWriteStream(osHomedir + x + '.mov');
+      console.log(outStream);
+      fluent_ffmpeg(clipCard.mediaPath)
         .size('1200x?')
         .aspect('1:1')
         .autopad()
@@ -88,28 +109,32 @@ export default class App extends React.Component {
         .videoCodec('libx264')
     		.noAudio()
         .outputOptions('-movflags frag_keyframe+empty_moov')
+        // .output(x + '.mp4')
+        // .pipe(outStream, { end: true })
+        .saveToFile(outStream)
         .on('error', function(err) {
           console.log('An error occurred: ' + err.message);
 		  	})
         .on('end', function() {
           console.log('Processing finished !');
-          mergedVideo = mergedVideo.addInput(tmpobj.name + '/' + jj + '.mov');
-          x++;
-      		if (x == videoCount) {
-            mergedVideo.mergeToFile('final.mov', './tmp/')
-      			  .videoCodec('libx264')
-      	      .audioCodec('libmp3lame')
-      				.format('mov')
-      				.outputOptions('-movflags frag_keyframe+empty_moov')
-      				.on('error', function(err) {
-      				  console.log('Error ' + err.message);
-      				})
-      				.on('end', function() {
-                console.log('Finished!');
-              })
-          }
+      ++x
+          // mergedVideo = mergedVideo.addInput(tmpobj.name + '/' + jj + '.mov');
+          // x++;
+      		// if (x == videoCount) {
+          //   mergedVideo.mergeToFile('final.mov', './tmp/')
+      		// 	  .videoCodec('libx264')
+      	  //     .audioCodec('libmp3lame')
+      		// 		.format('mov')
+      		// 		.outputOptions('-movflags frag_keyframe+empty_moov')
+      		// 		.on('error', function(err) {
+      		// 		  console.log('Error ' + err.message);
+      		// 		})
+      		// 		.on('end', function() {
+          //       console.log('Finished!');
+          //     })
+          // }
         })
-        .pipe(outStream, { end: true });
+    // .pipe(outStream, { end: true });
         // .pipe('final.mp4', { end: true });
     })
   }
