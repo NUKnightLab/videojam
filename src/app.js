@@ -14,15 +14,15 @@ var tmp = require('tmp');
 var tmpobj = tmp.dirSync({unsafeCleanup: true});
 
 // Import componenets
-import Clip from './Clip/Clip.jsx';
+import ClipCard from './ClipCard/ClipCard.jsx';
 import MediaLibrary from './MediaLibrary/MediaLibrary.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoObjects: [],
       clipCards: []
+      //first one doesn't get added to arr
     }
 
     this.addCard = this.addCard.bind(this);
@@ -31,11 +31,15 @@ export default class App extends React.Component {
 
   addCard(event) {
     var clipCards = this.state.clipCards;
+    clipCards.push(<ClipCard key={clipCards.length} />)
     this.setState({
-      'clipCards': clipCards.concat(<Clip key={clipCards.length} />)
+      // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
+      'clipCards': clipCards
     });
     console.log(clipCards)
   };
+
+  // getCards()
 
   addVideoObjects(event) {
     var clipCards = this.state.clipCards;
