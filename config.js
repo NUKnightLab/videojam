@@ -1,3 +1,7 @@
+// One document to hold relative paths and make sure
+// the correct packages are linked to ensure
+// FFmpeg functionality
+
 var path = require("path");
 // https://nodejs.org/api/path.html#path_path_resolve_paths
 // var appDir = path.resolve("./package.json");
