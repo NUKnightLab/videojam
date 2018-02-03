@@ -17,7 +17,6 @@ export default class TextChunker extends React.Component {
   }
 
   splitSentences() {
-    console.log(document.getElementById("text-to-chunk").value);
   	var chunkArray = [];
   	var text = document.getElementById("text-to-chunk").value;
   	var array = this.sentenceSplits(text);
@@ -49,16 +48,17 @@ export default class TextChunker extends React.Component {
       return chunkArray;
   	}
   	else if (this.hasConjuction(sentence)) {
-  		return splitBeforeConjuction(sentence, chunkArray);
+  		return this.splitBeforeConjuction(sentence, chunkArray);
   	}
   	else if (this.hasComma(sentence)) {
-  		return splitAfterComma(sentence, chunkArray);
+  		return this.splitAfterComma(sentence, chunkArray);
   	}
-  	else if (this.hasCutWord(sentence)) {
-  		return splitBeforeCutWord(sentence, chunkArray);
-  	}
+  	//else if (this.hasCutWord(sentence)) {
+  	//	return this.splitBeforeCutWord(sentence, chunkArray);
+  	//}
   	else {
-  		return chunkArray.push(sentence);
+  		chunkArray.push(sentence);
+      return chunkArray;
   	}
   }
 
@@ -86,7 +86,7 @@ export default class TextChunker extends React.Component {
 
   // Checks if the given sentence has any commas. Makes sure that it isnt part of a list though.
   hasComma(sentence) {
-  	count = 0;
+  	var count = 0;
   	if (sentence.indexOf(",") !== -1) {
   		var commaSplit = sentence.split(", ");
   		var afterCommaSplit = commaSplit[1].split(" ");
@@ -102,7 +102,7 @@ export default class TextChunker extends React.Component {
   	}
   }
 
-  hasCutWord(sentence) {
+  /*hasCutWord(sentence) {
   	cutWords = [];
   	for (var i = listOfCutWords.length - 1; i >= 0; i--) {
   		if (sentence.indexOf(listOfCutWords[i] + " ") != -1) {
@@ -115,7 +115,7 @@ export default class TextChunker extends React.Component {
   	else {
   		return false;
   	}
-  }
+  }*/
 
   // Checks the different parts of the agiven array for the number of words in each part with the hopes of
   // deducing if the words are part of a list
@@ -136,13 +136,13 @@ export default class TextChunker extends React.Component {
   	var sentenceWords = sentence.split(" ")
   	if (sentenceWords.indexOf("and") >= 5) {
   		var position = sentenceWords.indexOf("and");
-  		formSegment(sentenceWords.slice(0, position));
-  		formSegment(sentenceWords.slice(position, sentenceWords.length));
+  		chunkArray = this.formSegment(sentenceWords.slice(0, position), chunkArray);
+  		return this.formSegment(sentenceWords.slice(position, sentenceWords.length, chunkArray));
   	}
   	else if (sentenceWords.indexOf("but") >= 5) {
   		var position = sentenceWords.indexOf("but");
-  		formSegment(sentenceWords.slice(0, position));
-  		formSegment(sentenceWords.slice(position, sentenceWords.length));
+  		chunkArray = this.formSegment(sentenceWords.slice(0, position), chunkArray);
+  		return this.formSegment(sentenceWords.slice(position, sentenceWords.length), chunkArray);
   	}
   	else {
   		chunkArray.push(sentence);
@@ -175,7 +175,7 @@ export default class TextChunker extends React.Component {
   	}
   }
 
-  splitBeforeCutWord(sentence, chunkArray) {
+  /*splitBeforeCutWord(sentence, chunkArray) {
   	var lowest = [];
   	if (cutWords.length > 1) {
   		var cutWordSplit = sentence.split(" ");
@@ -215,7 +215,7 @@ export default class TextChunker extends React.Component {
         return chunkArray;
   		}
   	}
-  }
+  }*/
 
   // Takes an array of words and creates a single string segment from the array. It then pushes the segment to the
   // array with the rest of the segments.
