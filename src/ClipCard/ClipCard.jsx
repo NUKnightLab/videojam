@@ -23,6 +23,8 @@ export default class ClipCard extends React.Component {
     clipCard.text = event.target.value;
     this.setState({
       'clipCard': clipCard,
+      // 'clipCard.text': event.target.value,
+      // 'clipCard.text': event.target.value,
     });
   }
 
@@ -31,6 +33,7 @@ export default class ClipCard extends React.Component {
     clipCard.mediaPath = event.target.files[0].path;
     this.setState({
       'clipCard': clipCard,
+      // 'clipCard.mediaPath': event.target.files[0].path,
     });
   }
 

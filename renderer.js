@@ -6,7 +6,9 @@ const ReactDOM = require('react-dom');
 
 import App from './src/app.js';
 
-ReactDOM.render(
+var app = ReactDOM.render(
   React.createElement(App),
   document.getElementById('app')
 );
+
+window.app = app;
