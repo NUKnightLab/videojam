@@ -11,7 +11,7 @@ var fluent_ffmpeg = require('fluent-ffmpeg');
 var ffmpegPath  = require("./../config.js").ffmpegPath;
 var ffprobePath = require("./../config.js").ffprobePath;
 fluent_ffmpeg.setFfmpegPath(osHomedir() + '/desktop/knight-lab/2017-2018/jam/videojam/node_modules/ffmpeg-static' + ffmpegPath);
-fluent_ffmpeg.setFfprobePath(osHomedir() + '/desktop/knight-lab/2017-2018/jam/videojam/node_modules/ffmpeg-static' + ffprobePath);
+fluent_ffmpeg.setFfprobePath(osHomedir() + '/desktop/knight-lab/2017-2018/jam/videojam/node_modules/ffprobe-static' + ffprobePath);
 
 //initialize global variables
 var mergedVideo = fluent_ffmpeg();
@@ -19,6 +19,7 @@ var mergedVideo = fluent_ffmpeg();
 // Import componenets
 import ClipCard from './ClipCard/ClipCard.jsx';
 import MediaLibrary from './MediaLibrary/MediaLibrary.jsx';
+
 
 // Controller component
 export default class App extends React.Component {
@@ -46,7 +47,6 @@ export default class App extends React.Component {
     // console.log(inputs)
   };
 
-
   concatClips(event) {
     var mediaInputs =  document.getElementsByTagName("input")
     var textInputs =  document.getElementsByTagName("textarea")
@@ -59,9 +59,11 @@ export default class App extends React.Component {
     }
 
     var x = 0;
+    var processedClips = []
     paths.forEach(function(path) {
       var outStream = fs.createWriteStream('./' + x + '.mov');
       console.log(outStream.path);
+      processedClips.push(outStream.path);
       fluent_ffmpeg(path)
         .size('1200x?')
         .aspect('1:1')
@@ -90,9 +92,22 @@ export default class App extends React.Component {
         .save(outStream)
       ++x
     })
-    // console.log(paths)
-    // console.log(texts)
+    // _callback();
+    // processedClips.forEach(function(processedClip) {
+    //   mergedVideo.input(processedClip);
+    // })
   }
+
+/*********
+need a way to make this function wait until each individual
+clip processing is done to execute. callback?
+*********/
+  // processClips(arr) {
+  //   for (var x = 0; x < arr.length; ++x) {
+  //     mergedVideo.input(x+'.mov')
+  //   }
+  //   mergedVideo.mergeToFile('./final.mov')
+  // };
 
 
   render() {
