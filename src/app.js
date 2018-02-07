@@ -35,31 +35,31 @@ export default class App extends React.Component {
   addCard(event) {
     var clipCards = this.state.clipCards;
     var newCard = React.createElement(ClipCard, {key: clipCards.length});
+    // var newCard = new ClipCard
     clipCards.push(newCard)
     this.setState({
       // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
       'clipCards': clipCards
     });
     console.log(clipCards)
+    // var inputs = document.getElementsByTagName("input")
+    // console.log(inputs)
   };
 
+
   concatClips(event) {
-    var outPath = path.join(__dirname, 'out.mp4');
-    // var outPath = './out.mp4';
-    // var msgArea = document.getElementById("msgs");
-    var clipCards = this.state.clipCards;
-    var x = 0;
-
-    var addOn = 'fluent_ffmpeg('+ clipCards[0].mediaPath + ')'
-    console.log(clipCards)
-
-    console.log()
-    clipCards.forEach(function(clipCard) {
-      addOn += '.input'+(clipCard.mediaPath)
-    })
-    // console.log(addOn)
-    // var outStream = fs.createWriteStream('./' + x + '.mov');
+    var mediaInputs =  document.getElementsByTagName("input")
+    var textInputs =  document.getElementsByTagName("textarea")
+    var paths = []
+    var texts = []
+    for (var i = 0; i < mediaInputs.length; ++i) {
+      paths.push(mediaInputs[i].files[0].path)
+      texts.push(textInputs[i].value)
+    }
+    console.log(paths)
+    console.log(texts)
   }
+
 
   render() {
 
@@ -160,4 +160,25 @@ export default class App extends React.Component {
     // .pipe(outStream, { end: true });
         // .pipe('final.mp4', { end: true });
   //   })
+  // }
+
+
+
+  // concatClips(event) {
+  //   var outPath = path.join(__dirname, 'out.mp4');
+  //   // var outPath = './out.mp4';
+  //   // var msgArea = document.getElementById("msgs");
+  //
+  //   var clipCards = this.state.clipCards;
+  //   var x = 0;
+  //
+  //   var addOn = 'fluent_ffmpeg('+ clipCards[0].mediaPath + ')'
+  //   console.log(clipCards)
+  //
+  //   console.log()
+  //   clipCards.forEach(function(clipCard) {
+  //     addOn += '.input'+(clipCard.mediaPath)
+  //   })
+  //   // console.log(addOn)
+  //   // var outStream = fs.createWriteStream('./' + x + '.mov');
   // }
