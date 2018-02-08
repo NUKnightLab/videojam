@@ -30,6 +30,7 @@
   margin-bottom: 0;
 }
 
+<<<<<<< HEAD
 #do-chunk {
   margin: 10px 0px;
   color: #222;
@@ -37,6 +38,8 @@
   box-shadow: none;
 }
 
+=======
+>>>>>>> 0ef321e9c83059de3c27653c0b4345e531da9df8
 #dont-chunk {
   margin: 10px 0px;
   color: #222;

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Set up React and FFmpeg
 var React = require('react');
 var fluent_ffmpeg = require("fluent-ffmpeg");
@@ -33,7 +34,7 @@ export default class App extends React.Component {
   addCard(type, textChunk) {
     if (type == 'blank') {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text="" key={clipCards.length} />)
+      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} />)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
