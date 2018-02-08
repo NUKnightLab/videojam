@@ -16,6 +16,7 @@ var tmpobj = tmp.dirSync({unsafeCleanup: true});
 // Import componenets
 import ClipCard from './ClipCard/ClipCard.jsx';
 import MediaLibrary from './MediaLibrary/MediaLibrary.jsx';
+import TextChunker from './TextChunker/TextChunker.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -118,6 +119,7 @@ export default class App extends React.Component {
     return (
       <div>
         <h2>Hello World!</h2>
+        <TextChunker />
         <MediaLibrary />
         <button onClick={this.addCard}>add clips</button>
         {this.state.clipCards.map(function(clipCard, index) {
