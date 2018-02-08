@@ -1,0 +1,45 @@
+#text-chunker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  width: 75%;
+  height: 75%;
+  background-color: #737373;
+  border-radius: 10px;
+  border: 2px solid #cdcdcd;
+  text-align: center;
+  overflow: scroll;
+
+}
+
+#text-to-chunk {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -62.5%);
+  width: 75%;
+  height: 75%;
+  color: black;
+  background-color: #737373;
+  border: 2px solid #cdcdcd;
+}
+
+#modal-header {
+  margin-bottom: 0;
+}
+
+#do-chunk {
+  margin: 10px 0px;
+  color: #222;
+  text-shadow: none;
+  box-shadow: none;
+}
+
+#dont-chunk {
+  margin: 10px 0px;
+  color: #222;
+  text-shadow: none;
+  box-shadow: none;
+}
