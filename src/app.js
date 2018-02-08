@@ -30,14 +30,25 @@ export default class App extends React.Component {
     this.concatClips = this.concatClips.bind(this);
   }
 
-  addCard(event) {
-    var clipCards = this.state.clipCards;
-    clipCards.push(<ClipCard key={clipCards.length} />)
-    this.setState({
-      // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
-      'clipCards': clipCards
-    });
-    console.log(clipCards)
+  addCard(type, textChunk) {
+    if (type == 'blank') {
+      var clipCards = this.state.clipCards;
+      clipCards.push(<ClipCard text="" key={clipCards.length} />)
+      this.setState({
+        // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
+        'clipCards': clipCards
+      });
+      console.log(clipCards)
+    }
+
+    else {
+      var clipCards = this.state.clipCards;
+      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} />)
+      this.setState({
+        // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
+        'clipCards': clipCards
+      });
+    }
   };
 
   // getCards()
@@ -48,10 +59,6 @@ export default class App extends React.Component {
     this.setState({
       videoObjects: videoObjects.concat()
     });
-  }
-
-  componentDidUpdate() {
-    console.log("Hi!!")
   }
 
   // adds the most recently added video clip path to the
@@ -119,9 +126,9 @@ export default class App extends React.Component {
     return (
       <div>
         <h2>Hello World!</h2>
-        <TextChunker />
+        <TextChunker populateCards={this.addCard} />
         <MediaLibrary />
-        <button onClick={this.addCard}>add clips</button>
+        <button onClick={() => this.addCard('blank')}>add clips</button>
         {this.state.clipCards.map(function(clipCard, index) {
           return clipCard
         })}

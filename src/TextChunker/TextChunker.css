@@ -30,6 +30,13 @@
   margin-bottom: 0;
 }
 
+#do-chunk {
+  margin: 10px 0px;
+  color: #222;
+  text-shadow: none;
+  box-shadow: none;
+}
+
 #dont-chunk {
   margin: 10px 0px;
   color: #222;

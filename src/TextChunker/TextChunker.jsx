@@ -9,11 +9,11 @@ export default class TextChunker extends React.Component {
       open: true,
 		}
     this.closeModal = this.closeModal.bind(this);
-    this.splitSentences = this.splitSentences.bind(this);
+    this.chunkText = this.chunkText.bind(this);
   }
 
   closeModal() {
-    this.setState({ 'open': false, })
+    this.setState({ 'open': false, });
   }
 
   splitSentences() {
@@ -261,6 +261,29 @@ export default class TextChunker extends React.Component {
   			}
   		}
   	}
+    document.getElementById('do-chunk').innerHTML = 'Chunk Text';
+  }
+
+  chunkText() {
+
+    if (document.getElementById('do-chunk').innerHTML == 'Preview') {
+      this.splitSentences();
+    }
+    
+    else {
+      var textSegmentsArray = [];
+      var textSegments = document.getElementById('text-to-chunk').value;
+      textSegmentsArray = textSegments.split('\n \n');
+      for (var i = (textSegmentsArray.length - 1); i >= 0; i--) {
+        if (textSegmentsArray[i] === "") {
+          textSegmentsArray.splice(i, 1);
+        }
+      }
+      for (var i = 0; i <= (textSegmentsArray.length - 1); i++) {
+        this.props.populateCards('', textSegmentsArray[i]);
+      }
+      this.closeModal();
+    }
   }
 
   render() {
@@ -275,7 +298,7 @@ export default class TextChunker extends React.Component {
         >
         </textarea>
 
-        <button id="dont-chunk" onClick={this.splitSentences}> Chunk </button>
+        <button id="do-chunk" onClick={this.chunkText}>Preview</button>
         <button id="dont-chunk" onClick={this.closeModal}> Not Now </button>
 
       </div>
