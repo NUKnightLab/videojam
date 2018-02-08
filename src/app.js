@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Set up React and FFmpeg
 var React = require('react');
 var fluent_ffmpeg = require("fluent-ffmpeg");

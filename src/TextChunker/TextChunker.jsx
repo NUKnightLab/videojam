@@ -9,19 +9,11 @@ export default class TextChunker extends React.Component {
       open: true,
 		}
     this.closeModal = this.closeModal.bind(this);
-<<<<<<< HEAD
     this.chunkText = this.chunkText.bind(this);
   }
 
   closeModal() {
     this.setState({ 'open': false, });
-=======
-    this.splitSentences = this.splitSentences.bind(this);
-  }
-
-  closeModal() {
-    this.setState({ 'open': false, })
->>>>>>> 0ef321e9c83059de3c27653c0b4345e531da9df8
   }
 
   splitSentences() {
@@ -269,7 +261,6 @@ export default class TextChunker extends React.Component {
   			}
   		}
   	}
-<<<<<<< HEAD
     document.getElementById('do-chunk').innerHTML = 'Chunk Text';
   }
 
@@ -278,7 +269,7 @@ export default class TextChunker extends React.Component {
     if (document.getElementById('do-chunk').innerHTML == 'Preview') {
       this.splitSentences();
     }
-    
+
     else {
       var textSegmentsArray = [];
       var textSegments = document.getElementById('text-to-chunk').value;
@@ -293,8 +284,6 @@ export default class TextChunker extends React.Component {
       }
       this.closeModal();
     }
-=======
->>>>>>> 0ef321e9c83059de3c27653c0b4345e531da9df8
   }
 
   render() {
@@ -309,11 +298,7 @@ export default class TextChunker extends React.Component {
         >
         </textarea>
 
-<<<<<<< HEAD
         <button id="do-chunk" onClick={this.chunkText}>Preview</button>
-=======
-        <button id="dont-chunk" onClick={this.splitSentences}> Chunk </button>
->>>>>>> 0ef321e9c83059de3c27653c0b4345e531da9df8
         <button id="dont-chunk" onClick={this.closeModal}> Not Now </button>
 
       </div>
