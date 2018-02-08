@@ -16,6 +16,12 @@ export default class TextChunker extends React.Component {
     this.setState({ 'open': false, });
   }
 
+  newTextInput() {
+    if (document.getElementById('do-chunk').innerHTML != 'Preview') {
+      document.getElementById('do-chunk').innerHTML = 'Preview';
+    }
+  }
+
   splitSentences() {
   	var chunkArray = [];
   	var text = document.getElementById("text-to-chunk").value;
@@ -295,6 +301,7 @@ export default class TextChunker extends React.Component {
         <h3 id="modal-header"> Enter your story to begin </h3>
         <textarea
           id="text-to-chunk"
+          onChange={this.newTextInput}
         >
         </textarea>
 
