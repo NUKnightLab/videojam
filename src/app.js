@@ -1,5 +1,4 @@
 import React from 'react';
-import Clip from './Clip/Clip.jsx';
 import TextChunker from './TextChunker/TextChunker.jsx';
 
 export default class App extends React.Component {
@@ -13,8 +12,6 @@ export default class App extends React.Component {
       <div>
         Hello World!
         <TextChunker />
-
-        <Clip />
 
       </div>
     );
