@@ -27,11 +27,28 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clipCards: []
+      clipCards: [],
+      // font: 'Verdana.ttf',
+      // color: '#000000',
+      // music: 'music.mp3',
+      // logo: 'logo.png',
+      // aspect: '1:1',
+      globalPresets: {
+        font: 'Verdana.ttf',
+        color: '#000000',
+        music: 'music.mp3',
+        logo: 'logo.png',
+        aspect: '1:1'
+      }
     }
-
+    this.updateGlobalPresets = this.updateGlobalPresets.bind(this);
     this.addCard = this.addCard.bind(this);
     this.concatClips = this.concatClips.bind(this);
+  }
+
+  //state manager for global presets
+  updateGlobalPresets(updatedGlobalPresets) {
+    this.setState({ globalPresets: updatedGlobalPresets });
   }
 
   addCard(event) {
@@ -70,13 +87,15 @@ export default class App extends React.Component {
     return (
       <div>
         <h2>Hello World!</h2>
-        <GlobalPresets />
+        <GlobalPresets
+          globalPresets={ this.state.globalPresets }
+          updateGlobalPresets={ this.updateGlobalPresets } />
         <hr></hr>
         <MediaLibrary />
-        <button onClick={this.addCard}>add clips</button>
-          {this.state.clipCards.map(function(clipCard, index) {
+        <button onClick={ this.addCard }>add clips</button>
+          { this.state.clipCards.map(function(clipCard, index) {
                    return clipCard })}
-        <button onClick={this.concatClips}>make video</button>
+        <button onClick={ this.concatClips }>make video</button>
       </div>
     );
   }
