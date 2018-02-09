@@ -19,6 +19,7 @@ var mergedVideo = fluent_ffmpeg();
 // Import componenets
 import ClipCard from './ClipCard/ClipCard.jsx';
 import MediaLibrary from './MediaLibrary/MediaLibrary.jsx';
+import GlobalPresets from './GlobalPresets/GlobalPresets.jsx';
 
 
 // Controller component
@@ -62,84 +63,15 @@ export default class App extends React.Component {
       mergedVideo.input(clip)
     })
     mergedVideo.mergeToFile('./final.mov')
-    // clipsFolder.forEach(function(clip) {
-    //   mergedVideo.input(clip)
-    // });
-    // mergedVideo.mergeToFile('./final.mov')
-
-    // for (var x = 0; x < clipNumber; ++x) {
-    //     mergedVideo.input(x+'.mov')
-    //   }
-    //   mergedVideo.mergeToFile('./final.mov')
-    // };
   }
-    // var mediaInputs =  document.getElementsByTagName("input")
-    // var textInputs =  document.getElementsByTagName("textarea")
-    // var paths = []
-    // var texts = []
-    //
-    // for (var i = 0; i < mediaInputs.length; ++i) {
-    //   paths.push(mediaInputs[i].files[0].path)
-    //   texts.push(textInputs[i].value)
-    // }
-    //
-    // var x = 0;
-    // var processedClips = []
-    // paths.forEach(function(path) {
-    //   var outStream = fs.createWriteStream('./' + x + '.mov');
-    //   console.log(outStream.path);
-    //   processedClips.push(outStream.path);
-    //   fluent_ffmpeg(path)
-    //     .size('1200x?')
-    //     .aspect('1:1')
-    //     .autopad()
-		// 	  .toFormat('mov')
-    //     .duration(5.0)
-    //     .videoCodec('libx264')
-    // 		.noAudio()
-    //     //frag_keyframe allows fragmented output & empty_moov will cause
-    //     //output to be 100% fragmented; without this the first fragment
-    //     //will be muxed as a short movie (using moov) followed by the
-    //     //rest of the media in fragments.
-    //     .outputOptions('-movflags frag_keyframe+empty_moov')
-    //     .outputOptions('-strict -2')
-    //     // .output(outStream)
-    //     // .run()
-    //     // .pipe(outStream, { end: true })
-    //     // .saveToFile(outStream)
-    //     .on('error', function(err) {
-    //       console.log('An error occurred: ' + err.message);
-		//   	})
-    //     .on('end', function() {
-    //       console.log('Processing finished !')
-    //     })
-    //     // .pipe(outStream, { end: true })
-    //     .save(outStream)
-    //   ++x
-    // })
-    // _callback();
-    // processedClips.forEach(function(processedClip) {
-    //   mergedVideo.input(processedClip);
-    // })
-  // }
-
-/*********
-need a way to make this function wait until each individual
-clip processing is done to execute. callback?
-*********/
-  // processClips(arr) {
-  //   for (var x = 0; x < arr.length; ++x) {
-  //     mergedVideo.input(x+'.mov')
-  //   }
-  //   mergedVideo.mergeToFile('./final.mov')
-  // };
-
 
   render() {
 
     return (
       <div>
         <h2>Hello World!</h2>
+        <GlobalPresets />
+        <hr></hr>
         <MediaLibrary />
         <button onClick={this.addCard}>add clips</button>
           {this.state.clipCards.map(function(clipCard, index) {
