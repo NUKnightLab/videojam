@@ -18,7 +18,7 @@ export default class ClipCard extends React.Component {
         //clipCard: []
   			clipCard: {
           mediaPath: '',
-          text: ''
+          text: props.text
         }
   		}
     this.setText = this.setText.bind(this);
@@ -86,7 +86,7 @@ export default class ClipCard extends React.Component {
         </input>
         <textarea
           name = "clipText"
-          defaultValue = "fill me in"
+          defaultValue = {this.props.text}
           onChange = { this.setText }
           >
         </textarea>

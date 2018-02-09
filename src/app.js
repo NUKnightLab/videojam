@@ -20,6 +20,7 @@ var mergedVideo = fluent_ffmpeg();
 import ClipCard from './ClipCard/ClipCard.jsx';
 import MediaLibrary from './MediaLibrary/MediaLibrary.jsx';
 import GlobalPresets from './GlobalPresets/GlobalPresets.jsx';
+import TextChunker from './TextChunker/TextChunker.jsx';
 
 
 // Controller component
@@ -51,19 +52,53 @@ export default class App extends React.Component {
     this.setState({ globalPresets: updatedGlobalPresets });
   }
 
-  addCard(event) {
-    var clipCards = this.state.clipCards;
-    var newCard = React.createElement(ClipCard, {key: clipCards.length});
-    // var newCard = new ClipCard
-    clipCards.push(newCard)
-    this.setState({
-      // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
-      'clipCards': clipCards
-    });
-    console.log(clipCards)
-    // var inputs = document.getElementsByTagName("input")
-    // console.log(inputs)
+  addCard(type, textChunk) {
+    if (type == 'blank') {
+      var clipCards = this.state.clipCards;
+      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} />)
+      this.setState({
+        // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
+        'clipCards': clipCards
+      });
+      console.log(clipCards)
+    }
+
+    else {
+      var clipCards = this.state.clipCards;
+      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} />)
+      this.setState({
+        // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
+        'clipCards': clipCards
+      });
+    }
   };
+
+  // getCards()
+
+  addVideoObjects(event) {
+    var clipCards = this.state.clipCards;
+    var videoObjects = this.state.videoObjects;
+    this.setState({
+      videoObjects: videoObjects.concat()
+    });
+  }
+
+  // adds the most recently added video clip path to the
+  // videoPaths array
+  addPath(event) {
+    var videoPaths = this.state.videoPaths;
+    var mediaCount = this.state.mediaCount;
+    //find a more elegant way to do this
+    var videoPath = event.target.files[0].path;
+
+    this.setState({
+      //array only contains most recent path...
+      'videoPaths': videoPaths.push(videoPath),
+      'mediaCount': ++mediaCount
+    });
+    console.log(videoPath)
+    console.log(videoPaths)
+  }
 
   concatClips(event) {
     var clipsFolder = './clips';
@@ -87,6 +122,7 @@ export default class App extends React.Component {
     return (
       <div>
         <h2>Hello World!</h2>
+        <TextChunker populateCards={this.addCard} />
         <GlobalPresets
           globalPresets={ this.state.globalPresets }
           updateGlobalPresets={ this.updateGlobalPresets } />
