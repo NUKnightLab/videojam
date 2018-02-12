@@ -91,7 +91,7 @@ export default class App extends React.Component {
           globalPresets={ this.state.globalPresets }
           updateGlobalPresets={ this.updateGlobalPresets } />
         <hr></hr>
-        <MediaLibrary />
+        <h6>eventually media bar can go here</h6>
         <button onClick={ this.addCard }>add clips</button>
           { this.state.clipCards.map(function(clipCard, index) {
                    return clipCard })}
