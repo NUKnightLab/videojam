@@ -28,7 +28,7 @@ export default class GlobalPresets extends React.Component {
   //monitors text color selection dropdown
   changeColor(event) {
     console.log(this.props.globalPresets)
-    console.log("text color: " + event.target.value)
+    // console.log("text color: " + event.target.value)
     this.setState({
       'color': event.target.value,
     });
@@ -40,7 +40,7 @@ export default class GlobalPresets extends React.Component {
 
   //monitors font selection dropdown
   changeFont(event) {
-    console.log("Font type: " + event.target.value)
+    // console.log("Font type: " + event.target.value)
     this.setState({
       'font': event.target.value,
     });
@@ -52,10 +52,14 @@ export default class GlobalPresets extends React.Component {
 
   //monitors music selection dropdown
   changeMusic(event) {
-    console.log("Music selection: " + event.target.value)
+    // console.log("Music selection: " + event.target.value)
     this.setState({
       'music': event.target.value,
     });
+    if (event.target.value == "choose") {
+      console.log("THIS IS IMPORTANT")
+      this.addCustomMusic()
+    }
     var globalPresets = this.props.globalPresets;
     globalPresets.music = event.target.value;
     this.props.updateGlobalPresets(globalPresets);
@@ -64,15 +68,18 @@ export default class GlobalPresets extends React.Component {
 
   //monitors music upload option
   addCustomMusic(event) {
-    //open up a file selector to grab the font. Copy
-    //the font file to the media folder. add the path
-    //to the json file for saving
-    console.log("hey")
+    // <div id="myModal" class="modal">
+    //   <div class="modal-content">
+    //     <span class="close">&times;</span>
+    //     <p>Some text in the Modal..</p>
+    //   </div>
+    // </div>
+    console.log("IN CUSTOM MUSIC FUNCTION")
   }
 
   //monitors logo upload button
   addLogo(event) {
-    console.log(event.target.files[0].path)
+    // console.log(event.target.files[0].path)
     var globalPresets = this.props.globalPresets;
     globalPresets.logo = event.target.value;
     this.props.updateGlobalPresets(globalPresets);
@@ -81,7 +88,7 @@ export default class GlobalPresets extends React.Component {
 
   //monitors aspect ratio selection dropdown
   changeAspect(event) {
-    console.log("Aspect ratio: " + event.target.value)
+    // console.log("Aspect ratio: " + event.target.value)
     this.setState({
       'aspect': event.target.value,
     });
@@ -157,7 +164,11 @@ export default class GlobalPresets extends React.Component {
             onChange = { this.changeMusic }>
             <option value="twinkle">Twinkle Twinkle</option>
             <option value="elevator">Elevator Music</option>
-            <option onClick = { this.addCustomMusic }>Choose your own</option>
+            <option
+              id = "custommusic"
+              onClick = { this.addCustomMusic }
+              value = "choose">
+              Choose your own</option>
           </select>
         </div>
         <div className="presetwrapper">
