@@ -1,4 +1,15 @@
 import React from 'react';
+const osHomedir = require('os-homedir');
+var fs = require("fs");
+
+// Set up FFmpeg
+var fluent_ffmpeg = require('fluent-ffmpeg');
+var ffmpegPath  = require("./../../config.js").ffmpegPath;
+var ffprobePath = require("./../../config.js").ffprobePath;
+fluent_ffmpeg.setFfmpegPath(osHomedir() + '/desktop/knight-lab/2017-2018/jam/videojam/node_modules/ffmpeg-static' + ffmpegPath);
+fluent_ffmpeg.setFfprobePath(osHomedir() + '/desktop/knight-lab/2017-2018/jam/videojam/node_modules/ffprobe-static' + ffprobePath);
+var mergedVideo = fluent_ffmpeg();
+
 
 export default class ClipCard extends React.Component {
   constructor(props) {
@@ -23,6 +34,8 @@ export default class ClipCard extends React.Component {
     clipCard.text = event.target.value;
     this.setState({
       'clipCard': clipCard,
+      // 'clipCard.text': event.target.value,
+      // 'clipCard.text': event.target.value,
     });
   }
 
@@ -31,7 +44,35 @@ export default class ClipCard extends React.Component {
     clipCard.mediaPath = event.target.files[0].path;
     this.setState({
       'clipCard': clipCard,
+      // 'clipCard.mediaPath': event.target.files[0].path,
     });
+    var outStream = fs.createWriteStream('./clips/'+Math.random().toString()+'.mov');
+    fluent_ffmpeg(clipCard.mediaPath)
+      .size('1200x?')
+      .aspect('1:1')
+      .autopad()
+      .toFormat('mov')
+      .duration(5.0)
+      .videoCodec('libx264')
+      .noAudio()
+      //frag_keyframe allows fragmented output & empty_moov will cause
+      //output to be 100% fragmented; without this the first fragment
+      //will be muxed as a short movie (using moov) followed by the
+      //rest of the media in fragments.
+      .outputOptions('-movflags frag_keyframe+empty_moov')
+      .outputOptions('-strict -2')
+      // .output(outStream)
+      // .run()
+      // .pipe(outStream, { end: true })
+      // .saveToFile(outStream)
+      .on('error', function(err) {
+        console.log('An error occurred: ' + err.message);
+      })
+      .on('end', function() {
+        console.log('Processing finished !')
+      })
+      // .pipe(outStream, { end: true })
+      .save(outStream)
   }
 
   render() {

@@ -101,6 +101,7 @@
     "ffprobe-static": "^2.0.0",
     "file-system": "^2.2.2",
     "fluent-ffmpeg": "^2.1.2",
+    "os-homedir": "^1.0.2",
     "path": "^0.12.7",
     "react": "^16.1.1",
     "react-dom": "^16.1.1"

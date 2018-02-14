@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Anton');
+@import url('https://fonts.googleapis.com/css?family=Roboto:500');
+@import url('https://fonts.googleapis.com/css?family=Neuton:700');
+
+/* wraps all global presets */
+.globalpresets {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+/* wraps each individual global preset */
+.presetwrapper {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  margin: 0 10px;
+
+}
+
+.presetlabel {
+  width: fit-content;
+  white-space: nowrap;
+}
+
+#font-selector {
+
+}
+
+#neuton p {
+  font-family: 'Neuton', serif;
+}
+
+#roboto p {
+  font-family: 'Roboto', sans-serif;
+}
+
+#anton p {
+  font-family: 'Anton', sans-serif;
+}
