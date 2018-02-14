@@ -33,7 +33,8 @@ export default class App extends React.Component {
   addCard(type, textChunk) {
     if (type == 'blank') {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} />)
+      var key = clipCards.length;
+      clipCards.push(<ClipCard text="Fill me in" key={key} cardId={key} videoStorage={tmpobj.name} />)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -79,8 +80,12 @@ export default class App extends React.Component {
   }
 
   concatClips(event) {
+    var files = fs.readdirSync(tmpobj.name + '/');
+    console.log(files);
+
+
     // var outPath = path.join(__dirname, 'out.mp4');
-    var outPath = './out.mp4';
+    /*var outPath = './out.mp4';
     var msgArea = document.getElementById("msgs");
     var videoObjects = this.state.videoObjects;
     var x = 0;
@@ -119,7 +124,7 @@ export default class App extends React.Component {
         })
         .pipe(outStream, { end: true });
         // .pipe('final.mp4', { end: true });
-    })
+    })*/
   }
 
   render() {
