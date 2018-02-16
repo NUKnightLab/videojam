@@ -6,7 +6,7 @@ export default class TextChunker extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
-      open: true,
+      open: false,
 		}
     this.closeModal = this.closeModal.bind(this);
     this.chunkText = this.chunkText.bind(this);
