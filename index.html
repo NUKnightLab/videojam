@@ -49,59 +49,17 @@
       Loading...
       <!-- <script src="./bundle/renderer.bundle.js"></script> -->
     </div>
-    <div id="test">
-      <div id="msgs">results of this experiment will go here:</div>
-    </div>
   </body>
 
   <script>
-   //  // var fs = require('file-system');
-   //  // fs.recurse('/Users/mwhitely/desktop/knight-lab/2017-2018/jam/electron-quick-start',
-   //  // function(filepath, relative, filename){
-   //  //   document.getElementById("results").append(filename);
-   //  // });
-   //  var fluent_ffmpeg = require('fluent-ffmpeg');
-   //  var ffmpegPath  = require("./config.js").ffmpegPath;
-   //  var ffprobePath = require("./config.js").ffprobePath;
-   //  const path = require('path');
-   //
-   //  fluent_ffmpeg.setFfmpegPath(ffmpegPath);
-   //  fluent_ffmpeg.setFfprobePath(ffprobePath);
-   //
-   //  //initialize global variables
-   //  var mergedVideo = fluent_ffmpeg();
-   //
-   //  var vid1 = document.getElementById("v1");
-   //  var vid2 = document.getElementById("v2");
-   //  var makeVidBtn = document.getElementById("concat");
-   //
-   //  // vid1.onchange = console.log(vid1);
-   //  //
-   //  // makeVidBtn.onClick = console.log("You clicked")
-   //  // makeVidBtn.onclick = concatVidClips();
-   //
-   //  function concatVidClips() {
-  	// 	var outPath = path.join(__dirname, 'out.mp4');
-  	// 	var msgArea = document.getElementById("msgs");
-   //
-  	// 	var proc = fluent_ffmpeg(vid1.files[0].path)
-  	//     .input(vid2.files[0].path)
-  	// 		.on('progress', function(progress) {
-   //  			// console.log('Processing: ' + progress.percent + '% done');
-  	// 			msgArea.innerHTML += 'Processing: ' + progress.percent + '% done\n';
-  	// 		})
-  	//     .on('end', function() {
-  	//       console.log('files have been merged succesfully');
-  	// 			msgArea.innerHTML += 'files have been merged succesfully';
-  	//     })
-  	//     .on('error', function(err) {
-  	//       console.log('an error happened: ' + err.message);
-  	// 			msgArea.innerHTML += 'an error happened: ' + err.message;
-  	//     })
-  	//     .mergeToFile(outPath);
-	 // }
-
+    var fluent_ffmpeg = require('fluent-ffmpeg');
+    var ffmpegPath  = require("./config.js").ffmpegPath;
+    var ffprobePath = require("./config.js").ffprobePath;
+    const path = require('path');
+    fluent_ffmpeg.setFfmpegPath(ffmpegPath);
+    fluent_ffmpeg.setFfprobePath(ffprobePath);
   </script>
+
 
   <script>
     // You can also require other files to run in this process

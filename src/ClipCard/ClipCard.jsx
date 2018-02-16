@@ -4,10 +4,6 @@ var fs = require("fs");
 
 // Set up FFmpeg
 var fluent_ffmpeg = require('fluent-ffmpeg');
-var ffmpegPath  = require("./../../config.js").ffmpegPath;
-var ffprobePath = require("./../../config.js").ffprobePath;
-fluent_ffmpeg.setFfmpegPath(osHomedir() + '/desktop/knight-lab/2017-2018/jam/videojam/node_modules/ffmpeg-static' + ffmpegPath);
-fluent_ffmpeg.setFfprobePath(osHomedir() + '/desktop/knight-lab/2017-2018/jam/videojam/node_modules/ffprobe-static' + ffprobePath);
 var mergedVideo = fluent_ffmpeg();
 
 
@@ -34,7 +30,6 @@ export default class ClipCard extends React.Component {
     clipCard.text = event.target.value;
     this.setState({
       'clipCard': clipCard,
-      // 'clipCard.text': event.target.value,
       // 'clipCard.text': event.target.value,
     });
   }
