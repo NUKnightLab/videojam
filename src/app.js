@@ -107,8 +107,20 @@ export default class App extends React.Component {
       // var outStream = fs.createWriteStream(tmpobj.name +'/' + i + '.mov');
       var outStream = fs.createWriteStream(i + '.mov');
       fluent_ffmpeg(videoObjects[i].children[0].files[0].path)
+        .videoFilters({
+          filter: 'drawtext',
+          options: {
+            fontfile: this.state.globalPresets.font,
+            text: videoObjects[i].children[1].value,
+            fontsize: 50,
+            fontcolor: this.state.globalPresets.color,
+            shadowcolor: 'black',
+            shadowx: 2,
+            shadowy: 2
+          }
+        })
         .size('1200x?')
-        .aspect('1:1')
+        .aspect(this.state.globalPresets.aspect)
         .autopad()
         .toFormat('mov')
         .duration(5.0)
@@ -128,6 +140,10 @@ export default class App extends React.Component {
               mergedVideo = mergedVideo.addInput(j + '.mov')
             }
             mergedVideo.mergeToFile('done.mov')
+              .videoCodec('libx264')
+              .audioCodec('libmp3lame')
+              .format('mov')
+              .outputOptions('-movflags frag_keyframe+empty_moov')
               .on('error', function(err) {
                 console.log('An error occurred: ' + err.message);
               })

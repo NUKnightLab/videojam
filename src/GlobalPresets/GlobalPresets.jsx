@@ -10,7 +10,7 @@ export default class GlobalPresets extends React.Component {
         color: '#000000',
         music: 'music.mp3',
         logo: 'logo.png',
-        aspect: '1:1'
+        aspect: '2:1'
       }
     }
     this.changeColor = this.changeColor.bind(this);
