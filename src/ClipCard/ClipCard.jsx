@@ -41,33 +41,6 @@ export default class ClipCard extends React.Component {
       'clipCard': clipCard,
       // 'clipCard.mediaPath': event.target.files[0].path,
     });
-    var outStream = fs.createWriteStream('./clips/'+Math.random().toString()+'.mov');
-    fluent_ffmpeg(clipCard.mediaPath)
-      .size('1200x?')
-      .aspect('1:1')
-      .autopad()
-      .toFormat('mov')
-      .duration(5.0)
-      .videoCodec('libx264')
-      .noAudio()
-      //frag_keyframe allows fragmented output & empty_moov will cause
-      //output to be 100% fragmented; without this the first fragment
-      //will be muxed as a short movie (using moov) followed by the
-      //rest of the media in fragments.
-      .outputOptions('-movflags frag_keyframe+empty_moov')
-      .outputOptions('-strict -2')
-      // .output(outStream)
-      // .run()
-      // .pipe(outStream, { end: true })
-      // .saveToFile(outStream)
-      .on('error', function(err) {
-        console.log('An error occurred: ' + err.message);
-      })
-      .on('end', function() {
-        console.log('Processing finished !')
-      })
-      // .pipe(outStream, { end: true })
-      .save(outStream)
   }
 
   render() {
