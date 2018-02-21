@@ -72,7 +72,7 @@ export default class ClipCard extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="clipCard">
         <input
           type="file"
           id="v1"
