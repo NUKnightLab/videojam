@@ -98,27 +98,11 @@ export default class App extends React.Component {
   }
 
   concatClips(event) {
-    var clipsFolder = './clips';
-    var clipNumber = 0
-    var x = 0;
-    var clipPaths = []
-    fs.readdir(clipsFolder, (err, files) => {
-        console.log(files.length);
-        clipNumber = files.length;
-        files.forEach(function(file) {
-          clipPaths.push(file)
-          mergedVideo.addInput(file)
-          x++
-        });
-    });
-    // var jj = 0
-    // clipPaths.forEach(function(clip) {
-    //   mergedVideo.addInput(clip)
-    //   ++jj
-    // });
-    if (x == clipNumber) {
-      mergedVideo.mergeToFile('./final.mov')
-    }
+    //  document.getElementsByClassName('clipCard')[0].children[0].files[0].path
+    var videoObjects = document.getElementsByClassName('clipCard');
+    //This is to grab the media path: videoObjects[i].children[0].files[0].path
+    //This is to grab the text segment: videoObjects[i].children[1].value
+
   }
 
   render() {
