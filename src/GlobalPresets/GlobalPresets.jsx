@@ -93,7 +93,7 @@ export default class GlobalPresets extends React.Component {
       'aspect': event.target.value,
     });
     var globalPresets = this.props.globalPresets;
-    globalPresets.aspect = event.target.value;
+    globalPresets.logo = event.target.value;
     this.props.updateGlobalPresets(globalPresets);
     console.log("global aspect ratio state: " + globalPresets)
   }
@@ -149,12 +149,12 @@ export default class GlobalPresets extends React.Component {
           <select
             id = "aspect-selector"
             onChange = { this.changeAspect }>
-            <option value="1:1"> 1x1 - Square </option>
-            <option value="16:9"> 16x9 - Full Landscape </option>
-            <option value="4:5"> 4x5 - Vertical </option>
-            <option value="9:16"> 9x16 - Full Portrait </option>
-            <option value="1:2"> 1x2 - Newsfeed wide </option>
-            <option value="2:3"> 2x3 - Facebook vertical </option>
+            <option value='1:1'> Square </option>
+            <option value='16:9'> Full Landscape </option>
+            <option value='4:5'> Vertical </option>
+            <option value='9:16'> Full Portrait </option>
+            <option value='1:2'> Newsfeed wide </option>
+            <option value='2:3'> Facebook vertical </option>
           </select>
         </div>
         <div className="presetwrapper">
