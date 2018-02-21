@@ -102,7 +102,53 @@ export default class App extends React.Component {
     var videoObjects = document.getElementsByClassName('clipCard');
     //This is to grab the media path: videoObjects[i].children[0].files[0].path
     //This is to grab the text segment: videoObjects[i].children[1].value
+    for (var i = 0; i < videoObjects.length; i++) {
+      // var outStream = fs.createWriteStream(tmpobj.name +'/' + i + '.mov');
+      var outStream = fs.createWriteStream(i + '.mov');
+      fluent_ffmpeg(videoObjects[i].children[0].files[0].path)
+        .size('1200x?')
+        .aspect('1:1')
+        .autopad()
+        .toFormat('mov')
+        .duration(5.0)
+        .videoCodec('libx264')
+        .noAudio()
+        .outputOptions('-movflags frag_keyframe+empty_moov')
+        .outputOptions('-strict -2')
+        .save(outStream)
+        .on('error', function(err) {
+          console.log('An error occurred: ' + err.message);
+        })
+        .on('end', function() {
+          console.log('Processing finished !')
+          if (i == videoObjects.length) {
+            for (var i = 0; i < videoObjects.length; i++) {
+              mergedVideo = mergedVideo.addInput(i + '.mov')
+            }
+            mergedVideo.mergeToFile('done.mov')
+              .on('error', function(err) {
+                console.log('An error occurred: ' + err.message);
+              })
+              .on('end', function() {
+                console.log('Processing finished !')
+              })
+              .pipe(outStream, { end: true })
+          }
+        })
+        // .pipe(outStream, { end: true })
+        // .save(outStream)
+    }
+  }
 
+  finishMerge(arr) {
+    var check = 0;
+    for (var i = 0; i < arr.length; i++) {
+      mergedVideo = mergedVideo.addInput(i + '.mov')
+      ++check;
+    }
+    if (check == arr.length) {
+      mergedVideo.mergeToFile('done.mov')
+    }
   }
 
   render() {
@@ -124,3 +170,32 @@ export default class App extends React.Component {
     );
   }
 }
+
+//for clip card processing
+// var outStream = fs.createWriteStream('./clips/'+Math.random().toString()+'.mov');
+// fluent_ffmpeg(clipCard.mediaPath)
+//   .size('1200x?')
+//   .aspect('1:1')
+//   .autopad()
+//   .toFormat('mov')
+//   .duration(5.0)
+//   .videoCodec('libx264')
+//   .noAudio()
+//   //frag_keyframe allows fragmented output & empty_moov will cause
+//   //output to be 100% fragmented; without this the first fragment
+//   //will be muxed as a short movie (using moov) followed by the
+//   //rest of the media in fragments.
+//   .outputOptions('-movflags frag_keyframe+empty_moov')
+//   .outputOptions('-strict -2')
+//   // .output(outStream)
+//   // .run()
+//   // .pipe(outStream, { end: true })
+//   // .saveToFile(outStream)
+//   .on('error', function(err) {
+//     console.log('An error occurred: ' + err.message);
+//   })
+//   .on('end', function() {
+//     console.log('Processing finished !')
+//   })
+//   // .pipe(outStream, { end: true })
+//   .save(outStream)
