@@ -100,6 +100,7 @@ export default class App extends React.Component {
   concatClips(event) {
     //  document.getElementsByClassName('clipCard')[0].children[0].files[0].path
     var videoObjects = document.getElementsByClassName('clipCard');
+    var check = 0;
     //This is to grab the media path: videoObjects[i].children[0].files[0].path
     //This is to grab the text segment: videoObjects[i].children[1].value
     for (var i = 0; i < videoObjects.length; i++) {
@@ -120,34 +121,25 @@ export default class App extends React.Component {
           console.log('An error occurred: ' + err.message);
         })
         .on('end', function() {
-          console.log('Processing finished !')
-          if (i == videoObjects.length) {
-            for (var i = 0; i < videoObjects.length; i++) {
-              mergedVideo = mergedVideo.addInput(i + '.mov')
+          console.log('Processing finished !', "number: " + check)
+          if (check == videoObjects.length-1) {
+            console.log("starting to merge")
+            for (var j = 0; j < videoObjects.length; j++) {
+              mergedVideo = mergedVideo.addInput(j + '.mov')
             }
             mergedVideo.mergeToFile('done.mov')
               .on('error', function(err) {
                 console.log('An error occurred: ' + err.message);
               })
               .on('end', function() {
-                console.log('Processing finished !')
+                console.log('Video Merged')
               })
               .pipe(outStream, { end: true })
           }
+          check++;
         })
         // .pipe(outStream, { end: true })
         // .save(outStream)
-    }
-  }
-
-  finishMerge(arr) {
-    var check = 0;
-    for (var i = 0; i < arr.length; i++) {
-      mergedVideo = mergedVideo.addInput(i + '.mov')
-      ++check;
-    }
-    if (check == arr.length) {
-      mergedVideo.mergeToFile('done.mov')
     }
   }
 
