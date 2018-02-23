@@ -81,7 +81,7 @@ export default class GlobalPresets extends React.Component {
   addLogo(event) {
     // console.log(event.target.files[0].path)
     var globalPresets = this.props.globalPresets;
-    globalPresets.logo = event.target.value;
+    globalPresets.logo = event.target.files[0].path;
     this.props.updateGlobalPresets(globalPresets);
     console.log("global logo state: " + globalPresets)
   }
@@ -93,7 +93,7 @@ export default class GlobalPresets extends React.Component {
       'aspect': event.target.value,
     });
     var globalPresets = this.props.globalPresets;
-    globalPresets.logo = event.target.value;
+    globalPresets.aspect = event.target.value;
     this.props.updateGlobalPresets(globalPresets);
     console.log("global aspect ratio state: " + globalPresets)
   }
@@ -162,13 +162,10 @@ export default class GlobalPresets extends React.Component {
           <select
             id = "music-selector"
             onChange = { this.changeMusic }>
-            <option value="twinkle">Twinkle Twinkle</option>
-            <option value="elevator">Elevator Music</option>
-            <option
-              id = "custommusic"
-              onClick = { this.addCustomMusic }
-              value = "choose">
-              Choose your own</option>
+            <option value="./media/music1.mp3">Twinkle Twinkle</option>
+            <option value="./media/music2.mp3">Elevator Music</option>
+            <option value="./media/music3.mp3">Classic Jam</option>
+
           </select>
         </div>
         <div className="presetwrapper">
@@ -184,3 +181,11 @@ export default class GlobalPresets extends React.Component {
   }
 }
 // <option value="custom">add custom color</option>
+
+/*
+<option
+  id = "custommusic"
+  onClick = { this.addCustomMusic }
+  value = "choose">
+  Choose your own</option>
+*/

@@ -34,8 +34,8 @@ export default class App extends React.Component {
       globalPresets: {
         font: 'Verdana.ttf',
         color: '#000000',
-        music: 'music.mp3',
-        logo: 'logo.png',
+        music: '',
+        logo: '',
         aspect: '1:1'
       }
     }
@@ -100,6 +100,9 @@ export default class App extends React.Component {
   // audio adding helper function for concatClips
   addAudio(obj) {
     // var outStream = fs.createWriteStream('twothirds.mov');
+    var app = this;
+    var globalPresets = this.state.globalPresets;
+    
     if (obj.music != '') {
       fluent_ffmpeg()
         .input('onethird.mov')
@@ -116,6 +119,7 @@ export default class App extends React.Component {
           // }
           // else {
             console.log('Finished!')
+            app.addLogo(globalPresets);
           // }
         })
     }
@@ -167,7 +171,7 @@ export default class App extends React.Component {
         })
         .size('1200x?')
         // .aspect(this.state.globalPresets.aspect)
-        .aspect('1:1')
+        .aspect(this.state.globalPresets.aspect)
         .autopad()
         .toFormat('mov')
         .duration(5.0)
@@ -196,8 +200,8 @@ export default class App extends React.Component {
               })
               .on('end', function() {
                 console.log('Video Merged')
+                //add audio calls add logo
                 app.addAudio(globalPresets);
-                app.addLogo(globalPresets);
               })
               .pipe(outStream, { end: true })
           }
