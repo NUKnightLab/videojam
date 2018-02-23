@@ -42,6 +42,8 @@ export default class App extends React.Component {
     this.updateGlobalPresets = this.updateGlobalPresets.bind(this);
     this.addCard = this.addCard.bind(this);
     this.concatClips = this.concatClips.bind(this);
+    this.addAudio = this.addAudio.bind(this);
+    this.addLogo = this.addLogo.bind(this);
   }
 
   //state manager for global presets
@@ -70,15 +72,13 @@ export default class App extends React.Component {
     }
   };
 
-  // getCards()
-
   addVideoObjects(event) {
     var clipCards = this.state.clipCards;
     var videoObjects = this.state.videoObjects;
     this.setState({
       videoObjects: videoObjects.concat()
     });
-  }
+  };
 
   // adds the most recently added video clip path to the
   // videoPaths array
@@ -97,15 +97,59 @@ export default class App extends React.Component {
     console.log(videoPaths)
   }
 
+  // audio adding helper function for concatClips
+  addAudio(obj) {
+    // var outStream = fs.createWriteStream('twothirds.mov');
+    if (obj.music != '') {
+      fluent_ffmpeg()
+        .input('onethird.mov')
+        .input(obj.music)
+        .outputOptions([
+          '-codec copy',
+          '-shortest'
+          ])
+        .save('twothirds.mov')
+        .on('end', function() {
+          // if (obj.logo !== '') {
+          //   addLogo(fileName, presetOptions);
+          //   console.log('adding logo!');
+          // }
+          // else {
+            console.log('Finished!')
+          // }
+        })
+    }
+  }
+
+  // logo adding helper function for concatClips
+  addLogo(globalPresets) {
+    if (globalPresets.logo != '') {
+      fluent_ffmpeg()
+        .input('twothirds.mov')
+        .input(globalPresets.logo)
+        .complexFilter('[1:v]scale=100:-1[fg];[0:v][fg] overlay=(main_w-overlay_w)-25:(main_h-overlay_h)-25')
+        //.complextFilter('-vf scale=100:-1')
+        .save('done.mov')
+        .on('end', function() {
+          console.log('Finished LOGO!');
+        })
+        .on('progress', function(progress) {
+          console.log('Processing: ' + progress.percent + '% done');
+        })
+    }
+  }
+
   concatClips(event) {
     //  document.getElementsByClassName('clipCard')[0].children[0].files[0].path
     var videoObjects = document.getElementsByClassName('clipCard');
     var check = 0;
+    var globalPresets = this.state.globalPresets;
+    var app = this;
     //This is to grab the media path: videoObjects[i].children[0].files[0].path
     //This is to grab the text segment: videoObjects[i].children[1].value
     for (var i = 0; i < videoObjects.length; i++) {
-      // var outStream = fs.createWriteStream(tmpobj.name +'/' + i + '.mov');
       var outStream = fs.createWriteStream(i + '.mov');
+      // var outStream = fs.createWriteStream(tmpobj.name +'/' + i + '.mov');
       fluent_ffmpeg(videoObjects[i].children[0].files[0].path)
         .videoFilters({
           filter: 'drawtext',
@@ -116,11 +160,14 @@ export default class App extends React.Component {
             fontcolor: this.state.globalPresets.color,
             shadowcolor: 'black',
             shadowx: 2,
-            shadowy: 2
+            shadowy: 2,
+            x: 50,
+            y: 75
           }
         })
         .size('1200x?')
-        .aspect(this.state.globalPresets.aspect)
+        // .aspect(this.state.globalPresets.aspect)
+        .aspect('1:1')
         .autopad()
         .toFormat('mov')
         .duration(5.0)
@@ -133,13 +180,13 @@ export default class App extends React.Component {
           console.log('An error occurred: ' + err.message);
         })
         .on('end', function() {
-          console.log('Processing finished !', "number: " + check)
-          if (check == videoObjects.length-1) {
-            console.log("starting to merge")
+          console.log('Processing finished !', "number: " + check);
+          if (check == videoObjects.length - 1) {
+            console.log("starting to merge all videos")
             for (var j = 0; j < videoObjects.length; j++) {
               mergedVideo = mergedVideo.addInput(j + '.mov')
-            }
-            mergedVideo.mergeToFile('done.mov')
+            };
+            mergedVideo.mergeToFile('onethird.mov')
               .videoCodec('libx264')
               .audioCodec('libmp3lame')
               .format('mov')
@@ -149,6 +196,8 @@ export default class App extends React.Component {
               })
               .on('end', function() {
                 console.log('Video Merged')
+                app.addAudio(globalPresets);
+                app.addLogo(globalPresets);
               })
               .pipe(outStream, { end: true })
           }
