@@ -10,7 +10,7 @@ export default class GlobalPresets extends React.Component {
         color: '#000000',
         music: 'music.mp3',
         logo: 'logo.png',
-        aspect: '1:1'
+        aspect: '2:1'
       }
     }
     this.changeColor = this.changeColor.bind(this);
@@ -81,7 +81,7 @@ export default class GlobalPresets extends React.Component {
   addLogo(event) {
     // console.log(event.target.files[0].path)
     var globalPresets = this.props.globalPresets;
-    globalPresets.logo = event.target.value;
+    globalPresets.logo = event.target.files[0].path;
     this.props.updateGlobalPresets(globalPresets);
     console.log("global logo state: " + globalPresets)
   }
@@ -149,12 +149,12 @@ export default class GlobalPresets extends React.Component {
           <select
             id = "aspect-selector"
             onChange = { this.changeAspect }>
-            <option value="1:1"> 1x1 - Square </option>
-            <option value="16:9"> 16x9 - Full Landscape </option>
-            <option value="4:5"> 4x5 - Vertical </option>
-            <option value="9:16"> 9x16 - Full Portrait </option>
-            <option value="1:2"> 1x2 - Newsfeed wide </option>
-            <option value="2:3"> 2x3 - Facebook vertical </option>
+            <option value='1:1'> Square </option>
+            <option value='16:9'> Full Landscape </option>
+            <option value='4:5'> Vertical </option>
+            <option value='9:16'> Full Portrait </option>
+            <option value='1:2'> Newsfeed wide </option>
+            <option value='2:3'> Facebook vertical </option>
           </select>
         </div>
         <div className="presetwrapper">
@@ -162,13 +162,10 @@ export default class GlobalPresets extends React.Component {
           <select
             id = "music-selector"
             onChange = { this.changeMusic }>
-            <option value="twinkle">Twinkle Twinkle</option>
-            <option value="elevator">Elevator Music</option>
-            <option
-              id = "custommusic"
-              onClick = { this.addCustomMusic }
-              value = "choose">
-              Choose your own</option>
+            <option value="./media/music1.mp3">Twinkle Twinkle</option>
+            <option value="./media/music2.mp3">Elevator Music</option>
+            <option value="./media/music3.mp3">Classic Jam</option>
+
           </select>
         </div>
         <div className="presetwrapper">
@@ -184,3 +181,11 @@ export default class GlobalPresets extends React.Component {
   }
 }
 // <option value="custom">add custom color</option>
+
+/*
+<option
+  id = "custommusic"
+  onClick = { this.addCustomMusic }
+  value = "choose">
+  Choose your own</option>
+*/

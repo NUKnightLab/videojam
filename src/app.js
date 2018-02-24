@@ -34,14 +34,16 @@ export default class App extends React.Component {
       globalPresets: {
         font: 'Verdana.ttf',
         color: '#000000',
-        music: 'music.mp3',
-        logo: 'logo.png',
+        music: '',
+        logo: '',
         aspect: '1:1'
       }
     }
     this.updateGlobalPresets = this.updateGlobalPresets.bind(this);
     this.addCard = this.addCard.bind(this);
     this.concatClips = this.concatClips.bind(this);
+    this.addAudio = this.addAudio.bind(this);
+    this.addLogo = this.addLogo.bind(this);
   }
 
   //state manager for global presets
@@ -52,7 +54,8 @@ export default class App extends React.Component {
   addCard(type, textChunk) {
     if (type == 'blank') {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} />)
+      console.log("lwngth is: " + clipCards.length)
+      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} indexNum={clipCards.length} />)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -62,7 +65,7 @@ export default class App extends React.Component {
 
     else {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} />)
+      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} index={clipCards.length}/>)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -70,15 +73,13 @@ export default class App extends React.Component {
     }
   };
 
-  // getCards()
-
   addVideoObjects(event) {
     var clipCards = this.state.clipCards;
     var videoObjects = this.state.videoObjects;
     this.setState({
       videoObjects: videoObjects.concat()
     });
-  }
+  };
 
   // adds the most recently added video clip path to the
   // videoPaths array
@@ -97,18 +98,86 @@ export default class App extends React.Component {
     console.log(videoPaths)
   }
 
+  // audio adding helper function for concatClips
+  addAudio(obj) {
+    // var outStream = fs.createWriteStream('twothirds.mov');
+    var app = this;
+    var globalPresets = this.state.globalPresets;
+
+    if (obj.music != '') {
+      fluent_ffmpeg()
+        .input('onethird.mov')
+        .input(obj.music)
+        .outputOptions([
+          '-codec copy',
+          '-shortest'
+          ])
+        .save('twothirds.mov')
+        .on('end', function() {
+          // if (obj.logo !== '') {
+          //   addLogo(fileName, presetOptions);
+          //   console.log('adding logo!');
+          // }
+          // else {
+            console.log('Finished!')
+            processMessages.innerHTML += "Phase 2 done... "
+            app.addLogo(globalPresets);
+          // }
+        })
+    }
+  }
+
+  // logo adding helper function for concatClips
+  addLogo(globalPresets) {
+    if (globalPresets.logo != '') {
+      fluent_ffmpeg()
+        .input('twothirds.mov')
+        .input(globalPresets.logo)
+        .complexFilter('[1:v]scale=100:-1[fg];[0:v][fg] overlay=(main_w-overlay_w)-25:(main_h-overlay_h)-25')
+        //.complextFilter('-vf scale=100:-1')
+        .save('done.mov')
+        .on('end', function() {
+          console.log('Finished LOGO!');
+          processMessages.innerHTML += "Your video is ready at <PATH/LINK TO VIDEO?!> "
+        })
+        .on('progress', function(progress) {
+          console.log('Processing: ' + progress.percent + '% done');
+        })
+    }
+  }
+
   concatClips(event) {
+    processMessages.innerHTML += "Getting started! Give us a few. "
     //  document.getElementsByClassName('clipCard')[0].children[0].files[0].path
     var videoObjects = document.getElementsByClassName('clipCard');
     var check = 0;
+    var globalPresets = this.state.globalPresets;
+    var app = this;
+    var processMessages = document.getElementById("process-info");
+
     //This is to grab the media path: videoObjects[i].children[0].files[0].path
     //This is to grab the text segment: videoObjects[i].children[1].value
     for (var i = 0; i < videoObjects.length; i++) {
-      // var outStream = fs.createWriteStream(tmpobj.name +'/' + i + '.mov');
       var outStream = fs.createWriteStream(i + '.mov');
-      fluent_ffmpeg(videoObjects[i].children[0].files[0].path)
+      // var outStream = fs.createWriteStream(tmpobj.name +'/' + i + '.mov');
+      fluent_ffmpeg(videoObjects[i].children[0].children[0].children[2].files[0].path)
+        .videoFilters({
+          filter: 'drawtext',
+          options: {
+            fontfile: this.state.globalPresets.font,
+            text: videoObjects[i].children[1].value,
+            fontsize: 50,
+            fontcolor: this.state.globalPresets.color,
+            shadowcolor: 'black',
+            shadowx: 2,
+            shadowy: 2,
+            x: 50,
+            y: 75
+          }
+        })
         .size('1200x?')
-        .aspect('1:1')
+        // .aspect(this.state.globalPresets.aspect)
+        .aspect(this.state.globalPresets.aspect)
         .autopad()
         .toFormat('mov')
         .duration(5.0)
@@ -121,18 +190,25 @@ export default class App extends React.Component {
           console.log('An error occurred: ' + err.message);
         })
         .on('end', function() {
-          console.log('Processing finished !', "number: " + check)
-          if (check == videoObjects.length-1) {
-            console.log("starting to merge")
+          console.log('Processing finished !', "number: " + check);
+          if (check == videoObjects.length - 1) {
+            console.log("starting to merge all videos")
             for (var j = 0; j < videoObjects.length; j++) {
               mergedVideo = mergedVideo.addInput(j + '.mov')
-            }
-            mergedVideo.mergeToFile('done.mov')
+            };
+            mergedVideo.mergeToFile('onethird.mov')
+              .videoCodec('libx264')
+              .audioCodec('libmp3lame')
+              .format('mov')
+              .outputOptions('-movflags frag_keyframe+empty_moov')
               .on('error', function(err) {
                 console.log('An error occurred: ' + err.message);
               })
               .on('end', function() {
                 console.log('Video Merged')
+                processMessages.innerHTML += "Phase 1 complete... (all done if you don't have music or a logo!)"
+                //add audio calls add logo
+                app.addAudio(globalPresets);
               })
               .pipe(outStream, { end: true })
           }
@@ -158,6 +234,7 @@ export default class App extends React.Component {
           { this.state.clipCards.map(function(clipCard, index) {
                    return clipCard })}
         <button onClick={ this.concatClips }>make video</button>
+        <div id="process-info">Video making process: </div>
       </div>
     );
   }
