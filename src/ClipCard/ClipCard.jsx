@@ -1,4 +1,5 @@
 import React from 'react';
+import './ClipCard.css';
 const osHomedir = require('os-homedir');
 var fs = require("fs");
 
@@ -20,10 +21,6 @@ export default class ClipCard extends React.Component {
     this.setText = this.setText.bind(this);
     this.setMediaPath = this.setMediaPath.bind(this);
 	}
-
-  componentDidUpdate() {
-    console.log(this.state.clipCard);
-  }
 
   setText(event) {
     var clipCard = this.state.clipCard;
@@ -53,6 +50,7 @@ export default class ClipCard extends React.Component {
           >
         </input>
         <textarea
+          className="clipText"
           name = "clipText"
           defaultValue = {this.props.text}
           onChange = { this.setText }

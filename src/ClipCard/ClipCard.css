@@ -1,0 +1,20 @@
+::-webkit-scrollbar {
+  background-color: #cdcdcd;
+}
+::-webkit-scrollbar-corner {
+  background-color: white;
+}
+
+.clipCard {
+  margin: 10px;
+  width: 250px;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: #cdcdcd;
+}
+
+.clipText {
+  background-color: #737373;
+  color: black;
+  border: none;
+}

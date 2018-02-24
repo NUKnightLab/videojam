@@ -23,6 +23,7 @@ import ClipCard from './ClipCard/ClipCard.jsx';
 import MediaLibrary from './MediaLibrary/MediaLibrary.jsx';
 import GlobalPresets from './GlobalPresets/GlobalPresets.jsx';
 import TextChunker from './TextChunker/TextChunker.jsx';
+import './app.css';
 
 
 // Controller component
@@ -34,7 +35,7 @@ export default class App extends React.Component {
       globalPresets: {
         font: 'Verdana.ttf',
         color: '#000000',
-        music: '',
+        music: 'music.mp3',
         logo: '',
         aspect: '1:1'
       }
@@ -102,7 +103,7 @@ export default class App extends React.Component {
     // var outStream = fs.createWriteStream('twothirds.mov');
     var app = this;
     var globalPresets = this.state.globalPresets;
-    
+
     if (obj.music != '') {
       fluent_ffmpeg()
         .input('onethird.mov')
@@ -224,8 +225,10 @@ export default class App extends React.Component {
         <hr></hr>
         <h6>eventually media bar can go here</h6>
         <button onClick={ this.addCard }>add clips</button>
+        <div className="clipCardContainer">
           { this.state.clipCards.map(function(clipCard, index) {
                    return clipCard })}
+        </div>
         <button onClick={ this.concatClips }>make video</button>
       </div>
     );
