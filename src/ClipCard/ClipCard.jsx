@@ -15,7 +15,6 @@ export default class ClipCard extends React.Component {
   constructor(props) {
 		super(props);
   		this.state = {
-        //clipCard: []
   			clipCard: {
           mediaPath: '',
           text: props.text
@@ -29,7 +28,7 @@ export default class ClipCard extends React.Component {
 	}
 
   componentDidUpdate() {
-    console.log(this.state.clipCard);
+
   }
 
   setText(event) {
@@ -37,7 +36,6 @@ export default class ClipCard extends React.Component {
     clipCard.text = event.target.value;
     this.setState({
       'clipCard': clipCard,
-      // 'clipCard.text': event.target.value,
     });
   }
 
@@ -46,7 +44,6 @@ export default class ClipCard extends React.Component {
     clipCard.mediaPath = event.target.files[0].path;
     this.setState({
       'clipCard': clipCard,
-      // 'clipCard.mediaPath': event.target.files[0].path,
     });
   }
 
@@ -67,7 +64,7 @@ export default class ClipCard extends React.Component {
     this.setState({
       'clipCard': clipCard,
     });
-    var video = document.getElementById("video-input")
+    var video = document.getElementById("video-input" + this.props.index)
     video.src = files[0].path
   }
 
@@ -78,7 +75,7 @@ export default class ClipCard extends React.Component {
           <Dropzone onDrop={this.onDrop.bind(this)}>
             <p>Drop or click to add a video.</p>
             <video
-              id="video-input"
+              id={"video-input" + this.props.index}
               controls='true'>
             </video>
           </Dropzone>
@@ -86,7 +83,7 @@ export default class ClipCard extends React.Component {
         <textarea
           name = "clipText"
           defaultValue = {this.props.text}
-          onChange = { this.setText }
+          onChange = {this.setText}
           >
         </textarea>
       </div>

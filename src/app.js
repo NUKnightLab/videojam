@@ -54,7 +54,8 @@ export default class App extends React.Component {
   addCard(type, textChunk) {
     if (type == 'blank') {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} />)
+      console.log("lwngth is: " + clipCards.length)
+      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} indexNum={clipCards.length} />)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -64,7 +65,7 @@ export default class App extends React.Component {
 
     else {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} />)
+      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} index={clipCards.length}/>)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -102,7 +103,7 @@ export default class App extends React.Component {
     // var outStream = fs.createWriteStream('twothirds.mov');
     var app = this;
     var globalPresets = this.state.globalPresets;
-    
+
     if (obj.music != '') {
       fluent_ffmpeg()
         .input('onethird.mov')
@@ -119,6 +120,7 @@ export default class App extends React.Component {
           // }
           // else {
             console.log('Finished!')
+            processMessages.innerHTML += "Phase 2 done... "
             app.addLogo(globalPresets);
           // }
         })
@@ -136,6 +138,7 @@ export default class App extends React.Component {
         .save('done.mov')
         .on('end', function() {
           console.log('Finished LOGO!');
+          processMessages.innerHTML += "Your video is ready at <PATH/LINK TO VIDEO?!> "
         })
         .on('progress', function(progress) {
           console.log('Processing: ' + progress.percent + '% done');
@@ -144,17 +147,20 @@ export default class App extends React.Component {
   }
 
   concatClips(event) {
+    processMessages.innerHTML += "Getting started! Give us a few. "
     //  document.getElementsByClassName('clipCard')[0].children[0].files[0].path
     var videoObjects = document.getElementsByClassName('clipCard');
     var check = 0;
     var globalPresets = this.state.globalPresets;
     var app = this;
+    var processMessages = document.getElementById("process-info");
+
     //This is to grab the media path: videoObjects[i].children[0].files[0].path
     //This is to grab the text segment: videoObjects[i].children[1].value
     for (var i = 0; i < videoObjects.length; i++) {
       var outStream = fs.createWriteStream(i + '.mov');
       // var outStream = fs.createWriteStream(tmpobj.name +'/' + i + '.mov');
-      fluent_ffmpeg(videoObjects[i].children[0].files[0].path)
+      fluent_ffmpeg(videoObjects[i].children[0].children[0].children[2].files[0].path)
         .videoFilters({
           filter: 'drawtext',
           options: {
@@ -200,6 +206,7 @@ export default class App extends React.Component {
               })
               .on('end', function() {
                 console.log('Video Merged')
+                processMessages.innerHTML += "Phase 1 complete... (all done if you don't have music or a logo!)"
                 //add audio calls add logo
                 app.addAudio(globalPresets);
               })
@@ -227,6 +234,7 @@ export default class App extends React.Component {
           { this.state.clipCards.map(function(clipCard, index) {
                    return clipCard })}
         <button onClick={ this.concatClips }>make video</button>
+        <div id="process-info">Video making process: </div>
       </div>
     );
   }
