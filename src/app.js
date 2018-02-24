@@ -24,6 +24,9 @@ import MediaLibrary from './MediaLibrary/MediaLibrary.jsx';
 import GlobalPresets from './GlobalPresets/GlobalPresets.jsx';
 import TextChunker from './TextChunker/TextChunker.jsx';
 
+// Import styles
+import './modal.css'
+
 
 // Controller component
 export default class App extends React.Component {
@@ -37,18 +40,30 @@ export default class App extends React.Component {
         music: '',
         logo: '',
         aspect: '1:1'
-      }
+      },
+      open: false
     }
     this.updateGlobalPresets = this.updateGlobalPresets.bind(this);
     this.addCard = this.addCard.bind(this);
     this.concatClips = this.concatClips.bind(this);
     this.addAudio = this.addAudio.bind(this);
     this.addLogo = this.addLogo.bind(this);
+    this.previewVideo = this.previewVideo.bind(this);
+    // this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   //state manager for global presets
   updateGlobalPresets(updatedGlobalPresets) {
     this.setState({ globalPresets: updatedGlobalPresets });
+  }
+
+  // openModal() {
+  //   this.setState({ 'open': true, });
+  // }
+
+  closeModal() {
+    this.setState({ 'open': false, });
   }
 
   addCard(type, textChunk) {
@@ -96,6 +111,26 @@ export default class App extends React.Component {
     });
     console.log(videoPath)
     console.log(videoPaths)
+  }
+
+  // preview trigger
+  previewVideo(event) {
+    var videoObjects = document.getElementsByClassName('clipCard');
+    var mediaPaths = []
+    var previewscreen = document.getElementById("previewscreen")
+
+    this.setState({
+      'open': true
+    })
+
+    for (var i = 0; i < videoObjects.length; i++) {
+      mediaPaths.push(videoObjects[i].children[0].children[0].children[2].files[0].path);
+    }
+    console.log(mediaPaths)
+
+    for (var i = 0; i < mediaPaths.length; i++) {
+      previewscreen.src = mediaPaths[i]
+    }
   }
 
   // audio adding helper function for concatClips
@@ -220,7 +255,9 @@ export default class App extends React.Component {
   }
 
   render() {
-
+    const modalStatus = {
+      display: this.state.open ? 'block' : 'none',
+    }
     return (
       <div>
         <h2>Hello World!</h2>
@@ -233,7 +270,19 @@ export default class App extends React.Component {
         <button onClick={ this.addCard }>add clips</button>
           { this.state.clipCards.map(function(clipCard, index) {
                    return clipCard })}
-        <button onClick={ this.concatClips }>make video</button>
+        <button onClick={ this.previewVideo }>Preview video</button>
+
+        <div id="preview" style={modalStatus}>
+          <h3 id="modal-header"> Preview your video </h3>
+          <video
+            controls='true'
+            id='previewscreen'>
+          </video>
+          <button id="makeit">Make my video!</button>
+          <button id="closeit" onClick={this.closeModal}> Not Now </button>
+        </div>
+
+        <button onClick={ this.concatClips }>Make video</button>
         <div id="process-info">Video making process: </div>
       </div>
     );
