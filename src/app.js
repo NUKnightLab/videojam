@@ -114,23 +114,55 @@ export default class App extends React.Component {
   }
 
   // preview trigger
+  // HTML5 video tag access == videoObjects[i].children[0].children[0].children[1]
+  /* ISSUES
+    - how to have videos loop once one finishes?
+    - how to link video timing selections to the previewing?
+    - how to handle non-mov/mp4 files? html5 doesn't accept them
+  */
   previewVideo(event) {
     var videoObjects = document.getElementsByClassName('clipCard');
+    var previewScreen = document.getElementById("previewscreen")
+    var nextBtn = document.getElementById("nextbtn");
     var mediaPaths = []
-    var previewscreen = document.getElementById("previewscreen")
 
+    // open preview modal
     this.setState({
       'open': true
     })
 
+    // add all paths to clips to an array
     for (var i = 0; i < videoObjects.length; i++) {
       mediaPaths.push(videoObjects[i].children[0].children[0].children[2].files[0].path);
     }
     console.log(mediaPaths)
 
-    for (var i = 0; i < mediaPaths.length; i++) {
-      previewscreen.src = mediaPaths[i]
+    // make the preview video element each video
+    /* TRY 1 */
+    var i = 0
+    while (i < mediaPaths.length) {
+      var video = videoObjects[i].children[0].children[0].children[1]
+      previewScreen.src = mediaPaths[i]
+      console.log(video.duration)
+      i++
+      nextBtn.addEventListener("click", i++);
+      console.log('next btn: ' + i);
+      // console.log(i(video))
     }
+
+    /* TRY 2 */
+    // nextBtn.onClick = function() {
+    //   var i = 0
+    //   while (i < mediaPaths.length) {
+    //     var video = videoObjects[i].children[0].children[0].children[1]
+    //     previewScreen.src = mediaPaths[i]
+    //     console.log(video.duration)
+    //     i++
+    //     // nextBtn.addEventListener("click", i++);
+    //     console.log('next btn: ' + i);
+    //     // console.log(i(video))
+    //   }
+    // }
   }
 
   // audio adding helper function for concatClips
@@ -278,6 +310,7 @@ export default class App extends React.Component {
             controls='true'
             id='previewscreen'>
           </video>
+          <button id="nextbtn">preview next vid!</button>
           <button id="makeit">Make my video!</button>
           <button id="closeit" onClick={this.closeModal}> Not Now </button>
         </div>
