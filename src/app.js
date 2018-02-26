@@ -10,13 +10,14 @@ var tmpobj = tmp.dirSync({unsafeCleanup: true});
 var fluent_ffmpeg = require('fluent-ffmpeg');
 var ffmpegPath  = require("./../config.js").ffmpegPath;
 var ffprobePath = require("./../config.js").ffprobePath;
-// fluent_ffmpeg.setFfmpegPath(ffmpegPath);
-// fluent_ffmpeg.setFfprobePath(ffprobePath);
 fluent_ffmpeg.setFfmpegPath('./node_modules/ffmpeg-static' + ffmpegPath);
 fluent_ffmpeg.setFfprobePath('./node_modules/ffprobe-static' + ffprobePath);
+// fluent_ffmpeg.setFfmpegPath(ffmpegPath);
+// fluent_ffmpeg.setFfprobePath(ffprobePath);
 
 //initialize global variables
 var mergedVideo = fluent_ffmpeg();
+var mediaPaths = []
 
 // Import componenets
 import ClipCard from './ClipCard/ClipCard.jsx';
@@ -25,8 +26,7 @@ import GlobalPresets from './GlobalPresets/GlobalPresets.jsx';
 import TextChunker from './TextChunker/TextChunker.jsx';
 
 // Import styles
-import './modal.css'
-
+import './modal.css';
 
 // Controller component
 export default class App extends React.Component {
@@ -49,7 +49,6 @@ export default class App extends React.Component {
     this.addAudio = this.addAudio.bind(this);
     this.addLogo = this.addLogo.bind(this);
     this.previewVideo = this.previewVideo.bind(this);
-    // this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -58,18 +57,15 @@ export default class App extends React.Component {
     this.setState({ globalPresets: updatedGlobalPresets });
   }
 
-  // openModal() {
-  //   this.setState({ 'open': true, });
-  // }
-
   closeModal() {
     this.setState({ 'open': false, });
   }
 
+  // add a clipCard onClick
   addCard(type, textChunk) {
     if (type == 'blank') {
       var clipCards = this.state.clipCards;
-      console.log("lwngth is: " + clipCards.length)
+      console.log("length is: " + clipCards.length)
       clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} indexNum={clipCards.length} />)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
@@ -86,14 +82,6 @@ export default class App extends React.Component {
         'clipCards': clipCards
       });
     }
-  };
-
-  addVideoObjects(event) {
-    var clipCards = this.state.clipCards;
-    var videoObjects = this.state.videoObjects;
-    this.setState({
-      videoObjects: videoObjects.concat()
-    });
   };
 
   // adds the most recently added video clip path to the
@@ -124,7 +112,6 @@ export default class App extends React.Component {
     var videoObjects = document.getElementsByClassName('clipCard');
     var previewScreen = document.getElementById("previewscreen")
     var nextBtn = document.getElementById("nextbtn");
-    var mediaPaths = []
 
     // open preview modal
     this.setState({
@@ -137,31 +124,48 @@ export default class App extends React.Component {
     }
     console.log(mediaPaths)
 
+    /* TRY 2 */
+
     // make the preview video element each video
     /* TRY 1 */
-    var i = 0
-    while (i < mediaPaths.length) {
-      var video = videoObjects[i].children[0].children[0].children[1]
-      previewScreen.src = mediaPaths[i]
-      console.log(video.duration)
-      i++
-      nextBtn.addEventListener("click", i++);
-      console.log('next btn: ' + i);
-      // console.log(i(video))
-    }
+    // var i = 0
+    // while (i < mediaPaths.length) {
+    //   var video = videoObjects[i].children[0].children[0].children[1]
+    //   previewScreen.src = mediaPaths[i]
+    //   console.log(video.duration)
+    //   nextBtn.addEventListener("click", i++);
+    //   console.log('next btn: ' + i);
+    // }
+  }
 
-    /* TRY 2 */
-    // nextBtn.onClick = function() {
-    //   var i = 0
-    //   while (i < mediaPaths.length) {
-    //     var video = videoObjects[i].children[0].children[0].children[1]
-    //     previewScreen.src = mediaPaths[i]
-    //     console.log(video.duration)
-    //     i++
-    //     // nextBtn.addEventListener("click", i++);
-    //     console.log('next btn: ' + i);
-    //     // console.log(i(video))
-    //   }
+  playPreview(event) {
+    var videoObjects = document.getElementsByClassName('clipCard');
+    var previewScreen = document.getElementById("previewscreen")
+    var nextBtn = document.getElementById("nextbtn");
+    console.log("HERE")
+    previewScreen.dataset["index"] = 0;
+
+      console.log(mediaPaths.length)
+      var currIndex = parseInt(previewScreen.dataset["index"])
+      var video = videoObjects[currIndex].children[0].children[0].children[1];
+      previewScreen.src = mediaPaths[currIndex];
+      console.log(video.duration);
+      if (currIndex == mediaPaths.length) {
+        currIndex = 0
+      }
+      else {
+        currIndex += 1;
+      }
+      console.log('next btn: ' + previewScreen.dataset["index"]);
+
+    // for (var j = 0; j < mediaPaths.length; j++) {
+    //   console.log(mediaPaths.length)
+    //   var video = videoObjects[j].children[0].children[0].children[1];
+    //   previewScreen.src = mediaPaths[j];
+    //   console.log(video.duration);
+    //   var currIndex = parseInt(previewScreen.dataset["index"])
+    //   currIndex += 1;
+    //   console.log('next btn: ' + previewScreen.dataset["index"]);
     // }
   }
 
@@ -187,7 +191,7 @@ export default class App extends React.Component {
           // }
           // else {
             console.log('Finished!')
-            processMessages.innerHTML += "Phase 2 done... "
+            processMessages.innerHTML += "Phase 2 done... (all done if you don't have a logo!)"
             app.addLogo(globalPresets);
           // }
         })
@@ -308,8 +312,10 @@ export default class App extends React.Component {
           <h3 id="modal-header"> Preview your video </h3>
           <video
             controls='true'
-            id='previewscreen'>
+            id='previewscreen'
+            data-index='0'>
           </video>
+          <button id="play" onClick = { this.playPreview }>play preview!</button>
           <button id="nextbtn">preview next vid!</button>
           <button id="makeit">Make my video!</button>
           <button id="closeit" onClick={this.closeModal}> Not Now </button>
