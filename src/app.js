@@ -17,7 +17,7 @@ fluent_ffmpeg.setFfprobePath('./node_modules/ffprobe-static' + ffprobePath);
 
 //initialize global variables
 var mergedVideo = fluent_ffmpeg();
-var mediaPaths = []
+// var mediaPaths = []
 
 // Import componenets
 import ClipCard from './ClipCard/ClipCard.jsx';
@@ -112,6 +112,7 @@ export default class App extends React.Component {
     var videoObjects = document.getElementsByClassName('clipCard');
     var previewScreen = document.getElementById("previewscreen")
     var nextBtn = document.getElementById("nextbtn");
+    var mediaPaths = []
 
     // open preview modal
     this.setState({
@@ -142,21 +143,24 @@ export default class App extends React.Component {
     var videoObjects = document.getElementsByClassName('clipCard');
     var previewScreen = document.getElementById("previewscreen")
     var nextBtn = document.getElementById("nextbtn");
-    console.log("HERE")
-    previewScreen.dataset["index"] = 0;
+    var currIndex = parseInt(previewScreen.dataset["index"])
+    //path of video
+    var video = videoObjects[currIndex].children[0].children[0].children[2].files[0].path
+    //HTML video element to get video timing
+    var videocontainer = videoObjects[currIndex].children[0].children[0].children[1];
 
-      console.log(mediaPaths.length)
-      var currIndex = parseInt(previewScreen.dataset["index"])
-      var video = videoObjects[currIndex].children[0].children[0].children[1];
-      previewScreen.src = mediaPaths[currIndex];
-      console.log(video.duration);
-      if (currIndex == mediaPaths.length) {
-        currIndex = 0
-      }
-      else {
-        currIndex += 1;
-      }
-      console.log('next btn: ' + previewScreen.dataset["index"]);
+    previewScreen.src = video;
+    console.log("video length: " + videocontainer.duration);
+    console.log("current video time: " + videocontainer.currentTime)
+    previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) + 1
+    if (previewScreen.dataset["index"] == toString(videoObjects.length)) {
+      previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) - videoObjects.length;
+    }
+    else {
+      // currIndex += 1;
+      Number(previewScreen.dataset["index"]) + 1
+    }
+    console.log('next btn: ' + previewScreen.dataset["index"]);
 
     // for (var j = 0; j < mediaPaths.length; j++) {
     //   console.log(mediaPaths.length)
@@ -196,6 +200,7 @@ export default class App extends React.Component {
           // }
         })
     }
+    else { app.addLogo(globalPresets); }
   }
 
   // logo adding helper function for concatClips
@@ -313,7 +318,8 @@ export default class App extends React.Component {
           <video
             controls='true'
             id='previewscreen'
-            data-index='0'>
+            data-index='0'
+            onChange = { this.trackTime }>
           </video>
           <button id="play" onClick = { this.playPreview }>play preview!</button>
           <button id="nextbtn">preview next vid!</button>
