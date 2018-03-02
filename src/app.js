@@ -10,13 +10,14 @@ var tmpobj = tmp.dirSync({unsafeCleanup: true});
 var fluent_ffmpeg = require('fluent-ffmpeg');
 var ffmpegPath  = require("./../config.js").ffmpegPath;
 var ffprobePath = require("./../config.js").ffprobePath;
-// fluent_ffmpeg.setFfmpegPath(ffmpegPath);
-// fluent_ffmpeg.setFfprobePath(ffprobePath);
 fluent_ffmpeg.setFfmpegPath('./node_modules/ffmpeg-static' + ffmpegPath);
 fluent_ffmpeg.setFfprobePath('./node_modules/ffprobe-static' + ffprobePath);
+// fluent_ffmpeg.setFfmpegPath(ffmpegPath);
+// fluent_ffmpeg.setFfprobePath(ffprobePath);
 
-//initialize global variables
+// Initialize global variables
 var mergedVideo = fluent_ffmpeg();
+// var mediaPaths = []
 
 // Import componenets
 import ClipCard from './ClipCard/ClipCard.jsx';
@@ -26,6 +27,8 @@ import TextChunker from './TextChunker/TextChunker.jsx';
 import ClipEditor from './ClipEditor/ClipEditor.jsx'
 import './app.css';
 
+// Import styles
+import './modal.css';
 
 // Controller component
 export default class App extends React.Component {
@@ -40,19 +43,26 @@ export default class App extends React.Component {
         logo: '',
         aspect: '1:1'
       },
-
+      open: false
     }
     this.updateGlobalPresets = this.updateGlobalPresets.bind(this);
     this.addCard = this.addCard.bind(this);
     this.concatClips = this.concatClips.bind(this);
     this.addAudio = this.addAudio.bind(this);
     this.addLogo = this.addLogo.bind(this);
+    this.openPreview = this.openPreview.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     this.updateEditor = this.updateEditor.bind(this);
   }
 
-  //state manager for global presets
+  // State manager for global presets
   updateGlobalPresets(updatedGlobalPresets) {
     this.setState({ globalPresets: updatedGlobalPresets });
+  }
+
+  // Closes preview modal
+  closeModal() {
+    this.setState({ 'open': false, });
   }
 
   updateEditor(updatedEditorEndpoints) {
@@ -71,7 +81,6 @@ export default class App extends React.Component {
       });
       console.log(clipCards)
     }
-
     else {
       var clipCards = this.state.clipCards;
       clipCards.push(<ClipCard text={textChunk} key={clipCards.length} updateEditor={this.updateEditor} index={clipCards.length}/>)
@@ -82,32 +91,64 @@ export default class App extends React.Component {
     }
   };
 
-  addVideoObjects(event) {
-    var clipCards = this.state.clipCards;
-    var videoObjects = this.state.videoObjects;
-    this.setState({
-      videoObjects: videoObjects.concat()
-    });
-  };
+  // preview trigger
+  // HTML5 video tag access == videoObjects[i].children[0].children[0].children[1]
+  /* ISSUES
+    - how to have videos loop once one finishes?
+    - how to link video timing selections to the previewing?
+    - how to handle non-mov/mp4 files? html5 doesn't accept them
+  */
 
-  // adds the most recently added video clip path to the
-  // videoPaths array
-  addPath(event) {
-    var videoPaths = this.state.videoPaths;
-    var mediaCount = this.state.mediaCount;
-    //find a more elegant way to do this
-    var videoPath = event.target.files[0].path;
-
+  // Opens preview modal
+  openPreview(event) {
+    var previewScreen = document.getElementById("previewscreen");
+    previewScreen.dataset["index"] = 0;
+    console.log("NOW DATA INDEX IS AT: " + previewScreen.dataset["index"])
     this.setState({
-      //array only contains most recent path...
-      'videoPaths': videoPaths.push(videoPath),
-      'mediaCount': ++mediaCount
-    });
-    console.log(videoPath)
-    console.log(videoPaths)
+      'open': true
+    })
   }
 
-  // audio adding helper function for concatClips
+  // Grabs each media path and plays them in sequence onClick (soon will change)
+  playPreview(event) {
+    var videoObjects = document.getElementsByClassName('clipCard');
+    var previewScreen = document.getElementById("previewscreen");
+    var nextBtn = document.getElementById("nextbtn");
+    //grabs data index set on preview screen element
+    var currIndex = parseInt(previewScreen.dataset["index"]);
+    // grabs path of video
+    var video = videoObjects[currIndex].children[0].children[0].children[2].files[0].path
+    // grabs HTML video element to get video timing
+    var videocontainer = videoObjects[currIndex].children[0].children[0].children[1];
+
+    previewScreen.src = video;
+    console.log("video length: " + videocontainer.duration);
+    console.log("current video time: " + videocontainer.currentTime)
+    previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) + 1
+    if (previewScreen.dataset["index"] == toString(videoObjects.length)) {
+      // previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) - videoObjects.length;
+      previewScreen.dataset["index"] = 0;
+    }
+    else {
+      // currIndex += 1;
+      Number(previewScreen.dataset["index"]) + 1
+    }
+    console.log('next btn: ' + previewScreen.dataset["index"]);
+  }
+
+  // Trying to track time of current video in preview
+  trackTime(event) {
+    var videoObjects = document.getElementsByClassName('clipCard');
+    var currIndex = parseInt(previewScreen.dataset["index"])
+    var videocontainer = videoObjects[currIndex].children[0].children[0].children[1];
+    console.log("track time video length: " + videocontainer.duration);
+    console.log("track time current video time: " + videocontainer.currentTime)
+    if (videocontainer.duration == videocontainer.currentTime) {
+      console.log("THEYRE THE SAME!")
+    }
+  }
+
+  // Audio adding helper function for concatClips
   addAudio(obj) {
     // var outStream = fs.createWriteStream('twothirds.mov');
     var app = this;
@@ -129,14 +170,15 @@ export default class App extends React.Component {
           // }
           // else {
             console.log('Finished!')
-            processMessages.innerHTML += "Phase 2 done... "
+            processMessages.innerHTML += "Phase 2 done... (all done if you don't have a logo!)"
             app.addLogo(globalPresets);
           // }
         })
     }
+    else { app.addLogo(globalPresets); }
   }
 
-  // logo adding helper function for concatClips
+  // Logo adding helper function for concatClips
   addLogo(globalPresets) {
     if (globalPresets.logo != '') {
       fluent_ffmpeg()
@@ -155,6 +197,7 @@ export default class App extends React.Component {
     }
   }
 
+  // Concatenates all clips into one video
   concatClips(event) {
     processMessages.innerHTML += "Getting started! Give us a few. "
     //  document.getElementsByClassName('clipCard')[0].children[0].files[0].path
@@ -185,7 +228,6 @@ export default class App extends React.Component {
           }
         })
         .size('1200x?')
-        // .aspect(this.state.globalPresets.aspect)
         .aspect(this.state.globalPresets.aspect)
         .autopad()
         .toFormat('mov')
@@ -216,29 +258,44 @@ export default class App extends React.Component {
               .on('end', function() {
                 console.log('Video Merged')
                 processMessages.innerHTML += "Phase 1 complete... (all done if you don't have music or a logo!)"
-                //add audio calls add logo
                 app.addAudio(globalPresets);
               })
               .pipe(outStream, { end: true })
           }
           check++;
         })
-        // .pipe(outStream, { end: true })
-        // .save(outStream)
     }
   }
 
   render() {
-
+    const modalStatus = {
+      display: this.state.open ? 'block' : 'none',
+    }
     return (
       <div>
         <h2>Hello World!</h2>
         <TextChunker populateCards={this.addCard} />
         <GlobalPresets
-          globalPresets={ this.state.globalPresets }
-          updateGlobalPresets={ this.updateGlobalPresets } />
+          globalPresets={this.state.globalPresets}
+          updateGlobalPresets={this.updateGlobalPresets} />
         <hr></hr>
         <h6>eventually media bar can go here</h6>
+        <button onClick={this.openPreview}>Preview video</button>
+
+        <div id="preview" style={modalStatus}>
+          <h3 id="modal-header"> Preview your video </h3>
+          <video
+            controls='true'
+            id='previewscreen'
+            data-index='1'
+            onChange = {this.trackTime}>
+          </video>
+          <button id="play" onClick = {this.playPreview}>play preview!</button>
+          <button id="makeit" onClick={this.concatClips}>Make my video!</button>
+          <button id="closeit" onClick={this.closeModal}> Not Now </button>
+        </div>
+
+        <button onClick={ this.concatClips }>Make video</button>
         <ClipEditor editorEndpoints={this.state.editorEndpoints} />
 
         <div className="clipCardContainer">
