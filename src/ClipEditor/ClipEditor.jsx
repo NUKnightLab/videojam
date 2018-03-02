@@ -21,11 +21,11 @@ export default class ClipEditor extends React.Component {
       componentDidUpdate() {
         if (!isNaN(this.props.editorEndpoints)) {
           var selected = document.getElementsByClassName('clipCard')[this.props.editorEndpoints].children;
-          if ((this.state.mediaPath != (selected[0].files.length > 0 ? selected[0].files[0].path : '')) | this.state.text != selected[1].value ) {
+          if ((this.state.mediaPath != (selected[0].children[0].children[2].files.length > 0 ? selected[0].children[0].children[2].files[0].path : '')) | this.state.text != selected[1].value ) {
             console.log(this.state.text)
             this.setState({
 
-              'mediaPath' : selected[0].files.length > 0 ? selected[0].files[0].path : '',
+              'mediaPath' : selected[0].children[0].children[2].files.length > 0 ? selected[0].children[0].children[2].files[0].path : '',
               'text' : selected[1].value,
             })
             document.getElementById("editorText").value = selected[1].value;
