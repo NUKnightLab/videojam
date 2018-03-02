@@ -48,7 +48,7 @@ export default class App extends React.Component {
     this.concatClips = this.concatClips.bind(this);
     this.addAudio = this.addAudio.bind(this);
     this.addLogo = this.addLogo.bind(this);
-    this.previewVideo = this.previewVideo.bind(this);
+    this.openPreview = this.openPreview.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -94,6 +94,9 @@ export default class App extends React.Component {
 
   // Opens preview modal
   openPreview(event) {
+    var previewScreen = document.getElementById("previewscreen");
+    previewScreen.dataset["index"] = 0;
+    console.log("NOW DATA INDEX IS AT: " + previewScreen.dataset["index"])
     this.setState({
       'open': true
     })
@@ -116,7 +119,8 @@ export default class App extends React.Component {
     console.log("current video time: " + videocontainer.currentTime)
     previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) + 1
     if (previewScreen.dataset["index"] == toString(videoObjects.length)) {
-      previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) - videoObjects.length;
+      // previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) - videoObjects.length;
+      previewScreen.dataset["index"] = 0;
     }
     else {
       // currIndex += 1;
@@ -279,7 +283,7 @@ export default class App extends React.Component {
           <video
             controls='true'
             id='previewscreen'
-            data-index='0'
+            data-index='1'
             onChange = {this.trackTime}>
           </video>
           <button id="play" onClick = {this.playPreview}>play preview!</button>
