@@ -162,7 +162,7 @@ export default class GlobalPresets extends React.Component {
           <select
             id = "music-selector"
             onChange = { this.changeMusic }>
-            <option value="./media/music1.mp3">Twinkle Twinkle</option>
+            <option value="./media/music.mp3">Twinkle Twinkle</option>
             <option value="./media/music2.mp3">Elevator Music</option>
             <option value="./media/music3.mp3">Classic Jam</option>
 

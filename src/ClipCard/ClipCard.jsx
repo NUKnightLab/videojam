@@ -1,5 +1,6 @@
 // Add packages
 import React from 'react';
+import './ClipCard.css';
 const osHomedir = require('os-homedir');
 var fs = require("fs");
 
@@ -22,9 +23,13 @@ export default class ClipCard extends React.Component {
   		}
     this.setText = this.setText.bind(this);
     this.setMediaPath = this.setMediaPath.bind(this);
+    this.updateEditor = this.updateEditor.bind(this);
     this.onDrop = this.onDrop.bind(this);
     // this.dragDrop = this.dragDrop.bind(this);
+	}
 
+  updateEditor() {
+    this.props.updateEditor(this.props.index); 
 	}
 
   componentDidUpdate() {
@@ -70,7 +75,7 @@ export default class ClipCard extends React.Component {
 
   render() {
     return (
-      <div className="clipCard">
+      <div className="clipCard" onClick={this.updateEditor}>
         <div className="dropzone">
           <Dropzone onDrop={this.onDrop.bind(this)}>
             <p>Drop or click to add a video.</p>
@@ -81,6 +86,7 @@ export default class ClipCard extends React.Component {
           </Dropzone>
         </div>
         <textarea
+          className="clipText"
           name = "clipText"
           defaultValue = {this.props.text}
           onChange = {this.setText}

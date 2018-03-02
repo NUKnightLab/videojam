@@ -1,0 +1,20 @@
+.clipEditor {
+  display: flex;
+  position: relative;
+  height: 300px;;
+  width: 700px;
+  background-color: #616161;
+  left: 20%;
+  margin: 20px 0;
+}
+
+#editorText {
+  position: relative;
+  width: 200px;
+  height: 150px;
+  margin: 25px;
+}
+
+#editorVideo {
+  margin: 25px;
+}
