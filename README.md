@@ -1,4 +1,4 @@
-# electron-react-ffmpeg
+# VideoJam
 
 ### to start the project setup from scratch:
 1. Started with `electron-quick-start` application cloned locally
