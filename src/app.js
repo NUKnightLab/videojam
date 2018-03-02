@@ -24,6 +24,8 @@ import ClipCard from './ClipCard/ClipCard.jsx';
 import MediaLibrary from './MediaLibrary/MediaLibrary.jsx';
 import GlobalPresets from './GlobalPresets/GlobalPresets.jsx';
 import TextChunker from './TextChunker/TextChunker.jsx';
+import ClipEditor from './ClipEditor/ClipEditor.jsx'
+import './app.css';
 
 // Import styles
 import './modal.css';
@@ -37,7 +39,7 @@ export default class App extends React.Component {
       globalPresets: {
         font: 'Verdana.ttf',
         color: '#000000',
-        music: '',
+        music: 'music.mp3',
         logo: '',
         aspect: '1:1'
       },
@@ -50,6 +52,7 @@ export default class App extends React.Component {
     this.addLogo = this.addLogo.bind(this);
     this.openPreview = this.openPreview.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.updateEditor = this.updateEditor.bind(this);
   }
 
   // State manager for global presets
@@ -62,12 +65,16 @@ export default class App extends React.Component {
     this.setState({ 'open': false, });
   }
 
-  // Add a clipCard onClick
+  updateEditor(updatedEditorEndpoints) {
+    this.setState({
+      'editorEndpoints' : updatedEditorEndpoints,
+    })
+  }
+
   addCard(type, textChunk) {
     if (type == 'blank') {
       var clipCards = this.state.clipCards;
-      console.log("length is: " + clipCards.length)
-      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} indexNum={clipCards.length} />)
+      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} updateEditor={this.updateEditor} index={clipCards.length}/>)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -76,7 +83,7 @@ export default class App extends React.Component {
     }
     else {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} index={clipCards.length}/>)
+      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} updateEditor={this.updateEditor} index={clipCards.length}/>)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -273,9 +280,6 @@ export default class App extends React.Component {
           updateGlobalPresets={this.updateGlobalPresets} />
         <hr></hr>
         <h6>eventually media bar can go here</h6>
-        <button onClick={this.addCard}>add clips</button>
-          { this.state.clipCards.map(function(clipCard, index) {
-                   return clipCard })}
         <button onClick={this.openPreview}>Preview video</button>
 
         <div id="preview" style={modalStatus}>
@@ -292,6 +296,18 @@ export default class App extends React.Component {
         </div>
 
         <button onClick={ this.concatClips }>Make video</button>
+        <ClipEditor editorEndpoints={this.state.editorEndpoints} />
+
+        <div className="clipCardContainer">
+          <div id="addButtonContainer">
+            <div id="addClipsButton" onClick={ this.addCard }>
+              <p id="addClipText"> + </p>
+            </div>
+          </div>
+          { this.state.clipCards.map(function(clipCard, index) {
+                   return clipCard })}
+        </div>
+        <button onClick={ this.concatClips }>make video</button>
         <div id="process-info">Video making process: </div>
       </div>
     );
