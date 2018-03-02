@@ -15,7 +15,7 @@ fluent_ffmpeg.setFfprobePath('./node_modules/ffprobe-static' + ffprobePath);
 // fluent_ffmpeg.setFfmpegPath(ffmpegPath);
 // fluent_ffmpeg.setFfprobePath(ffprobePath);
 
-//initialize global variables
+// Initialize global variables
 var mergedVideo = fluent_ffmpeg();
 // var mediaPaths = []
 
@@ -52,16 +52,17 @@ export default class App extends React.Component {
     this.closeModal = this.closeModal.bind(this);
   }
 
-  //state manager for global presets
+  // State manager for global presets
   updateGlobalPresets(updatedGlobalPresets) {
     this.setState({ globalPresets: updatedGlobalPresets });
   }
 
+  // Closes preview modal
   closeModal() {
     this.setState({ 'open': false, });
   }
 
-  // add a clipCard onClick
+  // Add a clipCard onClick
   addCard(type, textChunk) {
     if (type == 'blank') {
       var clipCards = this.state.clipCards;
@@ -73,7 +74,6 @@ export default class App extends React.Component {
       });
       console.log(clipCards)
     }
-
     else {
       var clipCards = this.state.clipCards;
       clipCards.push(<ClipCard text={textChunk} key={clipCards.length} index={clipCards.length}/>)
@@ -84,23 +84,6 @@ export default class App extends React.Component {
     }
   };
 
-  // adds the most recently added video clip path to the
-  // videoPaths array
-  addPath(event) {
-    var videoPaths = this.state.videoPaths;
-    var mediaCount = this.state.mediaCount;
-    //find a more elegant way to do this
-    var videoPath = event.target.files[0].path;
-
-    this.setState({
-      //array only contains most recent path...
-      'videoPaths': videoPaths.push(videoPath),
-      'mediaCount': ++mediaCount
-    });
-    console.log(videoPath)
-    console.log(videoPaths)
-  }
-
   // preview trigger
   // HTML5 video tag access == videoObjects[i].children[0].children[0].children[1]
   /* ISSUES
@@ -108,45 +91,24 @@ export default class App extends React.Component {
     - how to link video timing selections to the previewing?
     - how to handle non-mov/mp4 files? html5 doesn't accept them
   */
-  previewVideo(event) {
-    var videoObjects = document.getElementsByClassName('clipCard');
-    var previewScreen = document.getElementById("previewscreen")
-    var nextBtn = document.getElementById("nextbtn");
-    var mediaPaths = []
 
-    // open preview modal
+  // Opens preview modal
+  openPreview(event) {
     this.setState({
       'open': true
     })
-
-    // add all paths to clips to an array
-    for (var i = 0; i < videoObjects.length; i++) {
-      mediaPaths.push(videoObjects[i].children[0].children[0].children[2].files[0].path);
-    }
-    console.log(mediaPaths)
-
-    /* TRY 2 */
-
-    // make the preview video element each video
-    /* TRY 1 */
-    // var i = 0
-    // while (i < mediaPaths.length) {
-    //   var video = videoObjects[i].children[0].children[0].children[1]
-    //   previewScreen.src = mediaPaths[i]
-    //   console.log(video.duration)
-    //   nextBtn.addEventListener("click", i++);
-    //   console.log('next btn: ' + i);
-    // }
   }
 
+  // Grabs each media path and plays them in sequence onClick (soon will change)
   playPreview(event) {
     var videoObjects = document.getElementsByClassName('clipCard');
-    var previewScreen = document.getElementById("previewscreen")
+    var previewScreen = document.getElementById("previewscreen");
     var nextBtn = document.getElementById("nextbtn");
-    var currIndex = parseInt(previewScreen.dataset["index"])
-    //path of video
+    //grabs data index set on preview screen element
+    var currIndex = parseInt(previewScreen.dataset["index"]);
+    // grabs path of video
     var video = videoObjects[currIndex].children[0].children[0].children[2].files[0].path
-    //HTML video element to get video timing
+    // grabs HTML video element to get video timing
     var videocontainer = videoObjects[currIndex].children[0].children[0].children[1];
 
     previewScreen.src = video;
@@ -161,19 +123,21 @@ export default class App extends React.Component {
       Number(previewScreen.dataset["index"]) + 1
     }
     console.log('next btn: ' + previewScreen.dataset["index"]);
-
-    // for (var j = 0; j < mediaPaths.length; j++) {
-    //   console.log(mediaPaths.length)
-    //   var video = videoObjects[j].children[0].children[0].children[1];
-    //   previewScreen.src = mediaPaths[j];
-    //   console.log(video.duration);
-    //   var currIndex = parseInt(previewScreen.dataset["index"])
-    //   currIndex += 1;
-    //   console.log('next btn: ' + previewScreen.dataset["index"]);
-    // }
   }
 
-  // audio adding helper function for concatClips
+  // Trying to track time of current video in preview
+  trackTime(event) {
+    var videoObjects = document.getElementsByClassName('clipCard');
+    var currIndex = parseInt(previewScreen.dataset["index"])
+    var videocontainer = videoObjects[currIndex].children[0].children[0].children[1];
+    console.log("track time video length: " + videocontainer.duration);
+    console.log("track time current video time: " + videocontainer.currentTime)
+    if (videocontainer.duration == videocontainer.currentTime) {
+      console.log("THEYRE THE SAME!")
+    }
+  }
+
+  // Audio adding helper function for concatClips
   addAudio(obj) {
     // var outStream = fs.createWriteStream('twothirds.mov');
     var app = this;
@@ -203,7 +167,7 @@ export default class App extends React.Component {
     else { app.addLogo(globalPresets); }
   }
 
-  // logo adding helper function for concatClips
+  // Logo adding helper function for concatClips
   addLogo(globalPresets) {
     if (globalPresets.logo != '') {
       fluent_ffmpeg()
@@ -222,6 +186,7 @@ export default class App extends React.Component {
     }
   }
 
+  // Concatenates all clips into one video
   concatClips(event) {
     processMessages.innerHTML += "Getting started! Give us a few. "
     //  document.getElementsByClassName('clipCard')[0].children[0].files[0].path
@@ -252,7 +217,6 @@ export default class App extends React.Component {
           }
         })
         .size('1200x?')
-        // .aspect(this.state.globalPresets.aspect)
         .aspect(this.state.globalPresets.aspect)
         .autopad()
         .toFormat('mov')
@@ -283,15 +247,12 @@ export default class App extends React.Component {
               .on('end', function() {
                 console.log('Video Merged')
                 processMessages.innerHTML += "Phase 1 complete... (all done if you don't have music or a logo!)"
-                //add audio calls add logo
                 app.addAudio(globalPresets);
               })
               .pipe(outStream, { end: true })
           }
           check++;
         })
-        // .pipe(outStream, { end: true })
-        // .save(outStream)
     }
   }
 
@@ -304,14 +265,14 @@ export default class App extends React.Component {
         <h2>Hello World!</h2>
         <TextChunker populateCards={this.addCard} />
         <GlobalPresets
-          globalPresets={ this.state.globalPresets }
-          updateGlobalPresets={ this.updateGlobalPresets } />
+          globalPresets={this.state.globalPresets}
+          updateGlobalPresets={this.updateGlobalPresets} />
         <hr></hr>
         <h6>eventually media bar can go here</h6>
-        <button onClick={ this.addCard }>add clips</button>
+        <button onClick={this.addCard}>add clips</button>
           { this.state.clipCards.map(function(clipCard, index) {
                    return clipCard })}
-        <button onClick={ this.previewVideo }>Preview video</button>
+        <button onClick={this.openPreview}>Preview video</button>
 
         <div id="preview" style={modalStatus}>
           <h3 id="modal-header"> Preview your video </h3>
@@ -319,11 +280,10 @@ export default class App extends React.Component {
             controls='true'
             id='previewscreen'
             data-index='0'
-            onChange = { this.trackTime }>
+            onChange = {this.trackTime}>
           </video>
-          <button id="play" onClick = { this.playPreview }>play preview!</button>
-          <button id="nextbtn">preview next vid!</button>
-          <button id="makeit">Make my video!</button>
+          <button id="play" onClick = {this.playPreview}>play preview!</button>
+          <button id="makeit" onClick={this.concatClips}>Make my video!</button>
           <button id="closeit" onClick={this.closeModal}> Not Now </button>
         </div>
 
@@ -333,32 +293,3 @@ export default class App extends React.Component {
     );
   }
 }
-
-//for clip card processing
-// var outStream = fs.createWriteStream('./clips/'+Math.random().toString()+'.mov');
-// fluent_ffmpeg(clipCard.mediaPath)
-//   .size('1200x?')
-//   .aspect('1:1')
-//   .autopad()
-//   .toFormat('mov')
-//   .duration(5.0)
-//   .videoCodec('libx264')
-//   .noAudio()
-//   //frag_keyframe allows fragmented output & empty_moov will cause
-//   //output to be 100% fragmented; without this the first fragment
-//   //will be muxed as a short movie (using moov) followed by the
-//   //rest of the media in fragments.
-//   .outputOptions('-movflags frag_keyframe+empty_moov')
-//   .outputOptions('-strict -2')
-//   // .output(outStream)
-//   // .run()
-//   // .pipe(outStream, { end: true })
-//   // .saveToFile(outStream)
-//   .on('error', function(err) {
-//     console.log('An error occurred: ' + err.message);
-//   })
-//   .on('end', function() {
-//     console.log('Processing finished !')
-//   })
-//   // .pipe(outStream, { end: true })
-//   .save(outStream)
