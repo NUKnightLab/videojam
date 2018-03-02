@@ -20,7 +20,12 @@ export default class ClipCard extends React.Component {
   		}
     this.setText = this.setText.bind(this);
     this.setMediaPath = this.setMediaPath.bind(this);
+    this.updateEditor = this.updateEditor.bind(this);
 	}
+
+  updateEditor() {
+    this.props.updateEditor(this.props.index); 
+  }
 
   setText(event) {
     var clipCard = this.state.clipCard;
@@ -42,7 +47,7 @@ export default class ClipCard extends React.Component {
 
   render() {
     return (
-      <div className="clipCard">
+      <div className="clipCard" onClick={this.updateEditor}>
         <input
           type="file"
           id="v1"

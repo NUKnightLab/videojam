@@ -23,6 +23,7 @@ import ClipCard from './ClipCard/ClipCard.jsx';
 import MediaLibrary from './MediaLibrary/MediaLibrary.jsx';
 import GlobalPresets from './GlobalPresets/GlobalPresets.jsx';
 import TextChunker from './TextChunker/TextChunker.jsx';
+import ClipEditor from './ClipEditor/ClipEditor.jsx'
 import './app.css';
 
 
@@ -38,13 +39,15 @@ export default class App extends React.Component {
         music: 'music.mp3',
         logo: '',
         aspect: '1:1'
-      }
+      },
+
     }
     this.updateGlobalPresets = this.updateGlobalPresets.bind(this);
     this.addCard = this.addCard.bind(this);
     this.concatClips = this.concatClips.bind(this);
     this.addAudio = this.addAudio.bind(this);
     this.addLogo = this.addLogo.bind(this);
+    this.updateEditor = this.updateEditor.bind(this);
   }
 
   //state manager for global presets
@@ -52,10 +55,16 @@ export default class App extends React.Component {
     this.setState({ globalPresets: updatedGlobalPresets });
   }
 
+  updateEditor(updatedEditorEndpoints) {
+    this.setState({
+      'editorEndpoints' : updatedEditorEndpoints,
+    })
+  }
+
   addCard(type, textChunk) {
     if (type == 'blank') {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} />)
+      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} updateEditor={this.updateEditor} index={clipCards.length}/>)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -65,7 +74,7 @@ export default class App extends React.Component {
 
     else {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} />)
+      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} updateEditor={this.updateEditor} index={clipCards.length}/>)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -224,8 +233,14 @@ export default class App extends React.Component {
           updateGlobalPresets={ this.updateGlobalPresets } />
         <hr></hr>
         <h6>eventually media bar can go here</h6>
-        <button onClick={ this.addCard }>add clips</button>
+        <ClipEditor editorEndpoints={this.state.editorEndpoints} />
+
         <div className="clipCardContainer">
+          <div id="addButtonContainer">
+            <div id="addClipsButton" onClick={ this.addCard }>
+              <p id="addClipText"> + </p>
+            </div>
+          </div>
           { this.state.clipCards.map(function(clipCard, index) {
                    return clipCard })}
         </div>
@@ -234,32 +249,3 @@ export default class App extends React.Component {
     );
   }
 }
-
-//for clip card processing
-// var outStream = fs.createWriteStream('./clips/'+Math.random().toString()+'.mov');
-// fluent_ffmpeg(clipCard.mediaPath)
-//   .size('1200x?')
-//   .aspect('1:1')
-//   .autopad()
-//   .toFormat('mov')
-//   .duration(5.0)
-//   .videoCodec('libx264')
-//   .noAudio()
-//   //frag_keyframe allows fragmented output & empty_moov will cause
-//   //output to be 100% fragmented; without this the first fragment
-//   //will be muxed as a short movie (using moov) followed by the
-//   //rest of the media in fragments.
-//   .outputOptions('-movflags frag_keyframe+empty_moov')
-//   .outputOptions('-strict -2')
-//   // .output(outStream)
-//   // .run()
-//   // .pipe(outStream, { end: true })
-//   // .saveToFile(outStream)
-//   .on('error', function(err) {
-//     console.log('An error occurred: ' + err.message);
-//   })
-//   .on('end', function() {
-//     console.log('Processing finished !')
-//   })
-//   // .pipe(outStream, { end: true })
-//   .save(outStream)
