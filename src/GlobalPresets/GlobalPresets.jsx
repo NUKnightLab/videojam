@@ -168,7 +168,7 @@ export default class GlobalPresets extends React.Component {
 
           </select>
         </div>
-        <div className="presetwrapper">
+        <div className="presetwrapper" id="logo-selector-div">
           <h5 className="presetlabel">Logo</h5>
           <div id = "logo-selector">
             <input

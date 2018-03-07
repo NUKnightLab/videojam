@@ -38,3 +38,8 @@
 #anton p {
   font-family: 'Anton', sans-serif;
 }
+
+#logo-selector-div.presetwrapper {
+  margin-right: 0px;
+  padding-right: 0px;
+}
