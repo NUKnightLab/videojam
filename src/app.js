@@ -125,9 +125,10 @@ export default class App extends React.Component {
     console.log("video length: " + videocontainer.duration);
     console.log("current video time: " + videocontainer.currentTime)
     previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) + 1
-    if (previewScreen.dataset["index"] == toString(videoObjects.length)) {
+    if (Number(previewScreen.dataset["index"]) == videoObjects.length) {
       // previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) - videoObjects.length;
       previewScreen.dataset["index"] = 0;
+      console.log("turn it back around")
     }
     else {
       // currIndex += 1;
@@ -199,13 +200,13 @@ export default class App extends React.Component {
 
   // Concatenates all clips into one video
   concatClips(event) {
+    var processMessages = document.getElementById("process-info");
     processMessages.innerHTML += "Getting started! Give us a few. "
     //  document.getElementsByClassName('clipCard')[0].children[0].files[0].path
     var videoObjects = document.getElementsByClassName('clipCard');
     var check = 0;
     var globalPresets = this.state.globalPresets;
     var app = this;
-    var processMessages = document.getElementById("process-info");
 
     //This is to grab the media path: videoObjects[i].children[0].files[0].path
     //This is to grab the text segment: videoObjects[i].children[1].value
@@ -288,7 +289,7 @@ export default class App extends React.Component {
             controls='true'
             id='previewscreen'
             data-index='1'
-            onChange = {this.trackTime}>
+            onPlay = {this.trackTime}>
           </video>
           <button id="play" onClick = {this.playPreview}>play preview!</button>
           <button id="makeit" onClick={this.concatClips}>Make my video!</button>
