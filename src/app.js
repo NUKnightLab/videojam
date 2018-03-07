@@ -63,6 +63,9 @@ export default class App extends React.Component {
   // Closes preview modal
   closeModal() {
     this.setState({ 'open': false, });
+    var previewscreen = document.getElementById("previewscreen");
+    // previewscreen.pause();
+    document.getElementById("previewscreen")
   }
 
   updateEditor(updatedEditorEndpoints) {
@@ -137,44 +140,26 @@ export default class App extends React.Component {
     console.log('next btn: ' + previewScreen.dataset["index"]);
   }
 
-
-  // componentDidMount() {
-  //   var previewScreen = document.getElementById("previewscreen");
-  //   var currIndex = parseInt(previewScreen.dataset["index"])
-  //   var videocontainer = videoObjects[currIndex].children[0].children[0].children[1];
-  //   document.getElementById('previewscreen').ontimeupdate = function() {console.log('curr time: ', videocontainer.currentTime)};
-  //
-  // }
-
-
-  // Trying to track time of current video in preview
-/*
+  //play video clips in sequence for previewing. Pause after final video. 
+  trackTime(event) {
     var videoObjects = document.getElementsByClassName('clipCard');
-    var previewScreen = document.getElementById("previewscreen");
-    var currIndex = parseInt(previewScreen.dataset["index"])
-    var videocontainer = videoObjects[currIndex].children[0].children[0].children[1];
-    function updateTime() {
-      console.log('curr time: ', videocontainer.currentTime)
-    };
-    videocontainer.ontimeupdate = function() {console.log('curr time: ', videocontainer.currentTime)};
-    videocontainer.addEventListener("timeupdate", updateTime)
-    // console.log("track time video length: " + videocontainer.duration);
-    // console.log("track time current video time: " + videocontainer.currentTime)
-    if (videocontainer.duration == videocontainer.currentTime) {
-      console.log("THEYRE THE SAME!")
+    var previewscreen = document.getElementById("previewscreen");
+    var currIndex = parseInt(previewscreen.dataset["index"])
+    if (Number(previewscreen.dataset["index"]) == videoObjects.length) {
+      // previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) - videoObjects.length;
+      previewscreen.dataset["index"] = 0;
+      console.log("turn it back around")
+      previewscreen.play()
+    }
+    else {
+      if (previewscreen.currentTime == previewscreen.duration) {
+        console.log("THEY'RE EQUAL");
+        previewscreen.dataset["index"] = Number(previewscreen.dataset["index"]) + 1;
+        previewscreen.src = videoObjects[currIndex].children[0].children[0].children[1].src;
+      }
+      Number(previewscreen.dataset["index"]) + 1
     }
   }
-  */
-
-
-
-  // componentDidMount() {
-  //   ReactDOM.findDOMNode(this).addEventListener('timeupdate', this._handleNVEvent);
-  // }
-  //
-  // componentWillUnmount() {
-  //   ReactDOM.findDOMNode(this).removeEventListener('nv-event', this._handleNVEvent);
-  // }
 
   // Audio adding helper function for concatClips
   addAudio(obj) {
@@ -295,10 +280,6 @@ export default class App extends React.Component {
     }
   }
 
-  trackTime(e) {
-    console.log("THIS IS TRACKTIME")
-  }
-
   render() {
     const modalStatus = {
       display: this.state.open ? 'block' : 'none',
@@ -320,7 +301,6 @@ export default class App extends React.Component {
             controls='true'
             id='previewscreen'
             data-index='1'
-            onChange = {this.trackTime}
             onTimeUpdate = {this.trackTime}
             >
           </video>
