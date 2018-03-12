@@ -29,7 +29,7 @@ export default class ClipCard extends React.Component {
 	}
 
   updateEditor() {
-    this.props.updateEditor(this.props.index); 
+    this.props.updateEditor(this.props.index);
 	}
 
   componentDidUpdate() {
@@ -77,8 +77,7 @@ export default class ClipCard extends React.Component {
     return (
       <div className="clipCard" onClick={this.updateEditor}>
         <div className="dropzone">
-          <Dropzone onDrop={this.onDrop.bind(this)}>
-            <p>Drop or click to add a video.</p>
+          <Dropzone className="dropzone" onDrop={this.onDrop.bind(this)}>
             <video
               id={"video-input" + this.props.index}
               controls='true'>

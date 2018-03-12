@@ -57,3 +57,9 @@
   text-shadow: none;
   box-shadow: none;
 }
+
+#checkthis {
+  position: absolute;
+  top: 50%;
+  left: 25%
+}

@@ -51,6 +51,7 @@ export default class App extends React.Component {
     this.addAudio = this.addAudio.bind(this);
     this.addLogo = this.addLogo.bind(this);
     this.openPreview = this.openPreview.bind(this);
+    this.trackTime = this.trackTime.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.updateEditor = this.updateEditor.bind(this);
   }
@@ -94,6 +95,10 @@ export default class App extends React.Component {
     }
   };
 
+
+/******************************/
+/********PREVIEW STUFF*********/
+/******************************/
   // preview trigger
   // HTML5 video tag access == videoObjects[i].children[0].children[0].children[1]
   /* ISSUES
@@ -129,22 +134,25 @@ export default class App extends React.Component {
     console.log("current video time: " + videocontainer.currentTime)
     previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) + 1
     if (Number(previewScreen.dataset["index"]) == videoObjects.length) {
-      // previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) - videoObjects.length;
       previewScreen.dataset["index"] = 0;
       console.log("turn it back around")
     }
     else {
-      // currIndex += 1;
       Number(previewScreen.dataset["index"]) + 1
     }
     console.log('next btn: ' + previewScreen.dataset["index"]);
   }
 
-  //play video clips in sequence for previewing. Pause after final video. 
+  //play video clips in sequence for previewing. Pause after final video.
   trackTime(event) {
     var videoObjects = document.getElementsByClassName('clipCard');
     var previewscreen = document.getElementById("previewscreen");
     var currIndex = parseInt(previewscreen.dataset["index"])
+    // grabs all text chunks
+    var text = document.getElementsByClassName("clipText");
+    // grabs <p> div stacked over video
+    var videotext = document.getElementById("checkthis");
+
     if (Number(previewscreen.dataset["index"]) == videoObjects.length) {
       // previewScreen.dataset["index"] = Number(previewScreen.dataset["index"]) - videoObjects.length;
       previewscreen.dataset["index"] = 0;
@@ -156,11 +164,21 @@ export default class App extends React.Component {
         console.log("THEY'RE EQUAL");
         previewscreen.dataset["index"] = Number(previewscreen.dataset["index"]) + 1;
         previewscreen.src = videoObjects[currIndex].children[0].children[0].children[1].src;
+
+        console.log("text: ", text[currIndex].innerHTML/*,", global preset color: ", this.state.globalPresets*/);
+        videotext.innerHTML = text[currIndex].innerHTML;
       }
       Number(previewscreen.dataset["index"]) + 1
     }
   }
+/******************************/
+/******END PREVIEW STUFF*******/
+/******************************/
 
+
+/******************************/
+/******MAKE VIDEO STUFF********/
+/******************************/
   // Audio adding helper function for concatClips
   addAudio(obj) {
     // var outStream = fs.createWriteStream('twothirds.mov');
@@ -279,6 +297,9 @@ export default class App extends React.Component {
         })
     }
   }
+/******************************/
+/****END MAKE VIDEO STUFF******/
+/******************************/
 
   render() {
     const modalStatus = {
@@ -286,13 +307,10 @@ export default class App extends React.Component {
     }
     return (
       <div>
-        <h2>Hello World!</h2>
         <TextChunker populateCards={this.addCard} />
         <GlobalPresets
           globalPresets={this.state.globalPresets}
           updateGlobalPresets={this.updateGlobalPresets} />
-        <hr></hr>
-        <h6>eventually media bar can go here</h6>
         <button onClick={this.openPreview}>Preview video</button>
 
         <div id="preview" style={modalStatus}>
@@ -304,6 +322,7 @@ export default class App extends React.Component {
             onTimeUpdate = {this.trackTime}
             >
           </video>
+          <p id="checkthis">lol does this work</p>
           <button id="play" onClick = {this.playPreview}>play preview!</button>
           <button id="makeit" onClick={this.concatClips}>Make my video!</button>
           <button id="closeit" onClick={this.closeModal}> Not Now </button>
@@ -321,9 +340,10 @@ export default class App extends React.Component {
           { this.state.clipCards.map(function(clipCard, index) {
                    return clipCard })}
         </div>
-        <button onClick={ this.concatClips }>make video</button>
         <div id="process-info">Video making progress: </div>
       </div>
     );
   }
 }
+
+// <button onClick={ this.concatClips }>make video</button>

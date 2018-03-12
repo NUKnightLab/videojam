@@ -299,10 +299,11 @@ export default class TextChunker extends React.Component {
     return (
       <div id="text-chunker" style={modalStatus}>
         <h3 id="modal-header"> Enter your story to begin </h3>
+        <p id="instructions">Hi! Welcome to VideoJam, a Knight Lab tool for social video automation. </p>
         <textarea
-          id="text-to-chunk"
-          onChange={this.newTextInput}
-        >
+            id="text-to-chunk"
+            onChange={this.newTextInput}
+          >
         </textarea>
 
         <button id="do-chunk" onClick={this.chunkText}>Preview</button>
