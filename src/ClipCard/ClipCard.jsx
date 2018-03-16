@@ -29,7 +29,7 @@ export default class ClipCard extends React.Component {
 	}
 
   updateEditor() {
-    this.props.updateEditor(this.props.index); 
+    this.props.updateEditor(this.props.index);
 	}
 
   componentDidUpdate() {
@@ -64,6 +64,7 @@ export default class ClipCard extends React.Component {
   // 	}
   onDrop(files) {
     console.log('dropzone ', files[0].path)
+    document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
     var clipCard = this.state.clipCard;
     clipCard.mediaPath = files[0].path;
     this.setState({
@@ -77,8 +78,8 @@ export default class ClipCard extends React.Component {
     return (
       <div className="clipCard" onClick={this.updateEditor}>
         <div className="dropzone">
-          <Dropzone onDrop={this.onDrop.bind(this)}>
-            <p>Drop or click to add a video.</p>
+          <Dropzone className="dropzone-styles" onDrop={this.onDrop.bind(this)}>
+            <p className="clip-instruction">Drop or click to add a video.</p>
             <video
               id={"video-input" + this.props.index}
               controls='true'>

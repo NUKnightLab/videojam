@@ -1,11 +1,15 @@
 .clipEditor {
-  display: flex;
   position: relative;
-  height: 300px;;
+  height: 320px;;
   width: 700px;
   background-color: #616161;
   left: 20%;
   margin: 20px 0;
+}
+
+#clipEdit-container {
+  display: flex;
+  position: relative;
 }
 
 #editorText {
@@ -17,4 +21,44 @@
 
 #editorVideo {
   margin: 25px;
+}
+
+#scrubber-container {
+  position: relative;
+  height: 23px;
+  width: 440px;
+  left: 25px;
+  transform: translateY(-50%);
+}
+
+#scrubber-line {
+  position: relative;
+  width: 98%;
+  height: 8px;
+  background-color: blue;
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#left-scrub {
+  position: absolute;
+  width: 5px;
+  height: 100%;
+  left: 1%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  background-color: #66f7ff;
+}
+
+#right-scrub {
+  position: absolute;
+  width: 5px;
+  height: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  background-color: #ff82ec;
 }

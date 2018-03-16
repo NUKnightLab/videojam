@@ -1,5 +1,6 @@
 .clipCardContainer {
   position: relative;
+  height: 210px;
   display: flex;
   margin-bottom: 10px;
   overflow: scroll;
