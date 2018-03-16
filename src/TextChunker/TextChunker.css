@@ -11,13 +11,12 @@
   border: 2px solid #cdcdcd;
   text-align: center;
   overflow: scroll;
-
 }
 
 #text-to-chunk {
   position: relative;
   top: 50%;
-  left: 50%;
+  left: 60%;
   transform: translate(-50%, -62.5%);
   width: 75%;
   height: 75%;
@@ -42,4 +41,16 @@
   color: #222;
   text-shadow: none;
   box-shadow: none;
+}
+
+#instructions {
+  padding: 0px;
+  margin: 0px;
+  display: inline;
+  position: relative;
+  width: 20%;
+  position: inherit;
+  left: 3%;
+  text-align: left;
+  top: 14%;
 }

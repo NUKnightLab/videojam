@@ -11,8 +11,10 @@ export default class GlobalPresets extends React.Component {
         music: 'music.mp3',
         logo: 'logo.png',
         aspect: '2:1'
-      }
+      },
+      open: false
     }
+    this.openPresets = this.openPresets.bind(this);
     this.changeColor = this.changeColor.bind(this);
     this.changeFont = this.changeFont.bind(this);
     this.changeMusic = this.changeMusic.bind(this);
@@ -24,6 +26,23 @@ export default class GlobalPresets extends React.Component {
 
 
   }
+
+  openPresets(event) {
+    // document.getElementById("collapsable-menu").style.display = none;
+    if (this.state.open == true) {
+      this.setState({
+        'open': false,
+      });
+      console.log("closed")
+    }
+    else {
+      this.setState({
+        'open': true,
+      });
+      console.log("open")
+    }
+  }
+
 
   //monitors text color selection dropdown
   changeColor(event) {
@@ -103,80 +122,89 @@ export default class GlobalPresets extends React.Component {
   }
 
   render() {
+    let openStatus = this.state.open ? "block" : "none"
     return (
-      <div
-        className="globalpresets"
-        onChange = { this.showGlobalPresets }>
-        <div className="presetwrapper">
-          <h5 className="presetlabel">Text color</h5>
-          <select
-            id = "text-color-selector"
-            onChange = { this.changeColor }>
-            <option value="#000000">Black</option>
-            <option value="#ffffff">White</option>
-            <option value="#6d6d6d">Grey</option>
-          </select>
-        </div>
-        <div className="presetwrapper">
-          <h5 className="presetlabel">Font style</h5>
-          <select
-            id = "font-selector"
-            onChange = { this.changeFont }>
-              <option
-                value="Verdana.ttf"
-                id="verdana">
-                Verdana
-              </option>
-              <option
-                value="neuton"
-                id="neuton">
-                Neuton
-              </option>
-              <option
-                value="roboto"
-                id="roboto">
-                Roboto
-              </option>
-              <option
-                value="anton"
-                id="anton">
-                Anton
-              </option>
-          </select>
-        </div>
-        <div className="presetwrapper">
-          <h5 className="presetlabel">Aspect ratio</h5>
-          <select
-            id = "aspect-selector"
-            onChange = { this.changeAspect }>
-            <option value='1:1'> Square </option>
-            <option value='16:9'> Full Landscape </option>
-            <option value='4:5'> Vertical </option>
-            <option value='9:16'> Full Portrait </option>
-            <option value='1:2'> Newsfeed wide </option>
-            <option value='2:3'> Facebook vertical </option>
-          </select>
-        </div>
-        <div className="presetwrapper">
-          <h5 className="presetlabel">Background music</h5>
-          <select
-            id = "music-selector"
-            onChange = { this.changeMusic }>
-            <option value="./media/music.mp3">Twinkle Twinkle</option>
-            <option value="./media/music2.mp3">Elevator Music</option>
-            <option value="./media/music3.mp3">Classic Jam</option>
+    <div>
+      <div id="collapsable-menu" style={{display: openStatus}}>
+        <div
+          className="globalpresets"
+          onChange = { this.showGlobalPresets }>
+          <div className="presetwrapper">
+            <h5 className="presetlabel">Text color</h5>
+            <select
+              id = "text-color-selector"
+              onChange = { this.changeColor }>
+              <option value="#000000">Black</option>
+              <option value="#ffffff">White</option>
+              <option value="#6d6d6d">Grey</option>
+            </select>
+          </div>
+          <div className="presetwrapper">
+            <h5 className="presetlabel">Font style</h5>
+            <select
+              id = "font-selector"
+              onChange = { this.changeFont }>
+                <option
+                  value="Verdana.ttf"
+                  id="verdana">
+                  Verdana
+                </option>
+                <option
+                  value="neuton"
+                  id="neuton">
+                  Neuton
+                </option>
+                <option
+                  value="roboto"
+                  id="roboto">
+                  Roboto
+                </option>
+                <option
+                  value="anton"
+                  id="anton">
+                  Anton
+                </option>
+            </select>
+          </div>
+          <div className="presetwrapper">
+            <h5 className="presetlabel">Aspect ratio</h5>
+            <select
+              id = "aspect-selector"
+              onChange = { this.changeAspect }>
+              <option value='1:1'> Square </option>
+              <option value='16:9'> Full Landscape </option>
+              <option value='4:5'> Vertical </option>
+              <option value='9:16'> Full Portrait </option>
+              <option value='1:2'> Newsfeed wide </option>
+              <option value='2:3'> Facebook vertical </option>
+            </select>
+          </div>
+          <div className="presetwrapper">
+            <h5 className="presetlabel">Background music</h5>
+            <select
+              id = "music-selector"
+              onChange = { this.changeMusic }>
+              <option value="./media/music.mp3">Twinkle Twinkle</option>
+              <option value="./media/music2.mp3">Elevator Music</option>
+              <option value="./media/music3.mp3">Classic Jam</option>
 
-          </select>
-        </div>
-        <div className="presetwrapper">
-          <h5 className="presetlabel">Logo</h5>
-          <div id = "logo-selector">
-            <input
-              type="file"
-              onChange = { this.addLogo }></input>
+            </select>
+          </div>
+          <div className="presetwrapper" id="logo-selector-div">
+            <h5 className="presetlabel">Logo</h5>
+            <div id = "logo-selector">
+              <input
+                type="file"
+                onChange = { this.addLogo }></input>
+            </div>
           </div>
         </div>
       </div>
+      <div id="globalpresetdropdown" onClick={this.openPresets}>
+        <div id="arrow-down"></div>
+        <p>Global styling options</p>
+      </div>
+    </div>
     )
   }
 }
