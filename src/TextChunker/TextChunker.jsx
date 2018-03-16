@@ -272,11 +272,8 @@ export default class TextChunker extends React.Component {
 
   chunkText() {
 
-    if (document.getElementById('do-chunk').innerHTML == 'Preview') {
       this.splitSentences();
-    }
 
-    else {
       var textSegmentsArray = [];
       var textSegments = document.getElementById('text-to-chunk').value;
       textSegmentsArray = textSegments.split('\n \n');
@@ -290,7 +287,7 @@ export default class TextChunker extends React.Component {
       }
       this.closeModal();
     }
-  }
+
 
   render() {
     const modalStatus = {
@@ -299,7 +296,8 @@ export default class TextChunker extends React.Component {
     return (
       <div id="text-chunker" style={modalStatus}>
         <h3 id="modal-header"> Enter your story to begin </h3>
-        <p id="instructions">Hi! Welcome to VideoJam, a Knight Lab tool for social video automation. </p>
+        <p id="instructions">Hi! Welcome to <b>VideoJam</b>, a <a href="LINK TO INFO PAGE">Knight Lab tool</a> for social video automation. Enter your st
+        to start.</p>
         <textarea
             id="text-to-chunk"
             onChange={this.newTextInput}
@@ -307,10 +305,10 @@ export default class TextChunker extends React.Component {
         </textarea>
 
         <button id="do-chunk" onClick={this.chunkText}>Preview</button>
-        <button id="dont-chunk" onClick={this.closeModal}> Not Now </button>
 
       </div>
 
     )
   }
 }
+// <button id="dont-chunk" onClick={this.closeModal}> Not Now </button>

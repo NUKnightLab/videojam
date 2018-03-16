@@ -3,6 +3,7 @@
   display: flex;
   margin-bottom: 10px;
   overflow: scroll;
+  height: 200px;
 }
 
 #addClipsButton {
