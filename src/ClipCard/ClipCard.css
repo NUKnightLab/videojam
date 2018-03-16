@@ -8,7 +8,7 @@
 .clipCard {
   margin: 10px;
   width: 250px;
-  height: 100px;
+  height: 125px;
   border: 1px solid black;
   border-radius: 10px;
   background-color: #cdcdcd;
@@ -22,4 +22,13 @@
 
 .dropzone {
   /* background-color: orange; */
+}
+
+.dropzone-styles {
+  width: 240px;
+  border: none;
+}
+
+#clip-instruction {
+
 }
