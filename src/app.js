@@ -59,22 +59,14 @@ export default class App extends React.Component {
   // State manager for global presets
   updateGlobalPresets(updatedGlobalPresets) {
     this.setState({ globalPresets: updatedGlobalPresets });
-  }
-
-  // Closes preview modal
-  closeModal() {
-    this.setState({ 'open': false, });
-    var previewscreen = document.getElementById("previewscreen");
-    // previewscreen.pause();
-    document.getElementById("previewscreen")
-  }
+  };
 
   updateEditor(updatedEditorEndpoints) {
     this.setState({
       'editorEndpoints' : updatedEditorEndpoints,
     })
-  }
-
+  };
+  
   addCard(type, textChunk) {
     if (type == 'blank') {
       var clipCards = this.state.clipCards;
@@ -115,6 +107,14 @@ export default class App extends React.Component {
     this.setState({
       'open': true
     })
+  }
+  
+  // Closes preview modal
+  closeModal() {
+    this.setState({ 'open': false, });
+    var previewscreen = document.getElementById("previewscreen");
+    // previewscreen.pause();
+    document.getElementById("previewscreen")
   }
 
   // Grabs each media path and plays them in sequence onClick (soon will change)
@@ -174,6 +174,18 @@ export default class App extends React.Component {
 /******************************/
 /******END PREVIEW STUFF*******/
 /******************************/
+
+
+
+/******************************/
+/*** CARDS / EDITOR WINDOW ****/
+/******************************/
+
+
+/******************************/
+/* END CARDS / EDITOR WINDOW **/
+/******************************/
+
 
 
 /******************************/

@@ -107,24 +107,7 @@ export default class TextChunker extends React.Component {
   		}
   	}
   }
-
-  /*hasCutWord(sentence) {
-  	cutWords = [];
-  	for (var i = listOfCutWords.length - 1; i >= 0; i--) {
-  		if (sentence.indexOf(listOfCutWords[i] + " ") != -1) {
-  			cutWords.push(listOfCutWords[i])
-  		}
-  	}
-  	if (cutWords.length > 0) {
-  		return true;
-  	}
-  	else {
-  		return false;
-  	}
-  }*/
-
-  // Checks the different parts of the agiven array for the number of words in each part with the hopes of
-  // deducing if the words are part of a list
+//comment here
   isThisAndList(array) {
   	var andSplitLength = array.length
   	var i = 0;
@@ -180,48 +163,6 @@ export default class TextChunker extends React.Component {
       return chunkArray;
   	}
   }
-
-  /*splitBeforeCutWord(sentence, chunkArray) {
-  	var lowest = [];
-  	if (cutWords.length > 1) {
-  		var cutWordSplit = sentence.split(" ");
-  		if (cutWordSplit.indexOf((cutWords.length - 1)) >=5 ) {
-  			lowest = [cutWords[(cutWords.length - 1)], cutWordSplit.indexOf((cutWords.length - 1))];
-  		}
-  		for (var i = cutWords.length - 2; i >= 0; i--) {
-  			var index = cutWordSplit.indexOf(cutWords[i]);
-  			if (index >= 5) {
-  				index<lowest[1] && (lowest=[cutWords[i], index]);
-  			}
-  		}
-  		if (lowest.length != 0) {
-  			var aaa = sentence.split(lowest[0]);
-  			if (aaa.length === 2) {
-  				chunkArray.push(aaa[0]);
-  				chunkArray.push(aaa[1]);
-          return chunkArray;
-  			}
-  			else {
-  				chunkArray.push(sentence);
-          return chunkArray;
-  			}
-  		}
-  	}
-  	else {
-  		var cutWordSplit = sentence.split(cutWords[0]);
-  		if (cutWordSplit.length === 2) {
-  			if (cutWordSplit[0].split(" ").length >= 5 && cutWordSplit[1].split(" ").length >= 5) {
-  				chunkArray.push(cutWordSplit[0]);
-  				chunkArray.push(cutWords[0] + cutWordSplit[1]);
-          return chunkArray;
-  			}
-  		}
-  		else {
-  			chunkArray.push(sentence);
-        return chunkArray;
-  		}
-  	}
-  }*/
 
   // Takes an array of words and creates a single string segment from the array. It then pushes the segment to the
   // array with the rest of the segments.
