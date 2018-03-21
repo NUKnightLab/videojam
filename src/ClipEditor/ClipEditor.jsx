@@ -39,28 +39,57 @@ export default class ClipEditor extends React.Component {
       updateText() {
       }
 
-      scrubRight(e) {
-        console.log( ReactDOM.findDOMNode(this.refs.container).style)
-        //document.getElementById('right-scrub').style.right
-      }
+      // scrubRight(e) {
+      //   console.log( ReactDOM.findDOMNode(this.refs.container).style)
+      //   //document.getElementById('right-scrub').style.right
+      // }
+      //
+      // scrubLeft(e) {
+      //   console.log(window.getComputedStyle(ReactDOM.findDOMNode(this.refs.leftScrub)).getPropertyValue("left"))
+      //   var container = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.scrubberContainer))
+      //   var editorWindow = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.clipEditor))
+      //   var leftShift = Number(editorWindow.getPropertyValue("left").split('px')[0]) + Number(container.getPropertyValue("left").split('px')[0]);
+      //   var currPos = leftShift + Number(window.getComputedStyle(ReactDOM.findDOMNode(this.refs.leftScrub)).getPropertyValue("left").split('px')[0]);
+      //   console.log(currPos, e.clientX)
+      // }
 
-      scrubLeft(e) {
-        console.log(window.getComputedStyle(ReactDOM.findDOMNode(this.refs.leftScrub)).getPropertyValue("left"))
-        var container = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.scrubberContainer))
-        var editorWindow = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.clipEditor))
-        var leftShift = Number(editorWindow.getPropertyValue("left").split('px')[0]) + Number(container.getPropertyValue("left").split('px')[0]);
-        var currPos = leftShift + Number(window.getComputedStyle(ReactDOM.findDOMNode(this.refs.leftScrub)).getPropertyValue("left").split('px')[0]);
-        console.log(currPos, e.clientX)
+  onDrop(files) {
+          console.log('dropzone ', files[0].path)
+          // document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
+          var clipCard = this.state.clipCard;
+          clipCard.mediaPath = files[0].path;
+          this.setState({
+            'clipCard': clipCard,
+          });
+          console.log(clipCard)
+          var video = document.getElementById("video-input" + this.props.index)
+          video.src = files[0].path
+          document.getElementById("placeholder").style.display="none";
+        }
 
-      }
-
-  render() {
-    const rightScrub = {right: '1%'}
-    return (
-      <div ref={"clipEditor"} className="clipEditor">
-        <div id="clipEdit-container">
-          <div>
-            <video id="editorVideo" width="440" height="360" src={this.state.mediaPath} controls></video>
+    render() {
+      const rightScrub = {right: '1%'}
+      return (
+      <div>
+        <div ref={"clipEditor"} className="clipEditor">
+            <div className="videotextcontainer">
+              <div className="dropzone">
+                <Dropzone className="dropzone-styles" onDrop={this.onDrop.bind(this)}>
+                  <p className="clip-instruction">Drop or click to add a video.</p>
+                  <img
+                    id="placeholder"
+                    src="./placehold.png">
+                  </img>
+                  <video
+                    id="editorVideo"
+                    id={"video-input" + this.props.index}
+                    width="440"
+                    height="360"
+                    src={this.state.mediaPath}
+                    controls>
+                  </video>
+                </Dropzone>
+            </div>
           </div>
           <textarea
             id="editorText"
