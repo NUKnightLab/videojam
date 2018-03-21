@@ -12,7 +12,6 @@ var mergedVideo = fluent_ffmpeg();
 import Dropzone from 'react-dropzone';
 
 
-
 export default class ClipEditor extends React.Component {
   constructor(props) {
 		super(props);
@@ -61,12 +60,12 @@ export default class ClipEditor extends React.Component {
   onDrop(files) {
           console.log('dropzone ', files[0].path)
           // document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
-          var clipCard = this.state.clipCard;
-          clipCard.mediaPath = files[0].path;
+          var mediaPath = this.state.mediaPath;
+          mediaPath = files[0].path;
           this.setState({
-            'clipCard': clipCard,
+            'mediaPath': mediaPath,
           });
-          console.log(clipCard)
+          // console.log(clipCard)
           var video = document.getElementById("video-input" + this.props.index)
           video.src = files[0].path
           document.getElementById("placeholder").style.display="none";
@@ -95,19 +94,13 @@ export default class ClipEditor extends React.Component {
                   </video>
                 </Dropzone>
             </div>
+            <textarea
+              id="editorText"
+              defaultValue={this.state.text}
+            >
+            </textarea>
           </div>
-          <textarea
-            id="editorText"
-            defaultValue={this.state.text}
-          >
-          </textarea>
         </div>
-        <div ref={"scrubberContainer"} id="scrubber-container">
-          <div id="scrubber-line"></div>
-          <div onClick={this.scrubLeft} ref={"leftScrub"} id="left-scrub"></div>
-          <div onClick={this.scrubRight} style={rightScrub} id="right-scrub"></div>
-        </div>
-
       </div>
     )
   }
