@@ -42,22 +42,36 @@ export default class ClipEditor extends React.Component {
       //   console.log(this.state.clipCard)
       // }
 
-      updateText() {
+      updateText(event) {
+        var clipCard = this.state.clipCard;
+        clipCard.text = event.target.value;
+        this.setState({
+          'clipCard': clipCard,
+        });
+        console.log(this.state.clipCard)
       }
+      //
+      // updateCardContainer() {
+      //   this.props.updateCardContainer(this.state.clipCard)
+      // }
 
       onDrop(files) {
-          console.log('dropzone ', files[0].path)
-          // document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
-          var clipCard = this.state.clipCard;
-          clipCard.mediaPath = files[0].path;
-          this.setState({
-            'clipCard': clipCard,
-          });
-          // console.log(clipCard)
-          var video = document.getElementById("video-input" + this.props.index)
-          video.src = files[0].path
-          document.getElementById("placeholder").style.display="none";
-        }
+        console.log('dropzone ', files[0].path)
+        // document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
+        var clipCard = this.state.clipCard;
+        clipCard.mediaPath = files[0].path;
+        this.setState({
+          'clipCard': clipCard,
+        });
+        var cardContainer = this.props.cardContainer;
+        cardContainer = cardContainer.concat(clipCard);
+        console.log(cardContainer);
+        this.props.updateCardContainer(cardContainer);
+        console.log(clipCard);
+        var video = document.getElementById("video-input" + this.props.index);
+        video.src = files[0].path;
+        document.getElementById("placeholder").style.display="none";
+      }
 
     render() {
       return (
@@ -85,6 +99,7 @@ export default class ClipEditor extends React.Component {
               id="editorText"
               defaultValue={this.state.text}
               onChange={this.updateText}
+              cardkey=''
             >
             </textarea>
           </div>
