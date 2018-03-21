@@ -3,6 +3,7 @@ import React from 'react';
 import './ClipCard.css';
 const osHomedir = require('os-homedir');
 var fs = require("fs");
+var rand = require("random-key");
 
 // Set up FFmpeg
 var fluent_ffmpeg = require('fluent-ffmpeg');
@@ -19,14 +20,22 @@ export default class ClipCard extends React.Component {
   			clipCard: {
           mediaPath: '',
           text: props.text
-        }
+        },
+        id: ''
   		}
     this.setText = this.setText.bind(this);
     this.setMediaPath = this.setMediaPath.bind(this);
     this.updateEditor = this.updateEditor.bind(this);
-    this.onDrop = this.onDrop.bind(this);
+    // this.onDrop = this.onDrop.bind(this);
     // this.dragDrop = this.dragDrop.bind(this);
 	}
+
+  componentDidMount() {
+      var id = rand.generate();
+      this.setState({
+        'id': id,
+      })
+    }
 
   updateEditor() {
     this.props.updateEditor(this.props.index);
@@ -62,35 +71,27 @@ export default class ClipCard extends React.Component {
   // 		videoObjects[position].video_path = data;
   // 		this.props.updateVideoObjects[videoObjects];
   // 	}
-  onDrop(files) {
-    console.log('dropzone ', files[0].path)
-    document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
-    var clipCard = this.state.clipCard;
-    clipCard.mediaPath = files[0].path;
-    this.setState({
-      'clipCard': clipCard,
-    });
-    var video = document.getElementById("video-input" + this.props.index)
-    video.src = files[0].path
-  }
+  // onDrop(files) {
+  //   console.log('dropzone ', files[0].path)
+  //   document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
+  //   var clipCard = this.state.clipCard;
+  //   clipCard.mediaPath = files[0].path;
+  //   this.setState({
+  //     'clipCard': clipCard,
+  //   });
+  //   var video = document.getElementById("video-input" + this.props.index)
+  //   video.src = files[0].path
+  // }
 
   render() {
     return (
-      <div className="clipCard" onClick={this.updateEditor}>
-        <div className="dropzone">
-          <Dropzone className="dropzone-styles" onDrop={this.onDrop.bind(this)}>
-            <p className="clip-instruction">Drop or click to add a video.</p>
-            <video
-              id={"video-input" + this.props.index}
-              controls='true'>
-            </video>
-          </Dropzone>
-        </div>
+      <div className="clipCard"
+        id = {this.state.id}>
         <textarea
           className="clipText"
           name = "clipText"
           defaultValue = {this.props.text}
-          onChange = {this.setText}
+          id = {this.state.id}
           >
         </textarea>
       </div>
