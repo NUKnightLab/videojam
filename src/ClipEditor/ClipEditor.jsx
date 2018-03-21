@@ -8,6 +8,10 @@ var fs = require("fs");
 var fluent_ffmpeg = require('fluent-ffmpeg');
 var mergedVideo = fluent_ffmpeg();
 
+// Import componenets
+import Dropzone from 'react-dropzone';
+
+
 
 export default class ClipEditor extends React.Component {
   constructor(props) {
@@ -17,8 +21,9 @@ export default class ClipEditor extends React.Component {
         text: 'Choose a clipcard',
         }
         this.updateText = this.updateText.bind(this);
-        this.scrubRight = this.scrubRight.bind(this);
-        this.scrubLeft = this.scrubLeft.bind(this);
+        // this.scrubRight = this.scrubRight.bind(this);
+        // this.scrubLeft = this.scrubLeft.bind(this);
+        this.onDrop = this.onDrop.bind(this);
   		}
 
       componentDidUpdate() {
