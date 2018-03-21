@@ -20,8 +20,6 @@ export default class ClipEditor extends React.Component {
         text: 'Choose a clipcard',
         }
         this.updateText = this.updateText.bind(this);
-        // this.scrubRight = this.scrubRight.bind(this);
-        // this.scrubLeft = this.scrubLeft.bind(this);
         this.onDrop = this.onDrop.bind(this);
   		}
 
@@ -42,20 +40,6 @@ export default class ClipEditor extends React.Component {
 
       updateText() {
       }
-
-      // scrubRight(e) {
-      //   console.log( ReactDOM.findDOMNode(this.refs.container).style)
-      //   //document.getElementById('right-scrub').style.right
-      // }
-      //
-      // scrubLeft(e) {
-      //   console.log(window.getComputedStyle(ReactDOM.findDOMNode(this.refs.leftScrub)).getPropertyValue("left"))
-      //   var container = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.scrubberContainer))
-      //   var editorWindow = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.clipEditor))
-      //   var leftShift = Number(editorWindow.getPropertyValue("left").split('px')[0]) + Number(container.getPropertyValue("left").split('px')[0]);
-      //   var currPos = leftShift + Number(window.getComputedStyle(ReactDOM.findDOMNode(this.refs.leftScrub)).getPropertyValue("left").split('px')[0]);
-      //   console.log(currPos, e.clientX)
-      // }
 
   onDrop(files) {
           console.log('dropzone ', files[0].path)

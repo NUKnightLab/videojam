@@ -26,8 +26,6 @@ export default class ClipCard extends React.Component {
     this.setText = this.setText.bind(this);
     this.setMediaPath = this.setMediaPath.bind(this);
     this.updateEditor = this.updateEditor.bind(this);
-    // this.onDrop = this.onDrop.bind(this);
-    // this.dragDrop = this.dragDrop.bind(this);
 	}
 
   componentDidMount() {
@@ -60,28 +58,6 @@ export default class ClipCard extends React.Component {
       'clipCard': clipCard,
     });
   }
-
-  // dragDrop(e) {
-  // 		e.preventDefault();
-  // 		var data = e.dataTransfer.getData('text');
-  // 		console.log('dragdrop',data);
-  // 		this.setState({ videoPath: e.dataTransfer.getData('text') });
-  // 		var videoObjects = this.props.videoObjects;
-  // 		var position = this.props.position;
-  // 		videoObjects[position].video_path = data;
-  // 		this.props.updateVideoObjects[videoObjects];
-  // 	}
-  // onDrop(files) {
-  //   console.log('dropzone ', files[0].path)
-  //   document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
-  //   var clipCard = this.state.clipCard;
-  //   clipCard.mediaPath = files[0].path;
-  //   this.setState({
-  //     'clipCard': clipCard,
-  //   });
-  //   var video = document.getElementById("video-input" + this.props.index)
-  //   video.src = files[0].path
-  // }
 
   render() {
     return (
