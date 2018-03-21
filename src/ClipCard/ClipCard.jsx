@@ -23,7 +23,8 @@ export default class ClipCard extends React.Component {
         },
         id: ''
   		}
-      this.seeMe = this.seeMe.bind(this);
+      // this.seeMe = this.seeMe.bind(this);
+      this.updateEditorVal = this.updateEditorVal.bind(this);
       this.setText = this.setText.bind(this);
     }
 
@@ -32,16 +33,24 @@ export default class ClipCard extends React.Component {
       this.setState({
         'id': id,
       })
-
     }
 
     setText(event) {
-      var clipCard = this.state.clipCard;
-      clipCard.text = document.getElementById("editorText").value;
-      this.setState({
-        'clipCard': clipCard,
-      })
-      console.log("OTHER CLIPCARD LOL: " + clipCard.text)
+      // var selected = document.getElementsByClassName('clipCard');
+      // console.log("id state: "+ this.state.id)
+      var targetElem = event.target;
+      var id = this.state.id;
+      var editorText = document.getElementById("editorText");
+      var text = targetElem.value;
+      editorText.value = text;
+      editorText.cardkey = id;
+      console.log("editor carkey: "+ editorText.cardkey)
+      // var clipCard = this.state.clipCard;
+      // clipCard.text = document.getElementById("editorText").value;
+      // this.setState({
+      //   'clipCard': clipCard,
+      // })
+      // console.log("OTHER CLIPCARD LOL: " + clipCard.text)
     }
 
     updateEditor() {
@@ -49,31 +58,40 @@ export default class ClipCard extends React.Component {
       // onClick={this.updateEditor}
   	}
 
-    seeMe(event) {
-      var selected = document.getElementsByClassName('clipCard');
-      var targetElem = event.target;
-      var id = this.state.id;
+    updateEditorVal(event) {
       var editorText = document.getElementById("editorText");
-      var text = event.target.value;
-      editorText.value = "id: " + id + " text: " + text;
-      editorText.cardkey = id;
-      console.log(editorText.cardkey)
+      var text = document.getElementById(this.state.id).value
+      editorText.value = text;
+      editorText.cardkey = this.state.id;
     }
+
+// used to be called by clipCard div onClick
+    // seeMe(event) {
+    //   var selected = document.getElementsByClassName('clipCard');
+    //   var targetElem = event.target;
+    //   var id = this.state.id;
+    //   var editorText = document.getElementById("editorText");
+    //   var text = event.target.value;
+    //   editorText.value = text;
+    //   editorText.cardkey = id;
+    //   console.log(editorText.cardkey)
+    // }
 
     render() {
       return (
         <div className="clipCard"
-          id = {this.state.id}
-          onClick= {this.seeMe}>
+          id = {this.state.id}>
           <textarea
             className="clipText"
             name = "clipText"
             defaultValue = {this.props.text}
             onChange = {this.setText}
-            key = ''
+            id = {this.state.id}
             >
           </textarea>
         </div>
       )
     }
   }
+
+  //onClick = {this.updateEditorVal}

@@ -32,20 +32,21 @@ export default class ClipEditor extends React.Component {
 		}
 
       updateText() {
-        var selected = document.getElementsByClassName('clipCard');
+        // var selected = document.getElementsByClassName('clipCard');
         var clipCard = this.state.clipCard;
-        var editorText = document.getElementById("editorText");
+        var editorText = document.getElementById("editorText").value;
+        var id = editorText.cardkey
+        console.log("id: " + id + " editor text: " + editorText)
+        console.log(editorText.defaultValue)
 
         clipCard.text = document.getElementById("editorText").value
         this.setState({
           'clipCard': clipCard,
         });
-        console.log(this.state.clipCard);
-
-        var id = editorText.cardkey
-        console.log(document.getElementById(id).value)
-
-        document.getElementById(id).value = editorText.value;
+        // console.log(this.state.clipCard);
+        // var id = editorText.cardkey
+        // console.log(document.getElementById(id).value)
+        // document.getElementById(id).value = editorText.value;
       }
 
       onDrop(files) {

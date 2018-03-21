@@ -5,6 +5,7 @@ const path = require('path');
 var fs = require("fs");
 var tmp = require('tmp');
 var tmpobj = tmp.dirSync({unsafeCleanup: true});
+var rand = require("random-key");
 
 // Set up FFmpeg
 var fluent_ffmpeg = require('fluent-ffmpeg');
@@ -36,6 +37,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       clipCards: [],
+      cardContainer: [],
       globalPresets: {
         font: 'Verdana.ttf',
         color: '#000000',
@@ -350,7 +352,9 @@ export default class App extends React.Component {
             </div>
           </div>
           { this.state.clipCards.map(function(clipCard, index) {
-                   return clipCard })}
+                   return <ClipCard 
+                            key={rand.generate()}
+                          />})}
         </div>
         <div id="process-info">Video making progress: </div>
       </div>
