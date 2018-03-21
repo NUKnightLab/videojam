@@ -39,8 +39,8 @@ export default class ClipCard extends React.Component {
     this.props.updateEditor(this.props.index);
 	}
 
-  componentDidUpdate() {
-
+  updateCardContainer() {
+    this.props.updateCardContainer(this.state.clipCard)
   }
 
   setText(event) {
@@ -57,6 +57,10 @@ export default class ClipCard extends React.Component {
     this.setState({
       'clipCard': clipCard,
     });
+    // var cardContainer = this.props.cardContainer;
+    // cardContainer = cardContainer.push(clipCard);
+    // this.props.updateCardContainer(cardContainer);
+    // console.log(cardContainer)
   }
 
   render() {
@@ -74,28 +78,3 @@ export default class ClipCard extends React.Component {
     )
   }
 }
-
-// <div className="dropzone">
-//   <Dropzone onDrop={this.onDrop.bind(this)}>
-//     <p>Try dropping some files here, or click to select files to upload.</p>
-//   </Dropzone>
-// </div>
-
-
-// <div
-//   className='dropzone'
-//   onDrop={this.dragDrop}>
-//         <video
-//           className='video-clip'
-//           controls='true'
-//           src={ this.state.mediaPath }>
-//         </video>
-// </div>
-
-//
-// <input
-//   type="file"
-//   id="v1"
-//   onChange= { this.setMediaPath }
-//   >
-// </input>

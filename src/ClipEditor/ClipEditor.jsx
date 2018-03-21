@@ -16,38 +16,41 @@ export default class ClipEditor extends React.Component {
   constructor(props) {
 		super(props);
   		this.state = {
-        mediaPath: '',
-        text: 'Choose a clipcard',
-        }
-        this.updateText = this.updateText.bind(this);
-        this.onDrop = this.onDrop.bind(this);
+        clipCard: {
+          mediaPath: '',
+          text: 'Choose a clipcard'
+        },
+      }
+      this.updateText = this.updateText.bind(this);
+      this.onDrop = this.onDrop.bind(this);
   		}
 
       componentDidUpdate() {
         if (!isNaN(this.props.editorEndpoints)) {
           var selected = document.getElementsByClassName('clipCard')[this.props.editorEndpoints].children;
-          if ((this.state.mediaPath != (selected[0].children[0].children[2].files.length > 0 ? selected[0].children[0].children[2].files[0].path : '')) | this.state.text != selected[1].value ) {
-            console.log(this.state.text)
+          if ((this.state.clipCard.mediaPath != (selected[0].children[0].children[2].files.length > 0 ? selected[0].children[0].children[2].files[0].path : '')) | this.state.clipCard.text != selected[1].value ) {
+            console.log(this.state.clipCard.text)
+            this.state.clipCard.mediaPath = selected[0].children[0].children[2].files.length > 0 ? selected[0].children[0].children[2].files[0].path : '';
+            this.state.clipCard.text = selected[1].value
             this.setState({
-
-              'mediaPath' : selected[0].children[0].children[2].files.length > 0 ? selected[0].children[0].children[2].files[0].path : '',
-              'text' : selected[1].value,
+              'clipCard': clipCard
             })
             document.getElementById("editorText").value = selected[1].value;
           }
         }
+        console.log(this.state.clipCard)
       }
 
       updateText() {
       }
 
-  onDrop(files) {
+      onDrop(files) {
           console.log('dropzone ', files[0].path)
           // document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
-          var mediaPath = this.state.mediaPath;
-          mediaPath = files[0].path;
+          var clipCard = this.state.clipCard;
+          clipCard.mediaPath = files[0].path;
           this.setState({
-            'mediaPath': mediaPath,
+            'clipCard': clipCard,
           });
           // console.log(clipCard)
           var video = document.getElementById("video-input" + this.props.index)
@@ -56,7 +59,6 @@ export default class ClipEditor extends React.Component {
         }
 
     render() {
-      const rightScrub = {right: '1%'}
       return (
       <div>
         <div ref={"clipEditor"} className="clipEditor">
