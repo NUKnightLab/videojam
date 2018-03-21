@@ -122,7 +122,8 @@ export default class GlobalPresets extends React.Component {
   }
 
   render() {
-    let openStatus = this.state.open ? "block" : "none"
+    let openStatus = this.state.open ? "block" : "none";
+    let openArrow = this.state.open ? "arrow-up" : "arrow-down";
     return (
     <div>
       <div id="collapsable-menu" style={{display: openStatus}}>
@@ -201,7 +202,7 @@ export default class GlobalPresets extends React.Component {
         </div>
       </div>
       <div id="globalpresetdropdown" onClick={this.openPresets}>
-        <div id="arrow-down"></div>
+        <div id={openArrow}></div>
         <p>Global styling options</p>
       </div>
     </div>
