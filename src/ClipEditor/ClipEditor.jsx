@@ -19,7 +19,8 @@ export default class ClipEditor extends React.Component {
         text: 'Choose a clipcard',
         clipCard: {
           mediaPath: '',
-          text: props.text
+          text: props.text,
+          id: ''
         },
       }
       this.updateText = this.updateText.bind(this);
@@ -45,15 +46,33 @@ export default class ClipEditor extends React.Component {
       updateText(event) {
         var clipCard = this.state.clipCard;
         clipCard.text = event.target.value;
+        clipCard.id = document.getElementById("editorText").cardkey;
         this.setState({
           'clipCard': clipCard,
         });
-        console.log(this.state.clipCard)
+
+        var cardContainer = this.props.cardContainer;
+        for (var i = 0; i < cardContainer.length; i++) {
+          if (cardContainer[i].id == clipCard.id) {
+            cardContainer[i].text == event.target.value;
+            console.log(cardContainer[i])
+            this.setState({
+              'cardContainer': cardContainer
+            })
+            // console.log("WE MATCH")
+            // console.log()
+          }
+        }
+        // console.log(this.state.clipCard)
+        console.log("card container editor win: ", this.props.cardContainer)
       }
       //
       // updateCardContainer() {
       //   this.props.updateCardContainer(this.state.clipCard)
       // }
+      passMedia(event) {
+        console.log("gonna make this work later")
+      }
 
       onDrop(files) {
         console.log('dropzone ', files[0].path)
@@ -91,7 +110,8 @@ export default class ClipEditor extends React.Component {
                     width="440"
                     height="360"
                     src={this.state.mediaPath}
-                    controls>
+                    controls
+                    onChange={this.passMedia}>
                   </video>
                 </Dropzone>
             </div>

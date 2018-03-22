@@ -19,9 +19,10 @@ export default class ClipCard extends React.Component {
   		this.state = {
   			clipCard: {
           mediaPath: '',
-          text: props.text
+          text: props.text,
+          id: ''
         },
-        id: ''
+        id: '',
   		}
     this.setText = this.setText.bind(this);
     this.placeText = this.placeText.bind(this);
@@ -35,10 +36,25 @@ export default class ClipCard extends React.Component {
       var id = rand.generate();
       this.setState({
         'id': id,
-      })
-      console.log("id: ", id);
+      });
+
       var clipCard = this.state.clipCard;
+      clipCard.id = id;
+      this.setState({
+        'clipCard': clipCard,
+      });
+
       var cardContainer = this.props.cardContainer;
+      for (var i = 0; i < cardContainer.length; i++) {
+        if (cardContainer[i].id == clipCard.id) {
+          break;
+        }
+      }
+      cardContainer.push(clipCard);
+      this.props.updateCardContainer(cardContainer);
+
+      // console.log("id: ", id);
+      // var cardContainer = this.props.cardContainer;
       console.log(cardContainer)
       // cardContainer.push(clipCard)
       // this.props.updateCardContainer(cardContainer.push(clipCard))
