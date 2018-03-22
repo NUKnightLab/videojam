@@ -61,53 +61,26 @@ export default class ClipEditor extends React.Component {
             console.log(cardContainer[i])
           }
         }
-
-
-        // cardContainer[0].text == editorText.value;
-        // this.props.updateCardContainer(cardContainer);
-        // console.log("cards: ", cardContainer)
-        // console.log(clipCard);
-        // var cardContainer = this.props.cardContainer;
-        // var arr = cardContainer.concat(clipCard);
-        // this.props.updateCardContainer(arr);
-        // console.log(arr)
-        // cardContainer[0].text = "heyo"
-        // console.log(cardContainer[0])
-        // this.props.updateCardContainer(cardContainer)
-        // for (var i = 0; i < cardContainer.length; i++) {
-        //   if (cardContainer[i].id == clipCard.id) {
-        //     clipCard.text == cardContainer[i].text;
-        //     console.log(cardContainer[i])
-        //     // this.setState({
-        //     //   'cardContainer': cardContainer
-        //     // })
-        //     this.props.updateCardContainer(cardContainer)
-        //     // console.log("WE MATCH")
-        //     // console.log()
-        //   }
-        // }
-      }
-      //
-      // updateCardContainer() {
-      //   this.props.updateCardContainer(this.state.clipCard)
-      // }
-      passMedia(event) {
-        console.log("gonna make this work later")
       }
 
       onDrop(files) {
-        console.log('dropzone ', files[0].path)
-        // document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
+        // console.log('dropzone ', files[0].path)
         var clipCard = this.state.clipCard;
         clipCard.mediaPath = files[0].path;
         this.setState({
           'clipCard': clipCard,
         });
+
         var cardContainer = this.props.cardContainer;
-        cardContainer = cardContainer.concat(clipCard);
-        console.log(cardContainer);
-        this.props.updateCardContainer(cardContainer);
-        console.log(clipCard);
+        for (var i = 0; i < cardContainer.length; i++) {
+            if (cardContainer[i].id == clipCard.id) {
+              cardContainer[i] = clipCard;
+              this.props.updateCardContainer(cardContainer);
+              console.log(cardContainer)
+              console.log("card i: ", cardContainer[i])
+            }
+          }
+
         var video = document.getElementById("video-input" + this.props.index);
         video.src = files[0].path;
         document.getElementById("placeholder").style.display="none";

@@ -114,6 +114,13 @@ export default class ClipCard extends React.Component {
           id = {this.state.id}
           >
         </textarea>
+        <div id="space"></div>
+        <video
+          id="{this.state.id}-vid"
+          src={this.state.mediaPath}
+          controls
+        >
+        </video>
       </div>
     )
   }
