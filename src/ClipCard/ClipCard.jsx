@@ -29,21 +29,24 @@ export default class ClipCard extends React.Component {
     // this.setMediaPath = this.setMediaPath.bind(this);
     // this.passUp = this.passUp.bind(this);
     this.updateEditor = this.updateEditor.bind(this);
-    this.updateCardContainer = this.updateCardContainer.bind(this);
+    // this.updateCardContainer = this.updateCardContainer.bind(this);
 	}
 
   componentDidMount() {
+      // creates a unique ID string for each clip card
       var id = rand.generate();
       this.setState({
         'id': id,
       });
 
+      // adds the id to the clip card object
       var clipCard = this.state.clipCard;
       clipCard.id = id;
       this.setState({
         'clipCard': clipCard,
       });
 
+      // adds clip card to app.js card container array
       var cardContainer = this.props.cardContainer;
       for (var i = 0; i < cardContainer.length; i++) {
         if (cardContainer[i].id == clipCard.id) {
@@ -52,45 +55,31 @@ export default class ClipCard extends React.Component {
       }
       cardContainer.push(clipCard);
       this.props.updateCardContainer(cardContainer);
-
-      // console.log("id: ", id);
-      // var cardContainer = this.props.cardContainer;
-      console.log(cardContainer)
-      // cardContainer.push(clipCard)
-      // this.props.updateCardContainer(cardContainer.push(clipCard))
-      // console.log(this.props.cardContainer)
-      // var ids = this.props.ids;
-      // ids = ids.push(id);
-      // console.log("array of ids:", ids)
     }
 
   updateEditor() {
     this.props.updateEditor(this.props.index);
 	}
 
-  updateCardContainer() {
-    this.props.updateCardContainer(this.state.clipCard)
-  }
-
-  setText(event) {
-    var clipCard = this.state.clipCard;
-    clipCard.text = event.target.value;
-    this.setState({
-      'clipCard': clipCard,
-    });
-    var editorText = document.getElementById("editorText");
-    editorText.value = clipCard.text;
-    // editorText.cardkey = clipCard.id;
-    console.log(editorText.cardkey)
-  }
+  // updateCardContainer() {
+  //   this.props.updateCardContainer(this.state.clipCard)
+  // }
 
   placeText(event) {
     var editorText = document.getElementById("editorText");
     var clipCard = this.state.clipCard;
     editorText.value = clipCard.text;
     editorText.cardkey = this.state.id;
-    console.log(editorText.cardkey)
+  }
 
+  setText(event) {
+    var clipCard = this.state.clipCard;
+    var cardContainer = this.props.cardContainer;
+    for (var i = 0; i < cardContainer.length; i++) {
+      if (cardContainer[i].id == clipCard.id) {
+        clipCard.text = cardContainer[i].text;
+      }
+    }
   }
 
   // passUp(event) {

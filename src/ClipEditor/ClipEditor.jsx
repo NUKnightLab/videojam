@@ -52,19 +52,40 @@ export default class ClipEditor extends React.Component {
         });
 
         var cardContainer = this.props.cardContainer;
+        // var editorText = document.getElementById("editorText")
         for (var i = 0; i < cardContainer.length; i++) {
           if (cardContainer[i].id == clipCard.id) {
-            cardContainer[i].text == event.target.value;
+            cardContainer[i] = clipCard;
+            this.props.updateCardContainer(cardContainer);
+            console.log(cardContainer)
             console.log(cardContainer[i])
-            this.setState({
-              'cardContainer': cardContainer
-            })
-            // console.log("WE MATCH")
-            // console.log()
           }
         }
-        // console.log(this.state.clipCard)
-        console.log("card container editor win: ", this.props.cardContainer)
+
+
+        // cardContainer[0].text == editorText.value;
+        // this.props.updateCardContainer(cardContainer);
+        // console.log("cards: ", cardContainer)
+        // console.log(clipCard);
+        // var cardContainer = this.props.cardContainer;
+        // var arr = cardContainer.concat(clipCard);
+        // this.props.updateCardContainer(arr);
+        // console.log(arr)
+        // cardContainer[0].text = "heyo"
+        // console.log(cardContainer[0])
+        // this.props.updateCardContainer(cardContainer)
+        // for (var i = 0; i < cardContainer.length; i++) {
+        //   if (cardContainer[i].id == clipCard.id) {
+        //     clipCard.text == cardContainer[i].text;
+        //     console.log(cardContainer[i])
+        //     // this.setState({
+        //     //   'cardContainer': cardContainer
+        //     // })
+        //     this.props.updateCardContainer(cardContainer)
+        //     // console.log("WE MATCH")
+        //     // console.log()
+        //   }
+        // }
       }
       //
       // updateCardContainer() {

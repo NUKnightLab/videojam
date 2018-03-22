@@ -304,7 +304,7 @@ export default class TextChunker extends React.Component {
           >
         </textarea>
 
-        <button id="do-chunk" onClick={this.chunkText}>Preview</button>
+        <button id="do-chunk" onClick={this.chunkText}>Chunk Text</button>
 
       </div>
 
