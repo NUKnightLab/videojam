@@ -19,81 +19,69 @@ export default class ClipCard extends React.Component {
   		this.state = {
   			clipCard: {
           mediaPath: '',
-          text: props.text
+          text: props.text,
+          id: ''
         },
-        id: ''
+        id: '',
   		}
     this.setText = this.setText.bind(this);
     this.placeText = this.placeText.bind(this);
     // this.setMediaPath = this.setMediaPath.bind(this);
     // this.passUp = this.passUp.bind(this);
     this.updateEditor = this.updateEditor.bind(this);
-    this.updateCardContainer = this.updateCardContainer.bind(this);
+    // this.updateCardContainer = this.updateCardContainer.bind(this);
 	}
 
   componentDidMount() {
+      // creates a unique ID string for each clip card
       var id = rand.generate();
       this.setState({
         'id': id,
-      })
-      console.log("id: ", id);
+      });
+
+      // adds the id to the clip card object
       var clipCard = this.state.clipCard;
+      clipCard.id = id;
+      this.setState({
+        'clipCard': clipCard,
+      });
+
+      // adds clip card to app.js card container array
       var cardContainer = this.props.cardContainer;
-      console.log(cardContainer)
-      // cardContainer.push(clipCard)
-      // this.props.updateCardContainer(cardContainer.push(clipCard))
-      // console.log(this.props.cardContainer)
-      // var ids = this.props.ids;
-      // ids = ids.push(id);
-      // console.log("array of ids:", ids)
+      for (var i = 0; i < cardContainer.length; i++) {
+        if (cardContainer[i].id == clipCard.id) {
+          break;
+        }
+      }
+      cardContainer.push(clipCard);
+      this.props.updateCardContainer(cardContainer);
     }
 
   updateEditor() {
     this.props.updateEditor(this.props.index);
 	}
 
-  updateCardContainer() {
-    this.props.updateCardContainer(this.state.clipCard)
-  }
-
-  setText(event) {
-    var clipCard = this.state.clipCard;
-    clipCard.text = event.target.value;
-    this.setState({
-      'clipCard': clipCard,
-    });
-    var editorText = document.getElementById("editorText");
-    editorText.value = clipCard.text;
-    // editorText.cardkey = clipCard.id;
-    console.log(editorText.cardkey)
-  }
+  // updateCardContainer() {
+  //   this.props.updateCardContainer(this.state.clipCard)
+  // }
 
   placeText(event) {
     var editorText = document.getElementById("editorText");
     var clipCard = this.state.clipCard;
     editorText.value = clipCard.text;
     editorText.cardkey = this.state.id;
-    console.log(editorText.cardkey)
-
   }
 
-  // passUp(event) {
-  //   var editorText = document.getElementById("editorText");
-  //   editorText.value = this.state.clipCard.text;
-  //   console.log(editorText.value)
-  // }
-
-  // setMediaPath(event) {
-  //   var clipCard = this.state.clipCard;
-  //   clipCard.mediaPath = event.target.files[0].path;
-  //   this.setState({
-  //     'clipCard': clipCard,
-  //   });
-    // var cardContainer = this.props.cardContainer;
-    // cardContainer = cardContainer.push(clipCard);
-    // this.props.updateCardContainer(cardContainer);
-    // console.log(cardContainer)
-  // }
+  setText(event) {
+    var clipCard = this.state.clipCard;
+    var cardContainer = this.props.cardContainer;
+    for (var i = 0; i < cardContainer.length; i++) {
+      if (cardContainer[i].id == clipCard.id) {
+        clipCard.text = cardContainer[i].text;
+        clipCard.mediaPath = cardContainer[i].mediaPath;
+      }
+    }
+  }
 
   render() {
     return (
@@ -109,6 +97,13 @@ export default class ClipCard extends React.Component {
           id = {this.state.id}
           >
         </textarea>
+        <div id="space"></div>
+        <video
+          id={this.state.id + "-vid"}
+          src={this.state.mediaPath}
+          controls
+        >
+        </video>
       </div>
     )
   }

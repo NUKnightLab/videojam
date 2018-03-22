@@ -19,7 +19,8 @@ export default class ClipEditor extends React.Component {
         text: 'Choose a clipcard',
         clipCard: {
           mediaPath: '',
-          text: props.text
+          text: props.text,
+          id: ''
         },
       }
       this.updateText = this.updateText.bind(this);
@@ -45,29 +46,41 @@ export default class ClipEditor extends React.Component {
       updateText(event) {
         var clipCard = this.state.clipCard;
         clipCard.text = event.target.value;
+        clipCard.id = document.getElementById("editorText").cardkey;
         this.setState({
           'clipCard': clipCard,
         });
-        console.log(this.state.clipCard)
+
+        var cardContainer = this.props.cardContainer;
+        // var editorText = document.getElementById("editorText")
+        for (var i = 0; i < cardContainer.length; i++) {
+          if (cardContainer[i].id == clipCard.id) {
+            cardContainer[i] = clipCard;
+            this.props.updateCardContainer(cardContainer);
+            console.log(cardContainer)
+            console.log(cardContainer[i])
+          }
+        }
       }
-      //
-      // updateCardContainer() {
-      //   this.props.updateCardContainer(this.state.clipCard)
-      // }
 
       onDrop(files) {
-        console.log('dropzone ', files[0].path)
-        // document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
+        // console.log('dropzone ', files[0].path)
         var clipCard = this.state.clipCard;
         clipCard.mediaPath = files[0].path;
         this.setState({
           'clipCard': clipCard,
         });
+
         var cardContainer = this.props.cardContainer;
-        cardContainer = cardContainer.concat(clipCard);
-        console.log(cardContainer);
-        this.props.updateCardContainer(cardContainer);
-        console.log(clipCard);
+        for (var i = 0; i < cardContainer.length; i++) {
+            if (cardContainer[i].id == clipCard.id) {
+              cardContainer[i] = clipCard;
+              this.props.updateCardContainer(cardContainer);
+              console.log(cardContainer)
+              console.log("card i: ", cardContainer[i])
+            }
+          }
+
         var video = document.getElementById("video-input" + this.props.index);
         video.src = files[0].path;
         document.getElementById("placeholder").style.display="none";
@@ -91,7 +104,8 @@ export default class ClipEditor extends React.Component {
                     width="440"
                     height="360"
                     src={this.state.mediaPath}
-                    controls>
+                    controls
+                    onChange={this.passMedia}>
                   </video>
                 </Dropzone>
             </div>

@@ -72,6 +72,10 @@ export default class App extends React.Component {
   updateIds(updatedIds) {
     this.setState({ ids: updatedIds });
   }
+  
+  componentDidMount() {
+    console.log("cardContainer: ", this.state.cardContainer)
+  }
 
   // Closes preview modal
   closeModal() {
@@ -94,10 +98,10 @@ export default class App extends React.Component {
                               key={clipCards.length}
                               updateEditor={this.updateEditor}
                               index={clipCards.length}
-                              cardcontainer={this.state.cardContainer}
+                              cardContainer={this.state.cardContainer}
                               updateCardContainer={this.updateCardContainer}
-                              ids={this.state.ids}
-                              updateIds={this.updateIds}
+                              // ids={this.state.ids}
+                              // updateIds={this.updateIds}
                       />)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
@@ -111,7 +115,7 @@ export default class App extends React.Component {
                               key={clipCards.length}
                               updateEditor={this.updateEditor}
                               index={clipCards.length}
-                              cardcontainer={this.state.cardContainer}
+                              cardContainer={this.state.cardContainer}
                               updateCardContainer={this.updateCardContainer}
                       />)
       this.setState({
