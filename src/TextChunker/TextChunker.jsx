@@ -17,8 +17,8 @@ export default class TextChunker extends React.Component {
   }
 
   newTextInput() {
-    if (document.getElementById('do-chunk').innerHTML != 'Preview') {
-      document.getElementById('do-chunk').innerHTML = 'Preview';
+    if (document.getElementById('do-chunk').innerHTML != 'Chunk Text') {
+      document.getElementById('do-chunk').innerHTML = 'Chunk Text';
     }
   }
 

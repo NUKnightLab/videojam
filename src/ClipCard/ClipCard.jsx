@@ -78,27 +78,10 @@ export default class ClipCard extends React.Component {
     for (var i = 0; i < cardContainer.length; i++) {
       if (cardContainer[i].id == clipCard.id) {
         clipCard.text = cardContainer[i].text;
+        clipCard.mediaPath = cardContainer[i].mediaPath;
       }
     }
   }
-
-  // passUp(event) {
-  //   var editorText = document.getElementById("editorText");
-  //   editorText.value = this.state.clipCard.text;
-  //   console.log(editorText.value)
-  // }
-
-  // setMediaPath(event) {
-  //   var clipCard = this.state.clipCard;
-  //   clipCard.mediaPath = event.target.files[0].path;
-  //   this.setState({
-  //     'clipCard': clipCard,
-  //   });
-    // var cardContainer = this.props.cardContainer;
-    // cardContainer = cardContainer.push(clipCard);
-    // this.props.updateCardContainer(cardContainer);
-    // console.log(cardContainer)
-  // }
 
   render() {
     return (
@@ -116,7 +99,7 @@ export default class ClipCard extends React.Component {
         </textarea>
         <div id="space"></div>
         <video
-          id="{this.state.id}-vid"
+          id={this.state.id + "-vid"}
           src={this.state.mediaPath}
           controls
         >
