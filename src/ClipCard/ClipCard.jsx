@@ -55,6 +55,7 @@ export default class ClipCard extends React.Component {
     var clipCard = this.state.clipCard;
     editorText.value = clipCard.text;
     editorText.cardkey = this.state.id;
+    editorText.cardindex = this.props.index;
   }
 
   updateText(event) {
@@ -90,14 +91,17 @@ export default class ClipCard extends React.Component {
         id = {this.state.id}
         onClick={this.placeText}
         >
-        <textarea
-          className="clipText"
-          name = "clipText"
-          defaultValue = {this.props.text}
-          id = {this.state.id}
-          onClick = {this.updateText}
-          >
-        </textarea>
+        <div id="numbercontainer">
+          <p id="cardindex">{this.props.index}</p>
+          <textarea
+            className="clipText"
+            name = "clipText"
+            defaultValue = {this.props.text}
+            id = {this.state.id}
+            onClick = {this.updateText}
+            >
+          </textarea>
+        </div>
         <div id="space"></div>
         <video
           id={this.state.id + "-vid"}

@@ -72,7 +72,7 @@ export default class App extends React.Component {
   updateIds(updatedIds) {
     this.setState({ ids: updatedIds });
   }
-  
+
   componentDidMount() {
     console.log("cardContainer: ", this.state.cardContainer)
   }

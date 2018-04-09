@@ -21,6 +21,7 @@ export default class ClipEditor extends React.Component {
       }
       this.updateText = this.updateText.bind(this);
       this.onDrop = this.onDrop.bind(this);
+      this.updateCard = this.updateCard.bind(this);
   		}
 
       // componentDidUpdate() {
@@ -59,6 +60,15 @@ export default class ClipEditor extends React.Component {
         }
       }
 
+      updateCard(event) {
+        console.log("BTN: update card")
+        var editorText = document.getElementById("editorText");
+        var editorTextIndex = document.getElementById("editorText").cardindex;
+        console.log(editorTextIndex)
+        var cardContainer = this.props.cardContainer;
+        console.log("we're here: ", cardContainer[editorTextIndex])
+      }
+
       onDrop(files) {
         // console.log('dropzone ', files[0].path)
         var clipCard = this.state.clipCard;
@@ -86,10 +96,10 @@ export default class ClipEditor extends React.Component {
       return (
       <div>
         <div ref={"clipEditor"} className="clipEditor">
+          <p className="clip-instruction">Add/edit text and video for the selected card. Press "Update Card" when you're done!</p>
             <div className="videotextcontainer">
               <div className="dropzone">
                 <Dropzone className="dropzone-styles" onDrop={this.onDrop.bind(this)}>
-                  <p className="clip-instruction">Drop or click to add a video.</p>
                   <img
                     id="placeholder"
                     src="./placehold.png">
@@ -105,13 +115,23 @@ export default class ClipEditor extends React.Component {
                   </video>
                 </Dropzone>
             </div>
-            <textarea
-              id="editorText"
-              defaultValue={this.state.text}
-              onChange={this.updateText}
-              cardkey=''
-            >
-            </textarea>
+            <div id="buttonalign">
+              <textarea
+                id="editorText"
+                defaultValue={this.state.text}
+                onChange={this.updateText}
+                cardkey=''
+                cardindex=''
+              >
+              </textarea>
+              <button
+                id="updatebtn"
+                className="button-dark"
+                onClick={this.updateCard}
+              >
+                Update card!
+              </button>
+          </div>
           </div>
         </div>
       </div>
