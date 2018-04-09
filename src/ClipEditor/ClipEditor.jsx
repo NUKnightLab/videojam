@@ -1,25 +1,21 @@
+// Import modules
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './ClipEditor.css';
-const osHomedir = require('os-homedir');
-var fs = require("fs");
-
-// Set up FFmpeg
-var fluent_ffmpeg = require('fluent-ffmpeg');
-var mergedVideo = fluent_ffmpeg();
-
-// Import componenets
+// import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone';
+
+// Import styles
+import './ClipEditor.css';
 
 
 export default class ClipEditor extends React.Component {
   constructor(props) {
 		super(props);
   		this.state = {
-        text: 'Choose a clipcard',
+        text: 'Choose a clipcard from below',
         clipCard: {
           mediaPath: '',
-          text: props.text,
+          // text: props.text,
+          text: '',
           id: ''
         },
       }
