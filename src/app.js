@@ -58,6 +58,7 @@ export default class App extends React.Component {
     this.trackTime = this.trackTime.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.updateEditor = this.updateEditor.bind(this);
+    this.playPreview = this.playPreview.bind(this);
   }
 
   // State manager for global presets
@@ -149,15 +150,17 @@ export default class App extends React.Component {
 
   // Grabs each media path and plays them in sequence onClick (soon will change)
   playPreview(event) {
-    var videoObjects = document.getElementsByClassName('clipCard');
+    // var videoObjects = document.getElementsByClassName('clipCard');
+    var videoObjects = this.state.cardContainer;
     var previewScreen = document.getElementById("previewscreen");
-    var nextBtn = document.getElementById("nextbtn");
     //grabs data index set on preview screen element
     var currIndex = parseInt(previewScreen.dataset["index"]);
     // grabs path of video
-    var video = videoObjects[currIndex].children[0].children[0].children[2].files[0].path
+    // var video = videoObjects[currIndex].children[2].src
+    var video = videoObjects[currIndex].mediaPath;
     // grabs HTML video element to get video timing
-    var videocontainer = videoObjects[currIndex].children[0].children[0].children[1];
+    // var videocontainer = videoObjects[currIndex].children[2]
+    var videocontainer = document.getElementById("editorVideo")
 
     previewScreen.src = video;
     console.log("video length: " + videocontainer.duration);
@@ -175,11 +178,12 @@ export default class App extends React.Component {
 
   //play video clips in sequence for previewing. Pause after final video.
   trackTime(event) {
-    var videoObjects = document.getElementsByClassName('clipCard');
+    // var videoObjects = document.getElementsByClassName('clipCard');
+    var videoObjects = this.state.cardContainer;
     var previewscreen = document.getElementById("previewscreen");
     var currIndex = parseInt(previewscreen.dataset["index"])
     // grabs all text chunks
-    var text = document.getElementsByClassName("clipText");
+    // var text = document.getElementsByClassName("clipText");
     // grabs <p> div stacked over video
     var videotext = document.getElementById("checkthis");
 
@@ -193,10 +197,12 @@ export default class App extends React.Component {
       if (previewscreen.currentTime == previewscreen.duration) {
         console.log("THEY'RE EQUAL");
         previewscreen.dataset["index"] = Number(previewscreen.dataset["index"]) + 1;
-        previewscreen.src = videoObjects[currIndex].children[0].children[0].children[1].src;
+        // previewscreen.src = videoObjects[currIndex].children[2].src;
+        previewscreen.src = videoObjects[currIndex].mediaPath;
 
-        console.log("text: ", text[currIndex].innerHTML/*,", global preset color: ", this.state.globalPresets*/);
-        videotext.innerHTML = text[currIndex].innerHTML;
+        // console.log("text: ", text[currIndex].innerHTML/*,", global preset color: ", this.state.globalPresets*/);
+        // videotext.innerHTML = text[currIndex].innerHTML;
+        videotext.innerHTML = videoObjects[currIndex].text;
       }
       Number(previewscreen.dataset["index"]) + 1
     }
@@ -262,23 +268,19 @@ export default class App extends React.Component {
   concatClips(event) {
     var processMessages = document.getElementById("process-info");
     processMessages.innerHTML += "Getting started! Give us a few. "
-    //  document.getElementsByClassName('clipCard')[0].children[0].files[0].path
-    var videoObjects = document.getElementsByClassName('clipCard');
+    var videoObjects = this.state.cardContainer;
     var check = 0;
     var globalPresets = this.state.globalPresets;
     var app = this;
 
-    //This is to grab the media path: videoObjects[i].children[0].files[0].path
-    //This is to grab the text segment: videoObjects[i].children[1].value
     for (var i = 0; i < videoObjects.length; i++) {
       var outStream = fs.createWriteStream(i + '.mov');
-      // var outStream = fs.createWriteStream(tmpobj.name +'/' + i + '.mov');
-      fluent_ffmpeg(videoObjects[i].children[0].children[0].children[2].files[0].path)
+      fluent_ffmpeg(videoObjects[i].mediaPath)
         .videoFilters({
           filter: 'drawtext',
           options: {
             fontfile: this.state.globalPresets.font,
-            text: videoObjects[i].children[1].value,
+            text: videoObjects[i].text,
             fontsize: 50,
             fontcolor: this.state.globalPresets.color,
             shadowcolor: 'black',

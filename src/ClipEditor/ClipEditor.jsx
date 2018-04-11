@@ -20,25 +20,10 @@ export default class ClipEditor extends React.Component {
         },
       }
       this.updateText = this.updateText.bind(this);
+      this.updateMedia = this.updateMedia.bind(this);
       this.onDrop = this.onDrop.bind(this);
       this.updateCard = this.updateCard.bind(this);
   		}
-
-      // componentDidUpdate() {
-      //   if (!isNaN(this.props.editorEndpoints)) {
-      //     var selected = document.getElementsByClassName('clipCard')[this.props.editorEndpoints].children;
-      //     if ((this.state.clipCard.mediaPath != (selected[0].children[0].children[2].files.length > 0 ? selected[0].children[0].children[2].files[0].path : '')) | this.state.clipCard.text != selected[1].value ) {
-      //       console.log(this.state.clipCard.text)
-      //       this.state.clipCard.mediaPath = selected[0].children[0].children[2].files.length > 0 ? selected[0].children[0].children[2].files[0].path : '';
-      //       this.state.clipCard.text = selected[1].value
-      //       this.setState({
-      //         'clipCard': clipCard
-      //       })
-      //       document.getElementById("editorText").value = selected[1].value;
-      //     }
-      //   }
-      //   console.log(this.state.clipCard)
-      // }
 
       updateText(event) {
         var clipCard = this.state.clipCard;
@@ -60,10 +45,30 @@ export default class ClipEditor extends React.Component {
         }
       }
 
+      updateMedia(event) {
+        var clipCard = this.state.clipCard;
+        clipCard.mediaPath = document.getElementById("editorVideo").src;
+        this.setState({
+          'clipCard': clipCard,
+        });
+
+        var cardContainer = this.props.cardContainer;
+        // var editorText = document.getElementById("editorText")
+        for (var i = 0; i < cardContainer.length; i++) {
+          if (cardContainer[i].id == clipCard.id) {
+            cardContainer[i] = clipCard;
+            this.props.updateCardContainer(cardContainer);
+            console.log(cardContainer)
+            console.log(cardContainer[i])
+          }
+        }
+      }
+
       // on editor window button click, updates the selected card's text/media
       updateCard(event) {
         // Grab editor window textarea element
         var editorText = document.getElementById("editorText");
+        var editorVideo = document.getElementById("editorVideo");
         // grab selected card's index
         var editorTextIndex = document.getElementById("editorText").cardindex;
 
@@ -71,23 +76,31 @@ export default class ClipEditor extends React.Component {
         var cardContainer = this.props.cardContainer;
         // get selected clipcard's info
         var currCardInfo = cardContainer[editorTextIndex]
-        console.log("we're here: ", currCardInfo)
+        console.log("current card state: ", currCardInfo)
         // get the current card's text value
         var currCardText = document.getElementById(currCardInfo['id']).children[0].children[1]
         // update the card's text value to be the editor text's value
         currCardText.value = editorText.value
 
-        var currCardMedia = document.getElementById(currCardInfo['id']).children[2]
-        // currCardMedia.src = currCardInfo['mediaPath']
-        currCardMedia.src = this.state.clipCard.mediaPath;
+        // var currCardMedia = document.getElementById(currCardInfo['id']).children[2].src;
+        var currCardMedia = document.getElementById("editorVideo").src;
 
-        console.log(currCardInfo['mediaPath'])
+        var clipCard = this.state.clipCard;
+        clipCard.mediaPath = currCardMedia;
+        this.setState({
+          'clipCard': clipCard,
+        });
+        // currCardMedia.src = currCardInfo['mediaPath']
+        // currCardMedia.src = this.state.clipCard.mediaPath;
+
+        console.log("card container: ", cardContainer)
       }
 
       onDrop(files) {
         // console.log('dropzone ', files[0].path)
         var clipCard = this.state.clipCard;
-        clipCard.mediaPath = files[0].path;
+        // clipCard.mediaPath = files[0].path;
+        clipCard.mediaPath = document.getElementById("editorVideo").src;
         this.setState({
           'clipCard': clipCard,
         });
@@ -106,6 +119,7 @@ export default class ClipEditor extends React.Component {
         var video = document.getElementById("editorVideo");
         video.src = files[0].path;
         document.getElementById("placeholder").style.display="none";
+
       }
 
     render() {
@@ -126,7 +140,7 @@ export default class ClipEditor extends React.Component {
                     height="360"
                     src={this.state.mediaPath}
                     controls
-                    onChange={this.passMedia}
+                    onChange={this.updateMedia}
                     cardkey=''
                     cardindex=''>
                   </video>
