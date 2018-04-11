@@ -60,18 +60,26 @@ export default class ClipEditor extends React.Component {
         }
       }
 
+      // on editor window button click, updates the selected card's text/media
       updateCard(event) {
+        // Grab editor window textarea element
         var editorText = document.getElementById("editorText");
+        // grab selected card's index
         var editorTextIndex = document.getElementById("editorText").cardindex;
-        var cardContainer = this.props.cardContainer;
-        console.log("we're here: ", cardContainer[editorTextIndex])
 
+        // grab array holding each clipcard's info
+        var cardContainer = this.props.cardContainer;
+        // get selected clipcard's info
         var currCardInfo = cardContainer[editorTextIndex]
+        console.log("we're here: ", currCardInfo)
+        // get the current card's text value
         var currCardText = document.getElementById(currCardInfo['id']).children[0].children[1]
+        // update the card's text value to be the editor text's value
         currCardText.value = editorText.value
 
         var currCardMedia = document.getElementById(currCardInfo['id']).children[2]
-        currCardMedia.src = currCardInfo['mediaPath']
+        // currCardMedia.src = currCardInfo['mediaPath']
+        currCardMedia.src = this.state.clipCard.mediaPath;
 
         console.log(currCardInfo['mediaPath'])
       }
@@ -94,7 +102,8 @@ export default class ClipEditor extends React.Component {
             }
           }
 
-        var video = document.getElementById("video-input" + this.props.index);
+        // var video = document.getElementById("video-input" + this.props.index);
+        var video = document.getElementById("editorVideo");
         video.src = files[0].path;
         document.getElementById("placeholder").style.display="none";
       }
@@ -113,12 +122,13 @@ export default class ClipEditor extends React.Component {
                   </img>
                   <video
                     id="editorVideo"
-                    id={"video-input" + this.props.index}
                     width="440"
                     height="360"
                     src={this.state.mediaPath}
                     controls
-                    onChange={this.passMedia}>
+                    onChange={this.passMedia}
+                    cardkey=''
+                    cardindex=''>
                   </video>
                 </Dropzone>
             </div>
@@ -145,3 +155,16 @@ export default class ClipEditor extends React.Component {
     )
   }
 }
+
+// id={"video-input" + this.props.index}
+
+
+// <video
+//   id="editorVideo"
+//   id={"video-input" + this.props.index}
+//   width="440"
+//   height="360"
+//   src={this.state.mediaPath}
+//   controls
+//   onChange={this.passMedia}>
+// </video>
