@@ -61,12 +61,19 @@ export default class ClipEditor extends React.Component {
       }
 
       updateCard(event) {
-        console.log("BTN: update card")
         var editorText = document.getElementById("editorText");
         var editorTextIndex = document.getElementById("editorText").cardindex;
-        console.log(editorTextIndex)
         var cardContainer = this.props.cardContainer;
         console.log("we're here: ", cardContainer[editorTextIndex])
+
+        var currCardInfo = cardContainer[editorTextIndex]
+        var currCardText = document.getElementById(currCardInfo['id']).children[0].children[1]
+        currCardText.value = editorText.value
+
+        var currCardMedia = document.getElementById(currCardInfo['id']).children[2]
+        currCardMedia.src = currCardInfo['mediaPath']
+
+        console.log(currCardInfo['mediaPath'])
       }
 
       onDrop(files) {

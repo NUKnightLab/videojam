@@ -52,25 +52,35 @@ export default class ClipCard extends React.Component {
   // DOESN'T use state, but this function needs to use clipContainer state
   placeText(event) {
     var editorText = document.getElementById("editorText");
-    var clipCard = this.state.clipCard;
-    editorText.value = clipCard.text;
-    editorText.cardkey = this.state.id;
-    editorText.cardindex = this.props.index;
+    // editorText.cardindex = this.props.index;
+    // editorText.cardkey = this.state.id;
+    // var editorTextIndex = editorText.cardindex
+    // var cardContainer = this.props.cardContainer;
+    console.log(event.target.children[1].value)
+    editorText.value = event.target.children[1].value;
+    // var currCardInfo = cardContainer[editorTextIndex]
+    // var currCardText = document.getElementById(currCardInfo['id']).children[0].children[1]
+    // console.log("desired text: ", currCardText.value)
+    // editorText.value = currCardText.value;
+
+    // var clipCard = this.state.clipCard;
+    // console.log(clipCard)
+    // editorText.cardindex = this.props.index;
   }
 
-  updateText(event) {
-    var cardContainer = this.props.cardContainer;
-    // console.log("omg")
-
-    for (var i = 0; i < cardContainer.length; i++) {
-      if (cardContainer[i].id = event.target.id) {
-        console.log("event id: " + event.target.id)
-        console.log("text of cc: " + cardContainer[i].text)
-        event.target.value = cardContainer[i].text;
-      }
-      else { i++ }
-    }
-  }
+  // updateText(event) {
+  //   var cardContainer = this.props.cardContainer;
+  //   // console.log("omg")
+  //
+  //   for (var i = 0; i < cardContainer.length; i++) {
+  //     if (cardContainer[i].id = event.target.id) {
+  //       console.log("event id: " + event.target.id)
+  //       console.log("text of cc: " + cardContainer[i].text)
+  //       event.target.value = cardContainer[i].text;
+  //     }
+  //     else { i++ }
+  //   }
+  // }
 
   // TRIES (fails) to set its text to editor window's text
   // setText(event) {
@@ -98,11 +108,10 @@ export default class ClipCard extends React.Component {
             name = "clipText"
             defaultValue = {this.props.text}
             id = {this.state.id}
-            onClick = {this.updateText}
             >
           </textarea>
         </div>
-        <div id="space"></div>
+        <div id="spce"></div>
         <video
           id={this.state.id + "-vid"}
           src={this.state.clipCard.mediaPath}
@@ -112,6 +121,10 @@ export default class ClipCard extends React.Component {
     )
   }
 }
+// div id = space
+//             onClick = {this.updateText}
+
+
 
 // <div className="clipCard"
 //   id = {this.state.id}
