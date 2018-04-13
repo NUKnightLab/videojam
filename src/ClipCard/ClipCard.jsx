@@ -3,6 +3,7 @@ import React from 'react';
 import './ClipCard.css';
 const osHomedir = require('os-homedir');
 var fs = require("fs");
+var rand = require("random-key");
 
 // Set up FFmpeg
 var fluent_ffmpeg = require('fluent-ffmpeg');
@@ -18,107 +19,92 @@ export default class ClipCard extends React.Component {
   		this.state = {
   			clipCard: {
           mediaPath: '',
-          text: props.text
-        }
+          text: props.text,
+          id: ''
+        },
+        id: '',
   		}
     this.setText = this.setText.bind(this);
-    this.setMediaPath = this.setMediaPath.bind(this);
+    this.placeText = this.placeText.bind(this);
+    // this.setMediaPath = this.setMediaPath.bind(this);
+    // this.passUp = this.passUp.bind(this);
     this.updateEditor = this.updateEditor.bind(this);
-    this.onDrop = this.onDrop.bind(this);
-    // this.dragDrop = this.dragDrop.bind(this);
+    // this.updateCardContainer = this.updateCardContainer.bind(this);
 	}
+
+  componentDidMount() {
+      // creates a unique ID string for each clip card
+      var id = rand.generate();
+      this.setState({
+        'id': id,
+      });
+
+      // adds the id to the clip card object
+      var clipCard = this.state.clipCard;
+      clipCard.id = id;
+      this.setState({
+        'clipCard': clipCard,
+      });
+
+      // adds clip card to app.js card container array
+      var cardContainer = this.props.cardContainer;
+      for (var i = 0; i < cardContainer.length; i++) {
+        if (cardContainer[i].id == clipCard.id) {
+          break;
+        }
+      }
+      cardContainer.push(clipCard);
+      this.props.updateCardContainer(cardContainer);
+    }
 
   updateEditor() {
     this.props.updateEditor(this.props.index);
 	}
 
-  componentDidUpdate() {
+  // updateCardContainer() {
+  //   this.props.updateCardContainer(this.state.clipCard)
+  // }
 
+  placeText(event) {
+    var editorText = document.getElementById("editorText");
+    var clipCard = this.state.clipCard;
+    editorText.value = clipCard.text;
+    editorText.cardkey = this.state.id;
   }
 
   setText(event) {
     var clipCard = this.state.clipCard;
-    clipCard.text = event.target.value;
-    this.setState({
-      'clipCard': clipCard,
-    });
-  }
-
-  setMediaPath(event) {
-    var clipCard = this.state.clipCard;
-    clipCard.mediaPath = event.target.files[0].path;
-    this.setState({
-      'clipCard': clipCard,
-    });
-  }
-
-  // dragDrop(e) {
-  // 		e.preventDefault();
-  // 		var data = e.dataTransfer.getData('text');
-  // 		console.log('dragdrop',data);
-  // 		this.setState({ videoPath: e.dataTransfer.getData('text') });
-  // 		var videoObjects = this.props.videoObjects;
-  // 		var position = this.props.position;
-  // 		videoObjects[position].video_path = data;
-  // 		this.props.updateVideoObjects[videoObjects];
-  // 	}
-  onDrop(files) {
-    console.log('dropzone ', files[0].path)
-    document.getElementsByClassName("clip-instruction")[this.props.index].style.display = "none";
-    var clipCard = this.state.clipCard;
-    clipCard.mediaPath = files[0].path;
-    this.setState({
-      'clipCard': clipCard,
-    });
-    var video = document.getElementById("video-input" + this.props.index)
-    video.src = files[0].path
+    var cardContainer = this.props.cardContainer;
+    for (var i = 0; i < cardContainer.length; i++) {
+      if (cardContainer[i].id == clipCard.id) {
+        clipCard.text = cardContainer[i].text;
+        clipCard.mediaPath = cardContainer[i].mediaPath;
+      }
+    }
   }
 
   render() {
     return (
-      <div className="clipCard" onClick={this.updateEditor}>
-        <div className="dropzone">
-          <Dropzone className="dropzone-styles" onDrop={this.onDrop.bind(this)}>
-            <p className="clip-instruction">Drop or click to add a video.</p>
-            <video
-              id={"video-input" + this.props.index}
-              controls='true'>
-            </video>
-          </Dropzone>
-        </div>
+      <div className="clipCard"
+        id = {this.state.id}
+        onClick={this.placeText}
+        >
         <textarea
           className="clipText"
           name = "clipText"
           defaultValue = {this.props.text}
-          onChange = {this.setText}
+          onChange={this.setText}
+          id = {this.state.id}
           >
         </textarea>
+        <div id="space"></div>
+        <video
+          id={this.state.id + "-vid"}
+          src={this.state.mediaPath}
+          controls
+        >
+        </video>
       </div>
     )
   }
 }
-
-// <div className="dropzone">
-//   <Dropzone onDrop={this.onDrop.bind(this)}>
-//     <p>Try dropping some files here, or click to select files to upload.</p>
-//   </Dropzone>
-// </div>
-
-
-// <div
-//   className='dropzone'
-//   onDrop={this.dragDrop}>
-//         <video
-//           className='video-clip'
-//           controls='true'
-//           src={ this.state.mediaPath }>
-//         </video>
-// </div>
-
-//
-// <input
-//   type="file"
-//   id="v1"
-//   onChange= { this.setMediaPath }
-//   >
-// </input>

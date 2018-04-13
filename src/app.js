@@ -36,6 +36,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       clipCards: [],
+      ids: [],
+      cardContainer: [],
       globalPresets: {
         font: 'Verdana.ttf',
         color: '#000000',
@@ -46,6 +48,8 @@ export default class App extends React.Component {
       open: false
     }
     this.updateGlobalPresets = this.updateGlobalPresets.bind(this);
+    this.updateCardContainer = this.updateCardContainer.bind(this);
+    this.updateIds = this.updateIds.bind(this);
     this.addCard = this.addCard.bind(this);
     this.concatClips = this.concatClips.bind(this);
     this.addAudio = this.addAudio.bind(this);
@@ -59,6 +63,18 @@ export default class App extends React.Component {
   // State manager for global presets
   updateGlobalPresets(updatedGlobalPresets) {
     this.setState({ globalPresets: updatedGlobalPresets });
+  }
+
+  updateCardContainer(updatedCardContainer) {
+    this.setState({ cardContainer: updatedCardContainer });
+  }
+
+  updateIds(updatedIds) {
+    this.setState({ ids: updatedIds });
+  }
+  
+  componentDidMount() {
+    console.log("cardContainer: ", this.state.cardContainer)
   }
 
   // Closes preview modal
@@ -78,7 +94,15 @@ export default class App extends React.Component {
   addCard(type, textChunk) {
     if (type == 'blank') {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text="Fill me in" key={clipCards.length} updateEditor={this.updateEditor} index={clipCards.length}/>)
+      clipCards.push(<ClipCard text="Fill me in"
+                              key={clipCards.length}
+                              updateEditor={this.updateEditor}
+                              index={clipCards.length}
+                              cardContainer={this.state.cardContainer}
+                              updateCardContainer={this.updateCardContainer}
+                              // ids={this.state.ids}
+                              // updateIds={this.updateIds}
+                      />)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -87,7 +111,13 @@ export default class App extends React.Component {
     }
     else {
       var clipCards = this.state.clipCards;
-      clipCards.push(<ClipCard text={textChunk} key={clipCards.length} updateEditor={this.updateEditor} index={clipCards.length}/>)
+      clipCards.push(<ClipCard text={textChunk}
+                              key={clipCards.length}
+                              updateEditor={this.updateEditor}
+                              index={clipCards.length}
+                              cardContainer={this.state.cardContainer}
+                              updateCardContainer={this.updateCardContainer}
+                      />)
       this.setState({
         // 'clipCards': clipCards.concat(<ClipCard key={clipCards.length} />)
         'clipCards': clipCards
@@ -329,7 +359,11 @@ export default class App extends React.Component {
         </div>
 
         <button onClick={ this.concatClips }>Make video</button>
-        <ClipEditor editorEndpoints={this.state.editorEndpoints} />
+        <ClipEditor
+          editorEndpoints={this.state.editorEndpoints}
+          updateCardContainer={this.updateCardContainer}
+          cardContainer={this.state.cardContainer}
+        />
 
         <div className="clipCardContainer">
           <div id="addButtonContainer">

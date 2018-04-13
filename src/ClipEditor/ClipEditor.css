@@ -19,8 +19,13 @@
   margin: 25px;
 }
 
-#editorVideo {
+.dropzone-styles {
   margin: 25px;
+}
+
+.videotextcontainer {
+  display: flex;
+  justify-content: space-around;
 }
 
 #scrubber-container {

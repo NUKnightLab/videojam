@@ -8,16 +8,23 @@ var fs = require("fs");
 var fluent_ffmpeg = require('fluent-ffmpeg');
 var mergedVideo = fluent_ffmpeg();
 
+// Import componenets
+import Dropzone from 'react-dropzone';
+
 
 export default class ClipEditor extends React.Component {
   constructor(props) {
 		super(props);
   		this.state = {
-        mediaPath: '',
         text: 'Choose a clipcard',
         leftScrubPos: 0,
         rightScrubPos: 0,
         videoStartTime : 0,
+        clipCard: {
+          mediaPath: '',
+          text: props.text,
+          id: ''
+        },
 
         }
         this.updateText = this.updateText.bind(this);
@@ -27,28 +34,31 @@ export default class ClipEditor extends React.Component {
         this.setRightScrubPos = this.setRightScrubPos.bind(this);
         this.pausePlay = this.pausePlay.bind(this);
         this.pauseVideo = this.pauseVideo.bind(this);
+        this.onDrop = this.onDrop.bind(this);
   		}
 
       componentDidMount() {
 
       }
 
-      componentDidUpdate() {
-        if (!isNaN(this.props.editorEndpoints)) {
-          var selected = document.getElementsByClassName('clipCard')[this.props.editorEndpoints].children;
-          if ((this.state.mediaPath != (selected[0].children[0].children[2].files.length > 0 ? selected[0].children[0].children[2].files[0].path : '')) | this.state.text != selected[1].value ) {
-            console.log(this.state.text)
-            this.setState({
+      updateText(event) {
+        var clipCard = this.state.clipCard;
+        clipCard.text = event.target.value;
+        clipCard.id = document.getElementById("editorText").cardkey;
+        this.setState({
+          'clipCard': clipCard,
+        });
 
-              'mediaPath' : selected[0].children[0].children[2].files.length > 0 ? selected[0].children[0].children[2].files[0].path : '',
-              'text' : selected[1].value,
-            })
-            document.getElementById("editorText").value = selected[1].value;
+        var cardContainer = this.props.cardContainer;
+        // var editorText = document.getElementById("editorText")
+        for (var i = 0; i < cardContainer.length; i++) {
+          if (cardContainer[i].id == clipCard.id) {
+            cardContainer[i] = clipCard;
+            this.props.updateCardContainer(cardContainer);
+            console.log(cardContainer)
+            console.log(cardContainer[i])
           }
         }
-      }
-
-      updateText() {
       }
 
       scrubRight(e) {
@@ -156,20 +166,66 @@ export default class ClipEditor extends React.Component {
           video.pause()
         }
       }
+        
+      onDrop(files) {
+        // console.log('dropzone ', files[0].path)
+        var clipCard = this.state.clipCard;
+        clipCard.mediaPath = files[0].path;
+        this.setState({
+          'clipCard': clipCard,
+        });
 
-  render() {
-    return (
-      <div ref={"clipEditor"} className="clipEditor">
-        <div id="clipEdit-container">
-          <div>
-            <video id="editorVideo" width="440" onTimeUpdate={this.pauseVideo} onPause={this.videoDone} height="360" src={this.state.mediaPath} controls></video>
+        var cardContainer = this.props.cardContainer;
+        for (var i = 0; i < cardContainer.length; i++) {
+            if (cardContainer[i].id == clipCard.id) {
+              cardContainer[i] = clipCard;
+              this.props.updateCardContainer(cardContainer);
+              console.log(cardContainer)
+              console.log("card i: ", cardContainer[i])
+            }
+          }
+
+        var video = document.getElementById("video-input" + this.props.index);
+        video.src = files[0].path;
+        document.getElementById("placeholder").style.display="none";
+      }
+        
+    render() {
+      return (
+      <div>
+        <div ref={"clipEditor"} className="clipEditor">
+            <div className="videotextcontainer">
+              <div className="dropzone">
+                <Dropzone className="dropzone-styles" onDrop={this.onDrop.bind(this)}>
+                  <p className="clip-instruction">Drop or click to add a video.</p>
+                  <img
+                    id="placeholder"
+                    src="./placehold.png">
+                  </img>
+                  <video
+                    id="editorVideo"
+                    id={"video-input" + this.props.index}
+                    width="440"
+                    height="360"
+                    onTimeUpdate={this.pauseVideo}
+                    onPause={this.videoDone}
+                    src={this.state.mediaPath}
+                    controls
+                    onChange={this.passMedia}>
+                    controls
+                  </video>
+                </Dropzone>
+            </div>
+            <textarea
+              id="editorText"
+              defaultValue={this.state.text}
+              onChange={this.updateText}
+              cardkey=''
+            >
+            </textarea>
           </div>
-          <textarea
-            id="editorText"
-            defaultValue={this.state.text}
-          >
-          </textarea>
         </div>
+          
         <div ref={"scrubberContainer"} id="scrubber-container">
           <div id="scrubber-line"></div>
           <p id="play-pause-button" onClick={this.pausePlay}> &#9658; </p>

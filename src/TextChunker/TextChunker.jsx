@@ -17,8 +17,8 @@ export default class TextChunker extends React.Component {
   }
 
   newTextInput() {
-    if (document.getElementById('do-chunk').innerHTML != 'Preview') {
-      document.getElementById('do-chunk').innerHTML = 'Preview';
+    if (document.getElementById('do-chunk').innerHTML != 'Chunk Text') {
+      document.getElementById('do-chunk').innerHTML = 'Chunk Text';
     }
   }
 
@@ -304,7 +304,7 @@ export default class TextChunker extends React.Component {
           >
         </textarea>
 
-        <button id="do-chunk" onClick={this.chunkText}>Preview</button>
+        <button id="do-chunk" onClick={this.chunkText}>Chunk Text</button>
 
       </div>
 
