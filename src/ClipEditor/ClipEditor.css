@@ -46,8 +46,8 @@
 #scrubber-container {
   position: relative;
   height: 23px;
-  width: 440px;
-  left: 25px;
+  width: 350px;
+  left: 60px;
   transform: translateY(-50%);
 }
 
@@ -62,21 +62,38 @@
   transform: translate(-50%, -50%);
 }
 
+#play-pause-button {
+  position: relative;
+  left: -35px;
+  font-size: 1.5em;
+  transform: translateY(-40%);
+}
+
+#play-pause-button:hover {
+  cursor: pointer;
+}
+
 #left-scrub {
   position: absolute;
   width: 5px;
   height: 100%;
-  left: 1%;
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
   border-radius: 2px;
   background-color: #66f7ff;
+  /*-webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;*/
 }
 
 #right-scrub {
   position: absolute;
   width: 5px;
   height: 100%;
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
   border-radius: 2px;
