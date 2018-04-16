@@ -6,12 +6,23 @@
 }
 
 .clipCard {
+  padding-top: 20px;
   margin: 10px;
   width: 250px;
   height: 125px;
   border: 1px solid black;
   border-radius: 10px;
   background-color: #cdcdcd;
+}
+
+#numbercontainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+#cardindex {
+  margin-right: 10px;
+  text-align: center;
 }
 
 .clipText {

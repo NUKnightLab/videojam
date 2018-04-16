@@ -7,6 +7,10 @@
   margin: 20px 0;
 }
 
+#clip-instruction {
+  margin: 0px 25px;
+}
+
 #clipEdit-container {
   display: flex;
   position: relative;
@@ -16,7 +20,7 @@
   position: relative;
   width: 200px;
   height: 150px;
-  margin: 25px;
+  margin: 0 25 25 25;
 }
 
 .dropzone-styles {
@@ -26,6 +30,17 @@
 .videotextcontainer {
   display: flex;
   justify-content: space-around;
+}
+
+#buttonalign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#updatebtn {
+  text-shadow: none;
+  box-shadow: none;
 }
 
 #scrubber-container {
