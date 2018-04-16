@@ -20,23 +20,22 @@ export default class ClipEditor extends React.Component {
         text: '',
         id: ''
       },
+      this.updateText = this.updateText.bind(this);
+      this.updateMedia = this.updateMedia.bind(this);
+      this.onDrop = this.onDrop.bind(this);
+      this.updateCard = this.updateCard.bind(this);
+      this.scrubRight = this.scrubRight.bind(this);
+      this.scrubLeft = this.scrubLeft.bind(this);
+      this.setLeftScrubPos = this.setLeftScrubPos.bind(this);
+      this.setRightScrubPos = this.setRightScrubPos.bind(this);
+      this.pausePlay = this.pausePlay.bind(this);
+      this.pauseVideo = this.pauseVideo.bind(this);
     }
-    this.updateText = this.updateText.bind(this);
-    this.updateMedia = this.updateMedia.bind(this);
-    this.onDrop = this.onDrop.bind(this);
-    this.updateCard = this.updateCard.bind(this);
-    this.scrubRight = this.scrubRight.bind(this);
-    this.scrubLeft = this.scrubLeft.bind(this);
-    this.setLeftScrubPos = this.setLeftScrubPos.bind(this);
-    this.setRightScrubPos = this.setRightScrubPos.bind(this);
-    this.pausePlay = this.pausePlay.bind(this);
-    this.pauseVideo = this.pauseVideo.bind(this);
-  }
 
       componentDidMount() {
 
       }
-  
+
       updateText(event) {
         var clipCard = this.state.clipCard;
         clipCard.text = event.target.value;
@@ -165,7 +164,7 @@ export default class ClipEditor extends React.Component {
 
         console.log("card container: ", cardContainer)
       }
-        
+
       setLeftScrubPos() {
         var container = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.scrubberContainer));
         var editorWindow = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.clipEditor));
@@ -213,7 +212,7 @@ export default class ClipEditor extends React.Component {
           video.pause()
         }
       }
-        
+
       onDrop(files) {
         // console.log('dropzone ', files[0].path)
         var clipCard = this.state.clipCard;
@@ -240,7 +239,7 @@ export default class ClipEditor extends React.Component {
         document.getElementById("placeholder").style.display="none";
 
       }
-        
+
     render() {
       return (
       <div>
@@ -286,7 +285,7 @@ export default class ClipEditor extends React.Component {
           </div>
           </div>
         </div>
-          
+
         <div ref={"scrubberContainer"} id="scrubber-container">
           <div id="scrubber-line"></div>
           <p id="play-pause-button" onClick={this.pausePlay}> &#9658; </p>
