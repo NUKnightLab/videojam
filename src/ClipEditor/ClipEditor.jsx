@@ -15,10 +15,12 @@ export default class ClipEditor extends React.Component {
         leftScrubPos: 0,
         rightScrubPos: 0,
         videoStartTime : 0,
-        mediaPath: '',
-        // text: props.text,
-        text: '',
-        id: ''
+        clipCard: {
+          mediaPath: '',
+          // text: props.text,
+          text: '',
+          id: ''
+        },
       },
       this.updateText = this.updateText.bind(this);
       this.updateMedia = this.updateMedia.bind(this);
