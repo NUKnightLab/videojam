@@ -133,7 +133,7 @@ export default class ClipEditor extends React.Component {
           if (button.innerHTML == "►") {
             button.innerHTML = "&#10074;&#10074;"
             console.log()
-            if (video.currentTime == video.duration || video.currentTime == 0 || (video.currentTime <= (this.state.endTime + 0.15) & video.currentTime >= (this.state.endTime - 0.15))) {
+            if (video.currentTime == video.duration || video.currentTime == 0 || video.currentTime >= (this.state.endTime - 0.15)) {
               video.currentTime = this.state.videoStartTime;
             }
             video.play();
@@ -152,7 +152,7 @@ export default class ClipEditor extends React.Component {
       pauseVideo() {
         var video = document.getElementById('editorVideo')
         console.log(video.currentTime, this.state.endTime, video.currentTime <= (this.state.endTime + 0.2) & video.currentTime >= (this.state.endTime - 0.2))
-        if (video.currentTime <= (this.state.endTime + 0.15) & video.currentTime >= (this.state.endTime - 0.15)) {
+        if (video.currentTime >= (this.state.endTime - 0.05)) {
           video.pause()
         }
       }
